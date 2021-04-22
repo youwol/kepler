@@ -1,0 +1,106 @@
+import {
+    Mesh, MeshStandardMaterial, Color,
+    DoubleSide, Material
+} from "three"
+
+import { SkinParameters } from "./skinParameters"
+import { IArray } from '@youwol/dataframe'
+import { createBufferGeometry } from "./bufferUtils"
+
+/**
+ * @see [[createSurface]]
+ * @category Skin Parameters
+ */
+export class SurfaceParameters extends SkinParameters {
+    public readonly color: string
+    public readonly opcacity: number = 1
+    public readonly flat: boolean = false
+    public readonly wireframe: boolean = false
+
+    constructor(
+        {color='#aaaaaa', flat=false, opacity=1, wireframe=false, ...others}:
+        {color?: string, opacity?: number, flat?: boolean, wireframe?:boolean} = {})
+    {
+        super(others as any)
+        this.color = color || '#aaaaaa'
+        this.flat = (flat !== undefined ? flat : false)
+        if (opacity !== undefined) this.opcacity = opacity
+        if (wireframe !== undefined) this.wireframe = wireframe
+    }
+}
+
+/**
+ * @brief Generate a 3D surface from positions and indices
+ * @example
+ * ```ts
+ * const surface = createSurface({
+ *     positions: dataframe.get('positions'),
+ *     indices  : dataframe.get('indices'),
+ *     parameters: new SurfaceParameters({
+ *         color: '#ff0000',
+ *         flat: true,
+ *         opacity: 0.7
+ *     })
+ * })
+ * 
+ * const attribute = dataframe.get('U').map( u => u[0] )
+ * paintAttribute(surface, attribute )
+ * 
+ * const skin = createIsoContourLines({
+ *     geometry : surface.geometry,
+ *     attribute: attribute,
+ *     parameters: new IsoContoursParameters({
+ *         color: '#999900',
+ *         nbr: 10,
+ *         min; 0.2,
+ *         max: 0.8
+ *     })
+ * })
+ * 
+ * scene.add( surface )
+ * surface.add( skin )
+ * ```
+ * @category Skins
+ */
+export function createSurface(
+    {positions, indices, material, parameters}:
+    {positions: IArray, indices: IArray, material?: Material, parameters?: SurfaceParameters}): Mesh
+{
+    if (positions === undefined) throw new Error('positions is undefined')
+    if (indices === undefined) throw new Error('indices is undefined')
+
+    if (parameters === undefined) {
+        parameters = new SurfaceParameters()
+    }
+
+    const mesh = new Mesh()
+    let color = new Color(parameters.color)
+
+    mesh.geometry = createBufferGeometry(positions, indices)
+
+    if (material) {
+        mesh.material = material
+    } else {
+        mesh.material = new MeshStandardMaterial({
+            color: color,
+            side: DoubleSide,
+            vertexColors: false,
+            wireframe: false, 
+            flatShading: parameters.flat
+        })
+    }
+
+    mesh.material.polygonOffset = true
+    mesh.material.polygonOffsetFactor = 1
+
+    if (parameters.opcacity !== 1) {
+        mesh.material.opacity = parameters.opcacity
+        mesh.material.transparent = true
+    } else {
+        mesh.material.transparent = false
+    }
+
+    mesh.geometry.computeVertexNormals()
+    mesh.geometry.computeBoundingBox()
+    return mesh
+}
