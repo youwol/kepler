@@ -78,9 +78,9 @@ export class MarchingTriangles {
             triangle[2] = this.topo_[i].k
 
             let t1, t2, t3 ;
-            const p0 = prop[triangle[0]]
-            const p1 = prop[triangle[1]]
-            const p2 = prop[triangle[2]]
+            const p0 = prop.array[triangle[0]]
+            const p1 = prop.array[triangle[1]]
+            const p2 = prop.array[triangle[2]]
 
             if (ok(p0, p1, p2, this._bounds[0], this._bounds[1]) === false) {
                 continue
@@ -146,7 +146,7 @@ export class MarchingTriangles {
                 v1 = triangle[v1]
                 isoline.push(v0)
                 isoline.push(v1)
-                values.push((isovalue - prop[v0]) / (prop[v1] - prop[v0]))
+                values.push((isovalue - prop.array[v0]) / (prop.array[v1] - prop.array[v0]))
                 let vmin = Math.min(v0, v1)
                 let vmax = Math.max(v0, v1)
 
@@ -195,7 +195,7 @@ export class MarchingTriangles {
                         if (vmin !== next_edge[0] || vmax !== next_edge[1]) {
                             isoline.push(v0)
                             isoline.push(v1)
-                            values.push((isovalue - prop[v0]) / (prop[v1] - prop[v0]))
+                            values.push((isovalue - prop.array[v0]) / (prop.array[v1] - prop.array[v0]))
                             next_edge[0] = vmin
                             next_edge[1] = vmax
                             break

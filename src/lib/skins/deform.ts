@@ -15,7 +15,7 @@ export class DeformParameters extends SkinParameters {
         {scaleX=1, scaleY=1, scaleZ=1, ...others}:
         {scaleX?: number, scaleY?: number, scaleZ?: number}={})
     {
-        super(others as any)
+        super(others)
         this.scaleX = scaleX || 1
         this.scaleY = scaleY || 1
         this.scaleZ = scaleZ || 1

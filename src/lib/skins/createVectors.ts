@@ -6,7 +6,7 @@ import {
 
 import { PaintParameters } from './paintAttribute'
 import { fromValueToColor } from '../utils/lut-utils'
-import { IArray, minMaxArray } from "@youwol/dataframe"
+import { ASerie, IArray, minMaxArray } from "@youwol/dataframe"
 import { Lut } from "../utils"
 
 /**
@@ -36,7 +36,7 @@ export class VectorsParameters extends PaintParameters {
             project?: boolean
         } = {})
     {
-        super(others as any)
+        super(others)
         this.vector    = vector || ''
         this.lineWidth = lineWidth || 1
         this.color     = color || '#000000'
@@ -55,7 +55,7 @@ export class VectorsParameters extends PaintParameters {
  */
 export function createVectors(
     {geometry,  material, vectorField, attribute, parameters}:
-    {geometry: BufferGeometry, material?: Material, vectorField?: IArray, attribute: IArray, parameters?: VectorsParameters}): LineSegments
+    {geometry: BufferGeometry, material?: Material, vectorField?: ASerie, attribute: ASerie, parameters?: VectorsParameters}): LineSegments
 {
     if (geometry === undefined) throw new Error('geometry is undefined')
     if (vectorField === undefined) throw new Error('vectorField is undefined')
@@ -88,9 +88,9 @@ export function createVectors(
         const x = position.getX(i)
         const y = position.getY(i)
         const z = position.getZ(i)
-        let ux = vectorField[3*i]
-        let uy = vectorField[3*i+1]
-        let uz = vectorField[3*i+2]
+        let ux = vectorField.array[3*i]
+        let uy = vectorField.array[3*i+1]
+        let uz = vectorField.array[3*i+2]
         if (parameters.project) {
             uz = 0
         }
@@ -110,7 +110,7 @@ export function createVectors(
     const defaultColor = new Color(parameters.color)
     const lutTable = new Lut(parameters.lut, 256)
 
-    const mm = minMaxArray(attribute)
+    const mm = minMaxArray(attribute.array)
 
     if (parameters.lockLut) {
         lutTable.setMin(0)
@@ -130,7 +130,7 @@ export function createVectors(
 
     if (attribute) {
         const colors: number[] = []
-        attribute.forEach( value => {
+        attribute.array.forEach( value => {
             const c = fromValueToColor(value, params)
             for (let i=0; i<2; ++i) {
                 colors.push(c[0], c[1], c[2])

@@ -20,7 +20,7 @@ export class LinesetParameters extends SkinParameters {
         {lineWidth, color, opacity, transparent, ...others}:
         {lineWidth?: number, color?: string, opacity?: number, transparent?: boolean} = {})
     {
-        super(others as any)
+        super(others)
         this.lineWidth = lineWidth || 1
         this.color = color || '#000000'
         this.opacity = opacity || 1

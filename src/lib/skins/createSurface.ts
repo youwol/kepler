@@ -1,5 +1,5 @@
 import {
-    Mesh, MeshStandardMaterial, Color,
+    Mesh, MeshStandardMaterial, Color, MeshBasicMaterial,
     DoubleSide, Material
 } from "three"
 
@@ -13,19 +13,21 @@ import { createBufferGeometry } from "./bufferUtils"
  */
 export class SurfaceParameters extends SkinParameters {
     public readonly color: string
-    public readonly opcacity: number = 1
+    public readonly opacity: number = 1
     public readonly flat: boolean = false
     public readonly wireframe: boolean = false
+    public readonly creaseAngle: number = 0
 
     constructor(
-        {color='#aaaaaa', flat=false, opacity=1, wireframe=false, ...others}:
-        {color?: string, opacity?: number, flat?: boolean, wireframe?:boolean} = {})
+        {color='#aaaaaa', flat=false, opacity=1, wireframe=false, creaseAngle=0, ...others}:
+        {color?: string, opacity?: number, flat?: boolean, wireframe?:boolean, creaseAngle?: number} = {})
     {
-        super(others as any)
+        super(others)
         this.color = color || '#aaaaaa'
         this.flat = (flat !== undefined ? flat : false)
-        if (opacity !== undefined) this.opcacity = opacity
+        if (opacity !== undefined) this.opacity = opacity
         if (wireframe !== undefined) this.wireframe = wireframe
+        if (creaseAngle !== undefined) this.creaseAngle = creaseAngle * Math.PI/180
     }
 }
 
@@ -39,7 +41,8 @@ export class SurfaceParameters extends SkinParameters {
  *     parameters: new SurfaceParameters({
  *         color: '#ff0000',
  *         flat: true,
- *         opacity: 0.7
+ *         opacity: 0.7,
+ *         creaseAngle: 30 // in degrees
  *     })
  * })
  * 
@@ -76,7 +79,7 @@ export function createSurface(
     const mesh = new Mesh()
     let color = new Color(parameters.color)
 
-    mesh.geometry = createBufferGeometry(positions, indices)
+    mesh.geometry = createBufferGeometry(positions, indices, parameters.creaseAngle)
 
     if (material) {
         mesh.material = material
@@ -85,22 +88,25 @@ export function createSurface(
             color: color,
             side: DoubleSide,
             vertexColors: false,
-            wireframe: false, 
+            wireframe: parameters.wireframe, 
             flatShading: parameters.flat
         })
     }
 
     mesh.material.polygonOffset = true
     mesh.material.polygonOffsetFactor = 1
+    // mesh.materialdepthWrite = false
+    // mesh.materialdepthTest = true
+    // mesh.materialpolygonOffsetUnits = 1
 
-    if (parameters.opcacity !== 1) {
-        mesh.material.opacity = parameters.opcacity
+    if (parameters.opacity !== 1) {
+        mesh.material.opacity = parameters.opacity
         mesh.material.transparent = true
     } else {
         mesh.material.transparent = false
     }
 
-    mesh.geometry.computeVertexNormals()
+    mesh.material.needsUpdate = true
     mesh.geometry.computeBoundingBox()
     return mesh
 }

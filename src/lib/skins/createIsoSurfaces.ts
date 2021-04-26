@@ -3,8 +3,8 @@ import {
     Object3D, Color
 } from "three"
 
-import { IArray, minMaxArray } from "@youwol/dataframe"
-import { IsoContoursFilledParameters } from "./createIsoContourFilled"
+import { ASerie, IArray, minMaxArray } from "@youwol/dataframe"
+import { IsoContoursParameters } from "./isoContoursParameters"
 import { MarchingCubes } from "./private/MarchingCubes2"
 import { ImplicitGrid3D } from './implicitGrid'
 import { fromValuesToColors, generateIsos } from "../utils"
@@ -15,7 +15,7 @@ import { createSurface } from "./createSurface"
  * @see [[createIsoSurfaces]]
  * @category Skin Parameters
  */
-export class IsoSurfaceParameters extends IsoContoursFilledParameters {
+export class IsoSurfaceParameters extends IsoContoursParameters {
     public readonly roughness: number
     public readonly metalness: number
     public readonly useTable: boolean
@@ -23,7 +23,7 @@ export class IsoSurfaceParameters extends IsoContoursFilledParameters {
     constructor({roughness=0.1, metalness=0.5, useTable=true, ...others}:
         {roughness?: number, metalness?: number, useTable?: boolean}={})
     {
-        super(others as any)
+        super(others)
         this.roughness = roughness !== undefined ? roughness : 0.1
         this.metalness = metalness !== undefined ? metalness : 0.5
         this.useTable = useTable !== undefined ? useTable : true
@@ -34,7 +34,7 @@ export class IsoSurfaceParameters extends IsoContoursFilledParameters {
  * @category Skins
  */
 export function createIsoSurfaces({grid, attribute, material, parameters}:
-    {grid: ImplicitGrid3D, attribute: IArray, material?: Material, parameters?: IsoSurfaceParameters}): Object3D
+    {grid: ImplicitGrid3D, attribute: ASerie, material?: Material, parameters?: IsoSurfaceParameters}): Object3D
 {
     if (grid === undefined) throw new Error('grid is undefined')
     if (attribute === undefined) throw new Error('attribute is undefined')
@@ -61,12 +61,12 @@ export function createIsoSurfaces({grid, attribute, material, parameters}:
     const defaultColor = new Color(parameters.color)
     material["color"]  = defaultColor
 
-    const minmax = minMaxArray(attribute)
+    const minmax = minMaxArray(attribute.array)
     const vmin   = minmax[0]
     const vmax   = minmax[1]
     
     // normalize
-    let scalars = attribute.map( v => (v-vmin)/(vmax-vmin) )
+    let scalars = attribute.array.map( v => (v-vmin)/(vmax-vmin) )
 
     const isoValues = generateIsos(
         lerp(parameters.min, vmin, vmax),

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Testing Kepler</title>
+    <script src='/projects/youwol/workspace/packages/kepler/node_modules/three/build/three.min.js'></script>
+    <script src='/projects/youwol/workspace/packages/dataframe/dist/@youwol/dataframe.js'></script>
+    <script src='/projects/youwol/workspace/packages/io/dist/@youwol/io.js'></script>
+    <script src='/projects/youwol/workspace/packages/kepler/dist/@youwol/kepler.js'></script>
+    <script src='/projects/youwol/workspace/packages/kepler/node_modules/three/examples/js/controls/TrackballControls.js'></script>
+    <script src="https://kit.fontawesome.com/daa834e337.js" crossorigin="anonymous"></script>
+    <style>
+        html, body {
+	        margin: 0;
+	        padding: 0;
+        }
+        .home-container {
+            position: absolute;
+            right: 40px;
+            top: 5px;
+            display: flex;
+        }
+        .right-container {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            display: flex;
+        }
+        
+        #orientCubeWrapper {
+            width: 130px;
+            height: 130px;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+            -webkit-transition: 0.3s;
+        }
+        #orientCubeWrapper:hover {
+            opacity: 1;
+        }
+        .fa-clinic-medical:before {
+            content: "\f7f2";
+        }
+
+        .loading {
+            position: fixed;
+            z-index: 50;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            /*background: #f1f1f1;*/
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loader {
+            -webkit-perspective: 120px;
+            -moz-perspective: 120px;
+            -ms-perspective: 120px;
+            perspective: 120px;
+            width: 100px;
+            height: 100px;
+        }
+
+        .loader::before {
+            content: "";
+            position: absolute;
+            left: 25px;
+            top: 25px;
+            width: 100px;
+            height: 100px;
+            background-color: #fbff02;
+            animation: flip 1s infinite;
+        }
+
+        @keyframes flip {
+            0% {
+                transform: rotate(0);
+            }
+
+            50% {
+                transform: rotateY(180deg);
+            }
+
+            100% {
+                transform: rotateY(180deg) rotateX(180deg);
+            }
+        }
+
+
+        .lds-hourglass {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+        .lds-hourglass:after {
+            content: " ";
+            display: block;
+            border-radius: 50%;
+            width: 0;
+            height: 0;
+            margin: 8px;
+            box-sizing: border-box;
+            border: 32px solid #fff;
+            border-color: #fff transparent #fff transparent;
+            animation: lds-hourglass 1.2s infinite;
+        }
+        @keyframes lds-hourglass {
+            0% {
+                transform: rotate(0);
+                animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+            }
+            50% {
+                transform: rotate(900deg);
+                animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+            }
+            100% {
+                transform: rotate(1800deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading" id="js-loader">
+        <div class="loader"></div>
+    </div>
+
+    <div class='home-container'>
+        <span>
+            <div class='buttonIcon'>
+                <div id='goHome'><i class='fa fa-home'></i></div>
+            </div>
+            <div class='buttonIcon'>
+                <div id='saveHome'><i class='fa fa-clinic-medical'></i></div>
+            </div>
+            <div class='right-container'>
+                <div id='orientCubeWrapper'></div>
+            </div>
+        </span>
+    </div>
+
+    
+
+    <script>
+        const dataframe = globalThis['@youwol/dataframe']
+        const io        = globalThis['@youwol/io']
+        const kepler    = globalThis['@youwol/kepler']
+        const three     = globalThis['THREE']
+
+        const surfaceset = [
+            {
+                //url: "/platform/test/geophysics/arche/model_test_sphere/sphere_5120.ts",
+                //url: '/platform/test/files/gocad/ts/S1_properties.ts',
+                url: "/platform/test/models/arche/Santos/out/horizon.ts",
+                show: true,
+                attr: 'stress3xy',
+                lut: 'Insar',
+                min: 0,
+                max: 1,
+                isoFill: {
+                    opacity: 0.8,
+                    show: true,
+                    showLines: false,
+                    lut: 'Igeoss',
+                    nb: 10
+                },
+                wireframe: {
+                    show: false,
+                    color: '#000000'
+                }
+            }
+        ]
+
+        let scene, camera, light, renderer, controls, cube, renderFct
+
+        init()
+        load()
+
+        function init() {
+            scene = new three.Scene
+            scene.background = new three.Color( 0xaaaaaa )
+
+            camera = new three.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 100000 )
+            camera.position.z = 100
+
+            renderer = new three.WebGLRenderer({alpha: true})
+            renderer.setPixelRatio( window.devicePixelRatio )
+            renderer.setSize( window.innerWidth, window.innerHeight )
+            document.body.appendChild( renderer.domElement )
+
+            renderFct = new kepler.RenderFunctions({renderer, scene, camera})
+
+            window.addEventListener( 'resize', onWindowResize )
+
+            controls = new three.TrackballControls( camera, renderer.domElement )
+            // controls.rotateSpeed = 1.0
+            // controls.zoomSpeed = 1.2
+            // controls.panSpeed = 0.8
+            renderFct.add( controls.update )
+
+            const cube = new kepler.NavigationCube(
+                new kepler.NavigationCubeParameters({
+                    scene, 
+                    camera, 
+                    renderer,
+                    controls, 
+                    renderFunctions: renderFct, // will also add the cube in renderFct
+                    labels: ['East', 'West', 'Up', 'Down', 'South', 'North'],
+
+                    domElement : document.getElementById('orientCubeWrapper'),
+                    domHome    : document.getElementById('goHome'), 
+                    domSaveHome: document.getElementById('saveHome')
+                })
+            )
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight
+            camera.updateProjectionMatrix()
+            renderer.setSize( window.innerWidth, window.innerHeight )
+            controls.handleResize()
+        }
+
+        function animate() {
+            //controls.update()
+            //renderer.render( scene, camera )
+            //cube.update()
+            renderFct.render()
+            requestAnimationFrame( animate )
+        }
+        requestAnimationFrame( animate )
+
+        function load() {
+            const promises = []
+
+            surfaceset.forEach( surface => {
+                if (surface.show===true) {
+                    const promise = doSurface(surface)
+                    if (promise) {
+                        promises.push(promise)
+                    }
+                }
+            })
+            
+            Promise.all(promises).then( _ => {
+                kepler.changeBackground( {scene, color: '#aaaaaa'} )
+
+                scene.add( kepler.createDefaultLights({object: scene, scaling: 10, intensity: 1}) )
+
+                const keyboard = new kepler.Keyboard()
+                keyboard.addKey('u', e => kepler.changeView('up', {scene, camera, controls}) )
+                keyboard.addKey('d', e => kepler.changeView('down', {scene, camera, controls}) )
+                keyboard.addKey('s', e => kepler.changeView('south', {scene, camera, controls}) )
+                keyboard.addKey('n', e => kepler.changeView('north', {scene, camera, controls}) )
+                keyboard.addKey('e', e => kepler.changeView('east', {scene, camera, controls}) )
+                keyboard.addKey('w', e => kepler.changeView('west', {scene, camera, controls}) )
+                keyboard.addKey('f', e => kepler.zoomToModel({scene, camera, controls, duration:300}) )
+
+                renderer.domElement.addEventListener('dblclick', event => {
+                    kepler.zoomToIntersection( {scene, event, camera, controls} )
+                })
+
+                const LOADER = document.getElementById('js-loader');
+                LOADER.remove();
+            })
+            .then( () => {
+                kepler.changeView('up', {scene, camera, controls})
+            })
+        }
+
+        function doSurface(surfaceInfo) {
+            const promise = fetch(surfaceInfo.url)
+                .then( res => {
+                    if ( res.ok ) return res.text()
+                    return undefined
+                })
+                .then( buffer => {
+                    if (! buffer) return undefined
+                    const dfs = io.decodeGocadTS(buffer, {shared: true, merge: false})
+                    dfs.forEach( df => {
+                        let skin
+
+                        // wireframe
+                        // scene.add( kepler.createSurface({
+                        //     positions: df.get('positions'),
+                        //     indices  : df.get('indices'),
+                        //     parameters: new kepler.SurfaceParameters({
+                        //         wireframe: true, 
+                        //         color: '#000000',
+                        //         opacity: 1.0
+                        //     })
+                        // }) )
+                        
+                        // surface
+                        const surface = kepler.createSurface({
+                            positions: df.get('positions'),
+                            indices  : df.get('indices'),
+                            parameters: new kepler.SurfaceParameters({
+                                flat: true, 
+                                wireframe: false, 
+                                color: '#aaaaaa',
+                                opacity: 1.0,
+                                creaseAngle: 0
+                            })
+                        })
+                        //scene.add(surface)
+
+                        // BBox
+                        scene.add( kepler.createBBox(surface) )
+
+                        if (df.get(surfaceInfo.attr)) {
+                            // kepler.paintAttribute( surface, df.get(surfaceInfo.attr), new kepler.PaintParameters({
+                            //     atVertex: true
+                            // }) )
+
+                            scene.add( kepler.createIsoContours(
+                                surface,
+                                df.get(surfaceInfo.attr),
+                                {
+                                    parameters: new kepler.IsoContoursParameters({
+                                        color: '#ffffff',
+                                        nbr: 10,
+                                        filled: true,
+                                        opacity: 1
+                                    })
+                                }
+                            ) )
+                            scene.add( kepler.createIsoContours(
+                                surface,
+                                df.get(surfaceInfo.attr),
+                                {
+                                    parameters: new kepler.IsoContoursParameters({
+                                        color: '#000000',
+                                        nbr: 20,
+                                        filled: false,
+                                        opacity: 1
+                                    })
+                                }
+                            ) )
+                        }
+                    })
+                })
+            return promise
+        }
+
+    </script>
+</body>
+</html>

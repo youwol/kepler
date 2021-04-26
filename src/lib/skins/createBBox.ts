@@ -40,10 +40,7 @@ export class BBoxParameters extends SkinParameters {
  * ```
  * @category Skins
  */
-export function createBBox(
-    {object, parameters}:
-    {object: Object3D, parameters: BBoxParameters}): LineSegments
-{
+export function createBBox(object: Object3D, parameters: BBoxParameters): LineSegments {
     if (object === undefined) throw new Error('object is undefined')
     if (parameters === undefined) parameters = new BBoxParameters()
     

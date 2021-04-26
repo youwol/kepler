@@ -1,42 +1,14 @@
 import {
     LineSegments, LineBasicMaterial, 
     Color, BufferGeometry, Float32BufferAttribute, 
-    VertexColors, Material
+    Material, Mesh
 } from "three"
 
-import { SkinParameters } from './skinParameters'
-import { generateIsos } from '../utils/generateIsos'
-import { lerp } from '../utils/lerp'
-import { MarchingTriangles } from './private/MarchingTriangles'
-import { minMaxArray, ASerie } from "@youwol/dataframe"
-
-/**
- * @see [[createIsoContourLines]]
- * @category Skin Parameters
- */
-export class IsoContoursParameters extends SkinParameters {
-    public readonly color: string = '#000000'
-
-    public readonly nbr: number = 10
-    public readonly min: number = 0
-    public readonly max: number = 1
-
-    // public readonly useTable: boolean = false
-    // public readonly lut: string = 'Rainbow'
-    // public readonly lockLut: boolean = true
-    // public readonly reversedLut: boolean
-
-    constructor(
-        {nbr=10, min=0, max=1, color, ...others}:
-        {nbr?: number, min?: number, max?: number, color?: string}={})
-    {
-        super(others as any)
-        this.color = color || '#000000'
-        this.nbr = (nbr!==undefined?nbr:10)
-        this.min = (min!==undefined?min:0 )
-        this.max = (max!==undefined?max:1 )
-    }
-}
+import { minMaxArray, ASerie }   from "@youwol/dataframe"
+import { IsoContoursParameters } from './isoContoursParameters'
+import { generateIsos }          from '../utils/generateIsos'
+import { MarchingTriangles }     from './private/MarchingTriangles'
+import { lerp }                  from '../utils/lerp'
 
 /**
  * @example
@@ -44,7 +16,7 @@ export class IsoContoursParameters extends SkinParameters {
  * const skin = createIsoContourLines({
  *     geometry : mesh.geometry,
  *     attribute: dataframe.get('u'),
- *     parameters: new IsoContoursParameters({
+ *     parameters: new IsoContoursLineParameters({
  *         color: '#999900',
  *         nbr: 10,
  *         min; 0.2,
@@ -57,15 +29,27 @@ export class IsoContoursParameters extends SkinParameters {
  * @category Skins
  */
 export function createIsoContourLines(
-    {geometry, attribute, material, parameters}:
-    {geometry: BufferGeometry, attribute: ASerie, material?: Material, parameters?: IsoContoursParameters}): LineSegments
+    mesh: Mesh, attribute: ASerie,
+    {material, parameters} : {material?: Material, parameters?: IsoContoursParameters} = {}): LineSegments
 {
-    if (geometry === undefined) {
-        throw new Error('geometry is undefined')
+    if (mesh === undefined) {
+        throw new Error('mesh is undefined')
     }
 
-    if (geometry.index === null) {
-        throw new Error('geometry.index is null')
+    if (mesh.geometry === undefined) {
+        throw new Error('mesh.geometry is undefined')
+    }
+
+    if (mesh.geometry instanceof BufferGeometry === false) {
+        throw new Error('mesh.geometry is not a BufferGeometry')
+    }
+
+    if (mesh.geometry.getAttribute('position') === undefined) {
+        throw new Error('mesh.geometry.position is undefined')
+    }
+
+    if (mesh.geometry.index === null) {
+        throw new Error('mesh.geometry.index is null')
     }
 
     if (attribute === undefined) {
@@ -76,19 +60,21 @@ export function createIsoContourLines(
         throw new Error('attribute must be a scalar attribute (itemSize = 1)')
     }
 
-    if (parameters === undefined) parameters = new IsoContoursParameters()
+    if (parameters === undefined) {
+        parameters = new IsoContoursParameters
+    }
 
     if (material === undefined) {
         material = new LineBasicMaterial({
             linewidth: 1,
             linecap: 'round',  // ignored by WebGLRenderer
-            linejoin: 'round', // ignored by WebGLRenderer
-            polygonOffset: true,
-            polygonOffsetFactor: 2, // positive value pushes polygon further away
-            polygonOffsetUnits: 1
+            linejoin: 'round' // ignored by WebGLRenderer
         })
     }
     material["color"] = new Color(parameters.color)
+    // material.polygonOffset = true
+    // material.polygonOffsetFactor = 2 // positive value pushes polygon further away
+    // material.polygonOffsetUnits = 1
 
     const minmax = minMaxArray(attribute.array)
     const vmin   = minmax[0]
@@ -100,9 +86,9 @@ export function createIsoContourLines(
     const isoValues = generateIsos( lerp(parameters.min, vmin, vmax), lerp(parameters.max, vmin, vmax), parameters.nbr)
 
     const algo = new MarchingTriangles()
-    algo.setup(geometry.index, [lerp(parameters.min, vmin, vmax), lerp(parameters.max, vmin, vmax)])
+    algo.setup(mesh.geometry.index, [lerp(parameters.min, vmin, vmax), lerp(parameters.max, vmin, vmax)])
 
-    const vertices  = geometry.getAttribute('position')
+    const vertices  = mesh.geometry.getAttribute('position')
     const positions = []
     let index       = 0
     // const mcolors   = fromValuesToColors(isoValues, {
@@ -117,7 +103,7 @@ export function createIsoContourLines(
 
     for (let i = 0; i < isoValues.length; ++i) {
         let result = algo.isolines(attribute, isoValues[i])
-        let color: any
+        //let color: any
         // if (parameters.useTable) {
         //     color = [mcolors[3 * i], mcolors[3 * i + 1], mcolors[3 * i + 2]]
         // }

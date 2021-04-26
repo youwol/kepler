@@ -6,6 +6,39 @@
                 {
                     "title": "Descripton",
                     "source": "./documentation/description.md"
+                },
+                {
+                    "title": "Commands",
+                    "source": "./documentation/commands.md"
+                },
+                {
+                    "title": "Todo",
+                    "source": "./documentation/todo.md"
+                }
+            ]
+        },
+        {
+            "title": "Examples",
+            "pages": [
+                {
+                    "title": "Iso-contouring",
+                    "source": "./documentation/surfaceIso.md"
+                },
+                {
+                    "title": "Iso-contour filled",
+                    "source": "./documentation/surfaceIsoFill.md"
+                },
+                {
+                    "title": "Wireframe",
+                    "source": "./documentation/surfaceWireframe.md"
+                },
+                {
+                    "title": "Painted wireframe",
+                    "source": "./documentation/surfaceWireframePaint.md"
+                },
+                {
+                    "title": "A full example",
+                    "source": "./documentation/full.md"
                 }
             ]
         }

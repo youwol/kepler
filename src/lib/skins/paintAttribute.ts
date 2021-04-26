@@ -1,6 +1,6 @@
 import {
     Mesh, Color, BufferGeometry,
-    Float32BufferAttribute
+    Float32BufferAttribute, FaceColors, VertexColors
 } from "three"
 
 import { fromValuesToColors } from '../utils/lut-utils'
@@ -18,16 +18,26 @@ export class PaintParameters extends SkinParameters {
     public readonly min: number
     public readonly max: number
     public readonly defaultColor: string
+    public readonly atVertex: boolean
 
     constructor(
-        {name, lut, min, max, lockLut, defaultColor, ...others}:
-        {name?: string, lut?: string, min?: number, max?: number, lockLut?: boolean, defaultColor?: string} = {})
+        {name, lut, min, max, lockLut, defaultColor, atVertex, ...others}:
+        {
+            name?: string, 
+            lut?: string, 
+            min?: number, 
+            max?: number, 
+            lockLut?: boolean, 
+            defaultColor?: string, 
+            atVertex?: boolean
+        } = {})
     {
-        super(others as any)
+        super(others)
         this.defaultColor = defaultColor || '#aaaaaa'
         this.lut = lut || 'Rainbow'
         this.min = min !==undefined ? min : 0
         this.max = max !==undefined ? max : 1
+        this.atVertex = atVertex !==undefined ? atVertex : true
         this.set('lockLut', lockLut)
         this.reversedLut = false
 
@@ -57,8 +67,7 @@ export class PaintParameters extends SkinParameters {
  * @category Skins
  */
 export function paintAttribute(
-    {mesh, attribute, parameters}:
-    {mesh: Mesh, attribute?: ASerie, parameters?: PaintParameters})
+    mesh: Mesh, attribute: ASerie, parameters?: PaintParameters)
 {
     if (mesh === undefined) {
         throw new Error('mesh is undefined')
@@ -98,16 +107,50 @@ export function paintAttribute(
         color = mesh.material['color']
         mesh.material['color'] = new Color('#ffffff')
     }
-    mesh.material.vertexColors = true
+    mesh.material.vertexColors  = (parameters.atVertex ? VertexColors : FaceColors)
+    mesh.material.polygonOffset = true
+    mesh.material.polygonOffsetFactor = 1
 
-    const colors = fromValuesToColors(attribute.array, {
-        defaultColor: new Color(parameters.defaultColor), 
+    let colors = fromValuesToColors(attribute.array, {
+        defaultColor: new Color(parameters.defaultColor),
         reverse: parameters.reversedLut, 
         min: parameters.min, 
         max: parameters.max, 
         lut: parameters.lut, 
         lockLut: parameters.lockLut
     })
-    mesh.geometry.setAttribute('color', new Float32BufferAttribute(colors, 3))
+
+    // colors = meshInterpolate({
+    //     attribute: colors, 
+    //     topology: mesh.geometry.index.array,
+    //     size:3,
+    //     direction: InterpolateDirection.INCREASING
+    // })
+    
+    if (parameters.atVertex) {
+        mesh.geometry.setAttribute('color', new Float32BufferAttribute(colors, 3))
+    }
+    else {
+        const faces         = mesh.geometry.index // 438
+        const nbVertPerFace = 3
+        const nbColorComps  = 3
+        let fcolors = new Float32Array(faces.count * nbVertPerFace * nbColorComps)
+
+        let j = 0
+
+        const setColor = (i: number) => {
+            for (let k=0; k<3; ++k) fcolors[j+k] = colors[i+k]
+            j += 3
+        }
+
+        for (let i=0; i<faces.count; i+=3) {
+            setColor( faces.array[i  ] )
+            setColor( faces.array[i+1] )
+            setColor( faces.array[i+2] )
+        }
+        mesh.geometry.setAttribute('color', new Float32BufferAttribute(fcolors, 3))
+    }
+
     mesh.geometry.attributes.color.needsUpdate = true
+    mesh.material.needsUpdate = true
 }

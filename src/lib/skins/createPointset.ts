@@ -41,7 +41,7 @@ export class PointsetParameters extends SkinParameters {
             sizeName?: string
         } = {})
     {
-        super(others as any)
+        super(others)
         this.size = size || 1
         this.color = color || '#ffff00'
         this.opacity = opacity || 1

@@ -1,46 +1,14 @@
 import { 
     Color, BufferGeometry, Mesh, BufferAttribute, 
     Material, MeshStandardMaterial, DoubleSide, 
-    MeshBasicMaterial
+    Float32BufferAttribute
 } from "three"
 
 import { fromValueToColor } from '../utils/lut-utils'
 import { Lut } from "../utils/Lut"
 import { createBufferGeometry } from './bufferUtils'
-import { IsoContoursParameters } from './createIsoContourLines'
+import { IsoContoursParameters } from './isoContoursParameters'
 import { ASerie, IArray, normalize } from '@youwol/dataframe'
-
-/**
- * @see [[createIsoContourFilled]]
- * @category Skin Parameters
- */
-export class IsoContoursFilledParameters extends IsoContoursParameters {
-    public readonly opacity: number = 1
-    public readonly lut: string = 'Rainbow'
-    public readonly lockLut: boolean = true
-    public readonly reversedLut: boolean
-
-    constructor(
-        {
-            lut, 
-            lockLut, 
-            opacity,
-            reversedLut}:
-        {
-            lut?: string, 
-            lockLut?: boolean, 
-            opacity?: number,
-            reversedLut?: boolean
-        }={})
-    {
-        super()
-        this.set('lockLut', lockLut)
-        this.set('reversedLut', reversedLut)
-        this.lut = lut || 'Rainbow'
-        if (lut !== undefined) this.lut = lut
-        if (opacity !== undefined) this.opacity = opacity
-    }
-}
 
 /**
  * @example
@@ -61,20 +29,28 @@ export class IsoContoursFilledParameters extends IsoContoursParameters {
  * @category Skins
  */
 export function createIsoContourFilled(
-    {geometry, attribute, material, parameters}:
-    {geometry: BufferGeometry, attribute: ASerie, material?: Material, parameters?: IsoContoursFilledParameters})
+    mesh: Mesh, attribute: ASerie,
+    {material, parameters} : {material?: Material, parameters?: IsoContoursParameters} = {})
     : Mesh
 {
-    if (geometry === undefined) {
-        throw new Error('geometry is undefined')
+    if (mesh === undefined) {
+        throw new Error('mesh is undefined')
     }
 
-    if (geometry.getAttribute('position') === undefined) {
-        throw new Error('geometry.position is undefined')
+    if (mesh.geometry === undefined) {
+        throw new Error('mesh.geometry is undefined')
     }
 
-    if (geometry.index === null) {
-        throw new Error('geometry.index is null')
+    if (mesh.geometry instanceof BufferGeometry === false) {
+        throw new Error('mesh.geometry is not a BufferGeometry')
+    }
+
+    if (mesh.geometry.getAttribute('position') === undefined) {
+        throw new Error('mesh.geometry.position is undefined')
+    }
+
+    if (mesh.geometry.index === null) {
+        throw new Error('mesh.geometry.index is null')
     }
 
     if (attribute === undefined) {
@@ -86,40 +62,41 @@ export function createIsoContourFilled(
     }
 
     if (parameters === undefined) {
-        parameters = new IsoContoursFilledParameters
+        parameters = new IsoContoursParameters
     }
 
     const iso = new IsoContoursFill(parameters)
-    const result = iso.run(attribute, geometry)
+    const result = iso.run(attribute, mesh.geometry)
     if (result.position.length === 0) return undefined
 
-    const mesh = new Mesh()
-    mesh.geometry = createBufferGeometry(result.position, result.index)
+    const nmesh = new Mesh()
+    nmesh.geometry = createBufferGeometry(result.position, result.index)
+    nmesh.geometry.setAttribute('color', new Float32BufferAttribute(result.color, 3))
 
     if (material !== undefined) {
-        mesh.material = material
+        nmesh.material = material
     } else {
-        const mat = new MeshBasicMaterial({
-            //color: color,
+        const mat = new MeshStandardMaterial({
+            color: new Color(parameters.color),
             side: DoubleSide,
             vertexColors: true,
             wireframe: false, 
             flatShading: false
         })
         //mat.wireframe = true
-        mesh.material = mat
+        nmesh.material = mat
     }
-    mesh.material.polygonOffset = true
-    mesh.material.polygonOffsetFactor = 1
+    nmesh.material.polygonOffset = true
+    nmesh.material.polygonOffsetFactor = 1
 
     if (parameters.opacity !== 1) {
-        mesh.material.opacity = parameters.opacity
-        mesh.material.transparent = true
+        nmesh.material.opacity = parameters.opacity
+        nmesh.material.transparent = true
     } else {
-        mesh.material.transparent = false
+        nmesh.material.transparent = false
     }
     
-    return mesh
+    return nmesh
 }
 
 class IsoSegment {
@@ -169,18 +146,18 @@ class IsoContoursFill {
     max_ = 1
     color_ = new Color('#000000')
     lutTable_: Lut = new Lut('Insar', 64)
-    params: IsoContoursFilledParameters = undefined
+    params: IsoContoursParameters = undefined
 
     position_: Array<number>  = []
     index_ : Array<number>    = []
     colors_: Array<number>    = []
-    //isoValues_: Array<number> = []
+    isoValues_: Array<number> = []
 
     get position()  {return this.position_}
     get index()     {return this.index_}
     get color()     {return this.colors_}
 
-    constructor(parameters: IsoContoursFilledParameters) {
+    constructor(parameters: IsoContoursParameters) {
         this.params = parameters
 
         this.min_ = parameters.min
@@ -192,8 +169,18 @@ class IsoContoursFill {
     }
 
     run(attr: ASerie, geometry: BufferGeometry): any {
-        this.attr       = normalize(attr.array)
-        this.increment_ = (this.max_-this.min_)/this.params.nbr
+        // const minmax = minMaxArray(attr.array)
+        // const vmin   = minmax[0]
+        // const vmax   = minmax[1]
+
+        this.attr = normalize(attr.array)
+
+        // this.isoValues_ = generateIsos(
+        //     lerp(this.params.min, vmin, vmax),
+        //     lerp(this.params.max, vmin, vmax),
+        //     this.params.nbr
+        // )
+
         const index     = geometry.index
         const array     = index.array
         this.nodes_     = geometry.getAttribute('position') as BufferAttribute
@@ -296,6 +283,18 @@ class IsoContoursFill {
                 t.notIntersectedPolygonValue = d
             }
         }
+        
+
+        // this.isoValues_.forEach( iso => {
+        //     if (iso<t.v3) {
+        //         if (iso > t.v1) {
+        //             this.addSegment(iso, t)
+        //             //console.log('adding ',d)
+        //         } else {
+        //             t.notIntersectedPolygonValue = iso
+        //         }
+        //     }
+        // })
     }
 
     addSegment(iso: number, t: TriInfo) {

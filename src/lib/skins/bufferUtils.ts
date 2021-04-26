@@ -1,22 +1,57 @@
 import { BufferGeometry, Float32BufferAttribute, BufferAttribute } from "three"
-import { ASerie, IArray } from "@youwol/dataframe"
+import { ASerie, IArray, Serie } from "@youwol/dataframe"
+import { normalAttribute } from "../utils/normalAttribute"
 
 /**
  * @brief Create a BufferGeometry using [[ASerie]]s
  * @category Buffer utils 
  */
-export function createBufferGeometry(position: IArray, indices?: IArray): BufferGeometry
+export function createBufferGeometry(
+    position: IArray|ASerie, 
+    indices?: IArray|ASerie, 
+    creaseAngle?: number
+): BufferGeometry
 {
+    const crease = creaseAngle!==undefined ? creaseAngle : 0
     const geom = new BufferGeometry()
-    geom.setAttribute('position', position)
-    geom.computeBoundingBox()
-    geom.computeBoundingSphere()
 
-    if (indices !== undefined) {
-        geom.setIndex(indices)
-        geom.computeVertexNormals()
+    if (position['array'] !== undefined) {
+        geom.setAttribute('position', new BufferAttribute((position as ASerie).array, 3) )
+    }
+    else {
+        if (Array.isArray(position)) {
+            geom.setAttribute('position', new BufferAttribute(new Float32Array(position), 3) )
+        }
+        else {
+            geom.setAttribute('position', new BufferAttribute(position, 3) )
+        }
     }
 
+    if (indices !== undefined) {
+        if (indices['array'] !== undefined) {
+            geom.setIndex( new BufferAttribute((indices as ASerie).array, 1) )
+        }
+        else {
+            if (Array.isArray(indices)) {
+                console.warn('Deal with Uint16 or Uint32')
+                geom.setIndex( new BufferAttribute(new Uint32Array(indices), 1) )
+            }
+            else {
+                geom.setIndex( new BufferAttribute(indices, 1) )
+            }
+        }
+
+        if (creaseAngle===0) {
+            geom.computeVertexNormals()
+        }
+        else {
+            const normals = normalAttribute(geom.getAttribute('position').array, geom.index.array, crease)
+            geom.setAttribute( 'normal', normals )
+        }
+    }
+
+    geom.computeBoundingBox()
+    geom.computeBoundingSphere()
     return geom
 }
 
