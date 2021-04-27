@@ -317,8 +317,7 @@
 
                             scene.add( kepler.createIsoContours(
                                 surface,
-                                df.get(surfaceInfo.attr),
-                                {
+                                df.get(surfaceInfo.attr), {
                                     parameters: new kepler.IsoContoursParameters({
                                         color: '#ffffff',
                                         nbr: 10,
@@ -329,16 +328,15 @@
                             ) )
                             scene.add( kepler.createIsoContours(
                                 surface,
-                                df.get(surfaceInfo.attr),
-                                {
+                                df.get(surfaceInfo.attr), {
                                     parameters: new kepler.IsoContoursParameters({
                                         color: '#000000',
                                         nbr: 20,
                                         filled: false,
                                         opacity: 1
                                     })
-                                }
-                            ) )
+                                })
+                            )
                         }
                     })
                 })

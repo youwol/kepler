@@ -69,9 +69,13 @@
 		<div class="col-8 col-content">
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Install a keyboard to grab key down events. By default, the keyboard is installed
+						using the <code>document</code> if the <code>dom</code> is not provided</p>
+					</div>
 					<dl class="tsd-comment-tags">
 						<dt>example</dt>
-						<dd><pre><code class="language-ts"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">keyboard</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">Keyboard</span><span style="color: #000000">()</span>
+						<dd><pre><code class="language-ts"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">keyboard</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #001080">kepler</span><span style="color: #000000">.</span><span style="color: #795E26">Keyboard</span><span style="color: #000000">()</span>
 <span style="color: #001080">keyboard</span><span style="color: #000000">.</span><span style="color: #795E26">addKey</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;u&#039;</span><span style="color: #000000">, </span><span style="color: #001080">e</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">kepler</span><span style="color: #000000">.</span><span style="color: #795E26">changeView</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;up&#039;</span><span style="color: #000000">, </span><span style="color: #001080">controls</span><span style="color: #000000">) )</span>
 </code></pre>
 						</dd>
@@ -108,6 +112,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="keyboard.html#addkey" class="tsd-kind-icon">add<wbr>Key</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="keyboard.html#destroy" class="tsd-kind-icon">destroy</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="keyboard.html#proceed" class="tsd-kind-icon">proceed</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="keyboard.html#removekey" class="tsd-kind-icon">remove<wbr>Key</a></li>
 							</ul>
 						</section>
 					</div>
@@ -161,13 +166,24 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Add a new key-binding</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>key: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The key</p>
+									</div>
 								</li>
 								<li>
 									<h5>cb: <span class="tsd-signature-type">KeyCallback</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The corresponding callback to call when the key is pressed</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -184,6 +200,11 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Remove the underlaying listener from the dom</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -202,6 +223,26 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>event: <span class="tsd-signature-type">KeyboardEvent</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="removekey" class="tsd-anchor"></a>
+					<h3>remove<wbr>Key</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">remove<wbr>Key<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>key: <span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -282,15 +323,15 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 								<a href="keyboard.html#proceed" class="tsd-kind-icon">proceed</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="keyboard.html#removekey" class="tsd-kind-icon">remove<wbr>Key</a>
+							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-class">
 						<a href="linesetparameters.html" class="tsd-kind-icon">Lineset<wbr>Parameters</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="navigationcube.html" class="tsd-kind-icon">Navigation<wbr>Cube</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="navigationcubeparameters.html" class="tsd-kind-icon">Navigation<wbr>Cube<wbr>Parameters</a>
@@ -354,6 +395,9 @@
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="../modules.html#fitscene" class="tsd-kind-icon">fit<wbr>Scene</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../modules.html#installnavigationcube" class="tsd-kind-icon">install<wbr>Navigation<wbr>Cube</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="../modules.html#paintattribute" class="tsd-kind-icon">paint<wbr>Attribute</a>

@@ -1,7 +1,30 @@
 import { MathUtils, WebGLRenderer, Scene, Camera } from "three"
 
+/**
+ * @see [[RenderFunctions]]
+ * @category Utils
+ */
 export type RenderFunction = () => void
 
+/**
+ * Used to gather all rendering/upfating functions in the `requestAnimationFrame`
+ * @example
+ * ```
+ * const renderFct = new kepler.RenderFunctions({renderer, scene, camera})
+ * renderFct.add( controls.update )
+ * renderFct.add( myCtrl.update )
+ * renderFct.add( muSkin.update )
+ * 
+ * function animate() {
+ *   renderFct.render()
+ *   requestAnimationFrame( animate )
+ * }
+ * requestAnimationFrame( animate )
+ * ```
+ * @see [[NavigationCubeParameters]]
+ * @see [[RenderFunction]]
+ * @category Utils
+ */
 export class RenderFunctions {
     constructor({renderer, scene, camera}:{renderer: WebGLRenderer, scene: Scene, camera: Camera}) {
         this.renderer = renderer

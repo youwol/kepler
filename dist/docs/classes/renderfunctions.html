@@ -67,6 +67,34 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Used to gather all rendering/upfating functions in the <code>requestAnimationFrame</code></p>
+					</div>
+					<dl class="tsd-comment-tags">
+						<dt>example</dt>
+						<dd><pre><code><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">renderFct</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #001080">kepler</span><span style="color: #000000">.</span><span style="color: #795E26">RenderFunctions</span><span style="color: #000000">({</span><span style="color: #001080">renderer</span><span style="color: #000000">, </span><span style="color: #001080">scene</span><span style="color: #000000">, </span><span style="color: #001080">camera</span><span style="color: #000000">})</span>
+<span style="color: #001080">renderFct</span><span style="color: #000000">.</span><span style="color: #795E26">add</span><span style="color: #000000">( </span><span style="color: #001080">controls</span><span style="color: #000000">.</span><span style="color: #001080">update</span><span style="color: #000000"> )</span>
+<span style="color: #001080">renderFct</span><span style="color: #000000">.</span><span style="color: #795E26">add</span><span style="color: #000000">( </span><span style="color: #001080">myCtrl</span><span style="color: #000000">.</span><span style="color: #001080">update</span><span style="color: #000000"> )</span>
+<span style="color: #001080">renderFct</span><span style="color: #000000">.</span><span style="color: #795E26">add</span><span style="color: #000000">( </span><span style="color: #001080">muSkin</span><span style="color: #000000">.</span><span style="color: #001080">update</span><span style="color: #000000"> )</span>
+
+<span style="color: #0000FF">function</span><span style="color: #000000"> </span><span style="color: #795E26">animate</span><span style="color: #000000">() {</span>
+<span style="color: #000000">  </span><span style="color: #001080">renderFct</span><span style="color: #000000">.</span><span style="color: #795E26">render</span><span style="color: #000000">()</span>
+<span style="color: #000000">  </span><span style="color: #795E26">requestAnimationFrame</span><span style="color: #000000">( </span><span style="color: #001080">animate</span><span style="color: #000000"> )</span>
+<span style="color: #000000">}</span>
+<span style="color: #795E26">requestAnimationFrame</span><span style="color: #000000">( </span><span style="color: #001080">animate</span><span style="color: #000000"> )</span>
+</code></pre>
+						</dd>
+						<dt>see</dt>
+						<dd><p><a href="navigationcubeparameters.html">NavigationCubeParameters</a></p>
+						</dd>
+						<dt>see</dt>
+						<dd><p><a href="../modules.html#renderfunction">RenderFunction</a></p>
+						</dd>
+					</dl>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -287,9 +315,6 @@
 						<a href="linesetparameters.html" class="tsd-kind-icon">Lineset<wbr>Parameters</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="navigationcube.html" class="tsd-kind-icon">Navigation<wbr>Cube</a>
-					</li>
-					<li class=" tsd-kind-class">
 						<a href="navigationcubeparameters.html" class="tsd-kind-icon">Navigation<wbr>Cube<wbr>Parameters</a>
 					</li>
 					<li class=" tsd-kind-class">
@@ -381,6 +406,9 @@
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="../modules.html#fitscene" class="tsd-kind-icon">fit<wbr>Scene</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../modules.html#installnavigationcube" class="tsd-kind-icon">install<wbr>Navigation<wbr>Cube</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="../modules.html#paintattribute" class="tsd-kind-icon">paint<wbr>Attribute</a>

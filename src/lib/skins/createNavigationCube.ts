@@ -12,6 +12,9 @@ import { changeView } from "../commands"
 
 // See https://github.com/bytezeroseven/GLB-Viewer/blob/master/viewer.js
 
+/**
+ * @category Skin Parameters
+ */
 export class NavigationCubeParameters {
 	scene     : Scene
     camera    : Camera
@@ -58,7 +61,25 @@ export class NavigationCubeParameters {
     }
 }
 
-export class NavigationCube {
+/**
+ * @category Skins
+ */
+export function installNavigationCube(params: NavigationCubeParameters) {
+    return new NavigationCube(params)
+}
+
+// =========================================================
+
+
+
+
+
+
+
+
+
+
+class NavigationCube {
     camera  :           Camera = undefined
     renderer:           WebGLRenderer = undefined
     cameraDistance:     number = 1.75
