@@ -1,29 +1,23 @@
-import { Vector3, BufferAttribute } from "three"
-/*
-   Vector3.clone()
-          .lerp()
-          .getX()
-          .getY()
-          .getZ()
- */
+//import { Vector3, BufferAttribute } from "three"
+import { IArray } from "@youwol/dataframe"
+import { ImplicitGrid3D } from "../implicitGrid"
 
+/**
+ * 
+ */
 export class MarchingCubes {
-    points: Array<Vector3> = []
-    sizes: Array<number> = []
-    _values: Array<number> = []
     _XYZ = true
     _bounds: Array<number> = []
 
-    constructor(sizes: Array<number>, position: BufferAttribute, values: Array<number>) {
-        for (let i = 0; i < position.count; ++i) {
-            this.points.push(new Vector3(position.getX(i), position.getY(i), position.getZ(i)))
-        }
-        this.sizes   = sizes
-        this._values = values
+    constructor(
+        private readonly position: ImplicitGrid3D, 
+        private readonly sizes: number[], 
+        private readonly values: IArray)
+    {
     }
 
     get valid() {
-        return this.sizes !== undefined && this.points !== undefined // && this.values !== undefined
+        return this.position !== undefined && this.values !== undefined
     }
 
     /**
@@ -59,7 +53,13 @@ export class MarchingCubes {
         return this._XYZ
     }
 
-    run(isoValue: number, bounds: Array<number>) {
+    /**
+     * 
+     * @param isoValue The iso value
+     * @param bounds Bounds of the model
+     * @returns the object `{positions: number[], indices: number[]}`
+     */
+    run(isoValue: number, bounds: number[]) {
         if (!this.valid) {
             return {positions: [], indices: []}
         }
@@ -77,7 +77,7 @@ export class MarchingCubes {
         const ny = this.sizes[1]
         const nz = this.sizes[2]
         const nxy = nx * ny
-        let ni, nj, nk
+        let ni: number, nj: number, nk: number
 
         if (this._XYZ === false) {
             ni = this.sizes[0]
@@ -95,7 +95,9 @@ export class MarchingCubes {
         for (let ii = 0; ii < ni - 1; ii++) {
             for (let jj = 0; jj < nj - 1; jj++) {
                 for (let kk = 0; kk < nk - 1; kk++) {
-                    let x, y, z, p, px, py, pxy, pz, pxz, pyz, pxyz
+                    let x: number, y: number, z: number, p: number,
+                        px: number, py: number, pxy: number,
+                        pz: number, pxz: number, pyz: number, pxyz: number
 
                     if (this._XYZ === false) {
                         x = ii
@@ -125,14 +127,14 @@ export class MarchingCubes {
 
                     id++
 
-                    const value0 = this._values[ p    ] ;
-                    const value1 = this._values[ px   ] ;
-                    const value2 = this._values[ py   ] ;
-                    const value3 = this._values[ pxy  ] ;
-                    const value4 = this._values[ pz   ] ;
-                    const value5 = this._values[ pxz  ] ;
-                    const value6 = this._values[ pyz  ] ;
-                    const value7 = this._values[ pxyz ] ;
+                    const value0 = this.values[ p    ]
+                    const value1 = this.values[ px   ]
+                    const value2 = this.values[ py   ]
+                    const value3 = this.values[ pxy  ]
+                    const value4 = this.values[ pz   ]
+                    const value5 = this.values[ pxz  ]
+                    const value6 = this.values[ pyz  ]
+                    const value7 = this.values[ pxyz ]
                     const allValues = [value0, value1, value2, value3, value4, value5, value6, value7]
 
                     if (this._ok(allValues) === false) {
@@ -160,62 +162,74 @@ export class MarchingCubes {
 
                     if (bits & 1) {
                         mu = (isoValue - value0) / (value1 - value0)
-                        vlist[0] = this.points[p].clone().lerp(this.points[px], mu)
+                        //vlist[0] = this.points[p].clone().lerp(this.points[px], mu)
+                        vlist[0] = this.lerp(p, px, mu)
                     }
 
                     if (bits & 2) {
                         mu = (isoValue - value1) / (value3 - value1)
-                        vlist[1] = this.points[px].clone().lerp(this.points[pxy], mu)
+                        //vlist[1] = this.points[px].clone().lerp(this.points[pxy], mu)
+                        vlist[1] = this.lerp(px, pxy, mu)
                     }
 
                     if (bits & 4) {
                         mu = (isoValue - value2) / (value3 - value2)
-                        vlist[2] = this.points[py].clone().lerp(this.points[pxy], mu)
+                        //vlist[2] = this.points[py].clone().lerp(this.points[pxy], mu)
+                        vlist[2] = this.lerp(py, pxy, mu)
                     }
 
                     if (bits & 8) {
                         mu = (isoValue - value0) / (value2 - value0)
-                        vlist[3] = this.points[p].clone().lerp(this.points[py], mu)
+                        //vlist[3] = this.points[p].clone().lerp(this.points[py], mu)
+                        vlist[3] = this.lerp(p, py, mu)
                     }
 
                     if (bits & 16) {
                         mu = (isoValue - value4) / (value5 - value4)
-                        vlist[4] = this.points[pz].clone().lerp(this.points[pxz], mu)
+                        //vlist[4] = this.points[pz].clone().lerp(this.points[pxz], mu)
+                        vlist[4] = this.lerp(pz, pxz, mu)
                     }
 
                     if (bits & 32) {
                         mu = (isoValue - value5) / (value7 - value5)
-                        vlist[5] = this.points[pxz].clone().lerp(this.points[pxyz], mu)
+                        //vlist[5] = this.points[pxz].clone().lerp(this.points[pxyz], mu)
+                        vlist[5] = this.lerp(pxz, pxyz, mu)
                     }
 
                     if (bits & 64) {
                         mu = (isoValue - value6) / (value7 - value6)
-                        vlist[6] = this.points[pyz].clone().lerp(this.points[pxyz], mu)
+                        //vlist[6] = this.points[pyz].clone().lerp(this.points[pxyz], mu)
+                        vlist[6] = this.lerp(pyz, pxyz, mu)
                     }
 
                     if (bits & 128) {
                         mu = (isoValue - value4) / (value6 - value4)
-                        vlist[7] = this.points[pz].clone().lerp(this.points[pyz], mu)
+                        //vlist[7] = this.points[pz].clone().lerp(this.points[pyz], mu)
+                        vlist[7] = this.lerp(pz, pyz, mu)
                     }
 
                     if (bits & 256) {
                         mu = (isoValue - value0) / (value4 - value0)
-                        vlist[8] = this.points[p].clone().lerp(this.points[pz], mu)
+                        //vlist[8] = this.points[p].clone().lerp(this.points[pz], mu)
+                        vlist[8] = this.lerp(p, pz, mu)
                     }
 
                     if (bits & 512) {
                         mu = (isoValue - value1) / (value5 - value1)
-                        vlist[9] = this.points[px].clone().lerp(this.points[pxz], mu)
+                        //vlist[9] = this.points[px].clone().lerp(this.points[pxz], mu)
+                        vlist[9] = this.lerp(px, pxz, mu)
                     }
 
                     if (bits & 1024) {
                         mu = (isoValue - value3) / (value7 - value3)
-                        vlist[10] = this.points[pxy].clone().lerp(this.points[pxyz], mu)
+                        //vlist[10] = this.points[pxy].clone().lerp(this.points[pxyz], mu)
+                        vlist[10] = this.lerp(pxy, pxyz, mu)
                     }
 
                     if (bits & 2048) {
                         mu = (isoValue - value2) / (value6 - value2)
-                        vlist[11] = this.points[py].clone().lerp(this.points[pyz], mu)
+                        //vlist[11] = this.points[py].clone().lerp(this.points[pyz], mu)
+                        vlist[11] = this.lerp(py, pyz, mu)
                     }
 
                     let i = 0
@@ -227,13 +241,13 @@ export class MarchingCubes {
                         const index2 = triTable[cubeindex + i + 1]
                         const index3 = triTable[cubeindex + i + 2]
 
-                        const p1 = vlist[index1]
-                        const p2 = vlist[index2]
-                        const p3 = vlist[index3]
-
-                        positions.push(p1.x, p1.y, p1.z)
-                        positions.push(p2.x, p2.y, p2.z)
-                        positions.push(p3.x, p3.y, p3.z)
+                        // const p1 = vlist[index1]
+                        // const p2 = vlist[index2]
+                        // const p3 = vlist[index3]
+                        // positions.push(p1.x, p1.y, p1.z)
+                        // positions.push(p2.x, p2.y, p2.z)
+                        // positions.push(p3.x, p3.y, p3.z)
+                        positions.push(...vlist[index1], ...vlist[index2], ...vlist[index3])
 
                         indices.push(vertexIndex, vertexIndex + 1, vertexIndex + 2)
                         vertexIndex += 3
@@ -245,14 +259,46 @@ export class MarchingCubes {
         return {positions, indices}
     }
 
-    _in(p: number) {
+    // -----------------------------------------------------------------------
+
+    private _in(p: number) {
         return p >= this._bounds[0] && p <= this._bounds[1]
     }
 
-    _ok(values: Array<number>) {
+    private _ok(values: Array<number>) {
         let ok = true
         values.forEach(v => {ok = ok && this._in(v)})
         return ok
+    }
+
+    private unflat(l: number) {
+        const ny = this.sizes[1]
+        const nz = this.sizes[2]
+
+        const di = l/ny/nz
+        const i  = Math.trunc(di)
+
+        let m  = ny*nz*(di-i)
+        let dj = m/nz
+        let j  = Math.trunc(dj)
+
+        let k = nz*(dj-j)
+
+        return [Math.round(i), Math.round(j), Math.round(k)]
+    }
+
+    private lerp(p1: number, p2: number, mu: number) {
+        const i  = this.unflat(p1)
+        const v1 = this.position.pos( i[0], i[1], i[2] )
+
+        const j  = this.unflat(p2)
+        const v2 = this.position.pos( j[0], j[1], j[2] )
+
+        v1[0] += ( v2[0] - v1[0] ) * mu
+        v1[1] += ( v2[1] - v1[1] ) * mu
+        v1[2] += ( v2[2] - v1[2] ) * mu
+
+        return v1
     }
 }
 

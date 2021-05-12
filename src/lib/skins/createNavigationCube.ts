@@ -5,8 +5,9 @@ import {
     Vector2, Vector3, WebGLRenderer
 } from "three"
 
-import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls'
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
+//import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls'
+import { TrackballControls } from '../utils/TrackballControls'
+//import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 import { RenderFunction, RenderFunctions } from "../utils/RenderFunctions"
 import { changeView } from "../commands"
 
@@ -84,7 +85,7 @@ class NavigationCube {
     renderer:           WebGLRenderer = undefined
     cameraDistance:     number = 1.75
     hasMoved:           boolean  = false
-    cubeController:     OrbitControls = undefined
+    cubeController:     TrackballControls = undefined
     scene:              Scene = new Scene
     planes:             Array<Mesh> = []
     cube:               Mesh = undefined
@@ -120,9 +121,11 @@ class NavigationCube {
         this.renderer.setPixelRatio(window.devicePixelRatio)
         this.domElement.appendChild(this.renderer.domElement)
 
-        this.cubeController = new OrbitControls(this.parentCamera, this.renderer.domElement)
-        this.cubeController.enablePan = false;
-        this.cubeController.enableZoom = false;
+        this.cubeController = new TrackballControls(this.parentCamera, this.renderer.domElement)
+        //this.cubeController.enablePan = false;
+        //this.cubeController.enableZoom = false;
+        this.cubeController.noPan = true
+        this.cubeController.noZoom = true
         this.cubeController.rotateSpeed = 0.125
 
         this.uuidFct = this.renderFunctions.add(() => {
@@ -132,11 +135,13 @@ class NavigationCube {
 
         this.generateCube(params)
 
-        let cubeController = new OrbitControls(this.camera, this.renderer.domElement);
-	    cubeController.enablePan = false;
-	    cubeController.enableZoom = false;
-        cubeController.rotateSpeed = 0.125;
-        cubeController.addEventListener('change', () => this.renderFunctions.render())
+        // let cubeController = new TrackballControls(this.camera, this.renderer.domElement);
+	    // // cubeController.enablePan = false;
+	    // // cubeController.enableZoom = false;
+        // cubeController.noPan = true
+	    // cubeController.noZoom = true
+        // cubeController.rotateSpeed = 0.125;
+        // //cubeController.addEventListener('change', () => this.renderFunctions.render())
 
         this.renderer.domElement.onmousemove = this.onMouseMove
         this.renderer.domElement.onclick = this.onClick

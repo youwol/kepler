@@ -1,14 +1,13 @@
 import { 
     Color, BufferGeometry, Mesh, BufferAttribute, 
     Material, MeshStandardMaterial, DoubleSide, 
-    Float32BufferAttribute
+    Float32BufferAttribute, Lut
 } from "three"
 
-import { fromValueToColor } from '../utils/lut-utils'
-import { Lut } from "../utils/Lut"
+import { fromValueToColor, createLut } from '../utils/lut-utils'
 import { createBufferGeometry } from './bufferUtils'
 import { IsoContoursParameters } from './isoContoursParameters'
-import { ASerie, IArray, normalize } from '@youwol/dataframe'
+import { ASerie, IArray, array } from '@youwol/dataframe'
 
 /**
  * @example
@@ -145,7 +144,7 @@ class IsoContoursFill {
     min_ = 0
     max_ = 1
     color_ = new Color('#000000')
-    lutTable_: Lut = new Lut('Insar', 64)
+    lutTable_: Lut = createLut('Insar', 64)
     params: IsoContoursParameters = undefined
 
     position_: Array<number>  = []
@@ -163,7 +162,7 @@ class IsoContoursFill {
         this.min_ = parameters.min
         this.max_ = parameters.max
         this.color_ = new Color(parameters.color)
-        this.lutTable_ = new Lut(parameters.lut, 64)
+        this.lutTable_ = createLut(parameters.lut, 64)
         this.lutTable_.setMin(this.min_)
         this.lutTable_.setMax(this.max_)
     }
@@ -173,7 +172,7 @@ class IsoContoursFill {
         // const vmin   = minmax[0]
         // const vmax   = minmax[1]
 
-        this.attr = normalize(attr.array)
+        this.attr = array.normalize(attr.array)
 
         // this.isoValues_ = generateIsos(
         //     lerp(this.params.min, vmin, vmax),
@@ -182,12 +181,12 @@ class IsoContoursFill {
         // )
 
         const index     = geometry.index
-        const array     = index.array
+        const a     = index.array
         this.nodes_     = geometry.getAttribute('position') as BufferAttribute
         //this.isoValues_ = generateIsosBySpacing(this.min_, this.max_, this.increment_)
 
-        for (let i=0; i<array.length; i += 3) {
-            this.classify(array[i], array[i+1], array[i+2])
+        for (let i=0; i<a.length; i += 3) {
+            this.classify(a[i], a[i+1], a[i+2])
         }
 
         return {

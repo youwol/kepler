@@ -3,9 +3,9 @@ import {
     Object3D, Color
 } from "three"
 
-import { ASerie, IArray, minMaxArray } from "@youwol/dataframe"
+import { ASerie, IArray, array } from "@youwol/dataframe"
 import { IsoContoursParameters } from "./isoContoursParameters"
-import { MarchingCubes } from "./private/MarchingCubes2"
+import { MarchingCubes } from "./private/MarchingCubes"
 import { ImplicitGrid3D } from './implicitGrid'
 import { fromValuesToColors, generateIsos } from "../utils"
 import { lerp } from '../utils/lerp'
@@ -61,7 +61,7 @@ export function createIsoSurfaces({grid, attribute, material, parameters}:
     const defaultColor = new Color(parameters.color)
     material["color"]  = defaultColor
 
-    const minmax = minMaxArray(attribute.array)
+    const minmax = array.minMax(attribute.array)
     const vmin   = minmax[0]
     const vmax   = minmax[1]
     

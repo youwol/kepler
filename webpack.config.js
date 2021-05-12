@@ -37,6 +37,7 @@ module.exports = {
         },
         '@youwol/flux-core': "@youwol/flux-core",
         '@youwol/flux-view': "@youwol/flux-view",
+        '@youwol/math': "@youwol/math",
         '@youwol/dataframe': "@youwol/dataframe",
         '@youwol/io': "@youwol/io",
         'three': {

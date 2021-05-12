@@ -6,8 +6,8 @@ import {
 
 import { PaintParameters } from './paintAttribute'
 import { fromValueToColor } from '../utils/lut-utils'
-import { ASerie, IArray, minMaxArray } from "@youwol/dataframe"
-import { Lut } from "../utils"
+import { ASerie, array } from "@youwol/dataframe"
+import { createLut } from "../utils"
 
 /**
  * @see [[createVectors]]
@@ -108,9 +108,9 @@ export function createVectors(
 
     // Coloring the vectors
     const defaultColor = new Color(parameters.color)
-    const lutTable = new Lut(parameters.lut, 256)
+    const lutTable = createLut(parameters.lut, 256)
 
-    const mm = minMaxArray(attribute.array)
+    const mm = array.minMax(attribute.array)
 
     if (parameters.lockLut) {
         lutTable.setMin(0)

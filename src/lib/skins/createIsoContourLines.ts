@@ -4,7 +4,7 @@ import {
     Material, Mesh
 } from "three"
 
-import { minMaxArray, ASerie }   from "@youwol/dataframe"
+import { array, ASerie }   from "@youwol/dataframe"
 import { IsoContoursParameters } from './isoContoursParameters'
 import { generateIsos }          from '../utils/generateIsos'
 import { MarchingTriangles }     from './private/MarchingTriangles'
@@ -76,7 +76,7 @@ export function createIsoContourLines(
     // material.polygonOffsetFactor = 2 // positive value pushes polygon further away
     // material.polygonOffsetUnits = 1
 
-    const minmax = minMaxArray(attribute.array)
+    const minmax = array.minMax(attribute.array)
     const vmin   = minmax[0]
     const vmax   = minmax[1]
 

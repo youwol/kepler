@@ -1,5 +1,6 @@
 import { Box3, Vector3, PerspectiveCamera, Object3D } from 'three'
-import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls'
+//import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls'
+import { TrackballControls } from '../utils/TrackballControls'
 
 /**
  * Fit a scene or a specific object or array of objects.

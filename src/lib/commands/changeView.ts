@@ -1,6 +1,7 @@
 import { Vector3, Scene, Camera, Box3 } from 'three'
-import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls'
+//import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls'
 import { animate } from '../utils/animationLoop'
+import { TrackballControls } from '../utils/TrackballControls'
 import { fitScene } from './fitScene'
 
 // TODO: define a Control interface since we can have OrbitControl etc...

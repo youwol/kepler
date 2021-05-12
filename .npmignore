@@ -1,2 +1,10 @@
-coverage
+node_modules
+**/node_modules/**/*
+coverage/
 junit.xml
+src/auto_generated.ts
+
+dist/@youwol
+dist/lib
+dist/tests
+dist/index.d.ts

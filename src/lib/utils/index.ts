@@ -1,5 +1,5 @@
 export * from './generateIsos'
-export * from './lut'
+export * from './colorMap'
 export * from './lut-utils'
 export * from './lerp'
 export * from './keyboard'

@@ -1,5 +1,5 @@
 import { BufferAttribute } from 'three'
-import { ASerie, minMaxArray } from '@youwol/dataframe'
+import { ASerie, array } from '@youwol/dataframe'
 
 function ok(p0: number, p1: number, p2: number, min: number, max: number) {
     function _in(p: number, min: number, max: number) {
@@ -59,7 +59,7 @@ export class MarchingTriangles {
         }
 
         if (this._bounds === undefined) {
-            this._bounds = minMaxArray(prop.array)
+            this._bounds = array.minMax(prop.array)
             //const min = Math.min(...prop)
             //const max = Math.max(...prop)
             //this._bounds = [min, max]
