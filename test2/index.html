@@ -1,19 +1,20 @@
-<!DOCTYPE html>
+<!doctype html>
+<html lang="en">
 <html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Test Toolbox</title>
+
+<base href="/ui/test-toolbox/">
+
 <head>
-    <meta charset="utf-8">
-    <title>Testing Kepler</title>
-    <script src='/projects/youwol/workspace/packages/kepler/node_modules/three/build/three.min.js'></script>
-    <script src='/projects/youwol/workspace/packages/dataframe/dist/@youwol/dataframe.js'></script>
-    <script src='/projects/youwol/workspace/packages/attribute/dist/@youwol/attribute.js'></script>
-    <script src='/projects/youwol/workspace/packages/io/dist/@youwol/io.js'></script>
-    <script src='/projects/youwol/workspace/packages/kepler/dist/@youwol/kepler.js'></script>
-    
+    <script src="/api/assets-gateway/raw/package/QHlvdXdvbC9jZG4tY2xpZW50/0.0.3/dist/@youwol/cdn-client.js"></script>
     <script src='/projects/youwol/workspace/packages/kepler/node_modules/three/examples/js/controls/TrackballControls.js'></script>
-    <script src="https://kit.fontawesome.com/daa834e337.js" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="style.css">
 </head>
+
+
 <body>
     <div class="loading" id="js-loader">
         <div class="loader"></div>
@@ -33,22 +34,30 @@
         </span>
     </div>
 
-    <script>
-        const attribute = globalThis['@youwol/attribute']
-        const dataframe = globalThis['@youwol/dataframe']
-        const io        = globalThis['@youwol/io']
-        const kepler    = globalThis['@youwol/kepler']
-        const three     = globalThis['THREE']
+    <script type="module">
+        let cdn = window['@youwol/cdn-client']
+        
+        await cdn.fetchBundles({
+            '@youwol/dataframe':'0.x',
+            '@youwol/math':'0.x',
+            '@youwol/attribute':'0.x',
+            '@youwol/io':'0.x',
+            '@youwol/kepler':'0.x'
+        }, window )
+      
+        await cdn.fetchStyleSheets([
+            "fontawesome#5.12.1~css/all.min.css",
+        ])
 
+        
         const surfaceset = [
             {
                 //url: "/platform/test/geophysics/arche/model_test_sphere/sphere_5120.ts",
                 //url: '/platform/test/files/gocad/ts/S1_properties.ts',
                 //url: "/platform/test/models/arche/Santos/out/horizon.ts",
                 url: "/platform/test/files/gocad/ts/output.ts",
-                //url: "/platform/test/geophysics/arche/lolo2020-petronas/results_salt_smoothed_intersected_edited_positive.ts",
                 show: true,
-                attr: 'Uy',
+                attr: 'z',
                 lut: 'Insar',
                 min: 0,
                 max: 1,
@@ -177,12 +186,9 @@
 
                         const manager = new attribute.AttributeManager(df, [
                             new attribute.PositionDecomposer,
-                            new attribute.ComponentDecomposer
                         ])
-                        console.log('available scalr attributes:', manager.names(1) )
 
                         const attr = manager.serie(1, surfaceInfo.attr)
-                        console.log(attr)
 
                         if (surfaceInfo.wireframe.show) {
                             scene.add( kepler.createSurface({
@@ -250,7 +256,6 @@
                 })
             return promise
         }
-
     </script>
-</body>
+  </body>
 </html>

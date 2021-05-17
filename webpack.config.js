@@ -29,16 +29,9 @@ module.exports = {
         ]
     },
     externals: [{
-        'rxjs': "rxjs",
-        'rxjs/operators': {
-            commonjs:'rxjs/operators',
-            commonjs2:'rxjs/operators',
-            root:['rxjs','operators']
-        },
-        '@youwol/flux-core': "@youwol/flux-core",
-        '@youwol/flux-view': "@youwol/flux-view",
         '@youwol/math': "@youwol/math",
         '@youwol/dataframe': "@youwol/dataframe",
+        '@youwol/attribute': "@youwol/attribute",
         '@youwol/io': "@youwol/io",
         'three': {
             commonjs:'three',

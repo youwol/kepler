@@ -1,6 +1,6 @@
 {
   "name": "@youwol/kepler",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Scientific visualization based on three.js",
   "author": "fmaerten@youwol.com",
   "keywords": [],
@@ -20,6 +20,7 @@
   },
   "peerDependencies": {
     "@youwol/math": "0.x",
+    "@youwol/attribute": "0.x",
     "@youwol/dataframe": "0.x",
     "@youwol/io": "0.x",
     "three": "^0.127.0"
@@ -28,6 +29,7 @@
     "@types/jest": "26.0.22",
     "@types/node": "14.14.37",
     "@youwol/dataframe": "0.0.8",
+    "@youwol/attribute": "0.x",
     "@youwol/io": "0.0.5",
     "@youwol/math": "0.x",
     "eslint": "7.23.0",
