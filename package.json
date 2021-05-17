@@ -13,11 +13,10 @@
     "test": "jest -c ./jest.config.js --rootDir .",
     "test-coverage": "jest -c ./jest.config.js --rootDir . --collect-coverage --collectCoverageFrom=./src/lib/**/*.ts ",
     "doc": "rm -fr  dist/docs && typedoc src/ --exclude src/lib --exclude src/tests --disableSources --out dist/docs --includeVersion --hideGenerator --theme pages-plugin --media ./media",
-    "serve": "http-server ../../../../../ -p 80 -o projects/youwol/workspace/packages/kepler/test"
+    "serve": "http-server ../../../../../ -p 80 -o projects/youwol/workspace/packages/kepler/test",
+    "upgrade-youwol": "yarn upgrade @youwol/math @youwol/attribute @youwol/dataframe @youwol/io"
   },
-  "dependencies": {
-    
-  },
+  "dependencies": {},
   "peerDependencies": {
     "@youwol/math": "0.x",
     "@youwol/attribute": "0.x",
@@ -28,14 +27,15 @@
   "devDependencies": {
     "@types/jest": "26.0.22",
     "@types/node": "14.14.37",
-    "@youwol/dataframe": "0.0.8",
     "@youwol/attribute": "0.x",
+    "@youwol/dataframe": "0.x",
     "@youwol/io": "0.0.5",
     "@youwol/math": "0.x",
     "eslint": "7.23.0",
     "eslint-webpack-plugin": "2.5.3",
     "jest": "26.6.3",
     "jest-junit": "12.0.0",
+    "three": "^0.127.0",
     "ts-jest": "26.5.4",
     "ts-lib": "0.0.5",
     "ts-loader": "8.1.0",

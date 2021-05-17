@@ -1,6 +1,6 @@
 node_modules
 coverage
-
+junit.xml
 dist/lib
 dist/@youwol
 dist/index.d.ts

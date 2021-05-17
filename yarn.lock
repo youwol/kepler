@@ -811,10 +811,25 @@
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
+"@youwol/attribute@0.x":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@youwol/attribute/-/attribute-0.0.4.tgz#c6b0bc2ec7baff59a763db6ae131b5e8522f8143"
+  integrity sha512-MGnuXVBDnAYadhzpl61Us8CRdJED8dN/HR+nGXRovyZLJnxiMFD+EqYv3wnbPEsHfnEx0Tp43N0V03Eul7z+jQ==
+
 "@youwol/dataframe@0.x":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@youwol/dataframe/-/dataframe-0.0.3.tgz#f44994e71c969702aa9786edabf29002e2469315"
-  integrity sha512-wzuW8lldbook96qSSTUrcjaOeYbCbLlXaRC86KgMueMEEqYTsoB7rjqzZAujgn+4L+3RVapKYkRbXCcy48VLxw==
+  version "0.0.18"
+  resolved "https://registry.yarnpkg.com/@youwol/dataframe/-/dataframe-0.0.18.tgz#32de64e8fe71c50093fd8ddd1190a620be1a8cb0"
+  integrity sha512-z63zN0CaPVMp/mzDsBkGgSG9J/1iweypGEH2upblfDyORj1iZVwkG6Rmu2WuKxHBdhSqIxvm3FGuFruAC1VNvA==
+
+"@youwol/io@0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@youwol/io/-/io-0.0.5.tgz#54f22c4d72625841c8cb106f740e4ccdd8616b74"
+  integrity sha512-dzTiqlNQgaI8C1MkuRV+gNLwJGWR09TOqqlkkrY/v5y1nQSyNLyxa/Cxd/AFC/jWEuKwhdQ/8fTzAxODKZHOkQ==
+
+"@youwol/math@0.x":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@youwol/math/-/math-0.0.5.tgz#9bc29de230e6c44d85450c71d1563ca9fae7f026"
+  integrity sha512-6YrrQ03mknGCGzmySrL/bIF1aPaH2i0FeJAd3ovvjWL7SnMuTqevIdcChsf3WH3wvT9FKsC6w5IGZ53yPxaTSQ==
 
 abab@^2.0.3, abab@^2.0.5:
   version "2.0.5"
