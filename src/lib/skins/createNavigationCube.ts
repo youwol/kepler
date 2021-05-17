@@ -8,7 +8,7 @@ import {
 //import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls'
 import { TrackballControls } from '../utils/TrackballControls'
 //import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
-import { RenderFunction, RenderFunctions } from "../utils/RenderFunctions"
+import { RenderFunction, RenderFunctions } from "../utils/renderFunctions"
 import { changeView } from "../commands"
 
 // See https://github.com/bytezeroseven/GLB-Viewer/blob/master/viewer.js
