@@ -162,6 +162,7 @@ class IsoContoursFill {
 
         this.min_ = parameters.min
         this.max_ = parameters.max
+        this.increment_ = (this.max_ - this.min_) / parameters.nbr
         this.color_ = new Color(parameters.color)
         this.lutTable_ = createLut(parameters.lut, 64)
         this.lutTable_.setMin(this.min_)
