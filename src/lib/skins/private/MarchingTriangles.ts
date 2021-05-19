@@ -9,7 +9,7 @@ function ok(p0: number, p1: number, p2: number, min: number, max: number) {
 }
 
 export class MarchingTriangles {
-    topo_: BufferAttribute = [] ;
+    topo_: any[] = [] ;
     lock_ = false ;
     maxVertexIndex_ = -1 ;
     loockup0 = [[-1, -1], [1, 2], [0, 1], [2, 0], [2, 0], [0, 1], [1, 2], [-1, -1]] ;

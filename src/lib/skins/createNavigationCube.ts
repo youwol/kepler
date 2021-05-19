@@ -339,19 +339,19 @@ class TrackballSerializer {
     }
 
     serialize() {
-        localStorage.setItem("controls.target.x", this.controls.target.x)
-        localStorage.setItem("controls.target.y", this.controls.target.y)
-        localStorage.setItem("controls.target.z", this.controls.target.z)
+        localStorage.setItem("controls.target.x", this.controls.target.x.toString() )
+        localStorage.setItem("controls.target.y", this.controls.target.y.toString() )
+        localStorage.setItem("controls.target.z", this.controls.target.z.toString() )
 
-        localStorage.setItem("controls.object.position.x", this.controls.object.position.x)
-        localStorage.setItem("controls.object.position.y", this.controls.object.position.y)
-        localStorage.setItem("controls.object.position.z", this.controls.object.position.z)
+        localStorage.setItem("controls.object.position.x", this.controls.object.position.x.toString() )
+        localStorage.setItem("controls.object.position.y", this.controls.object.position.y.toString() )
+        localStorage.setItem("controls.object.position.z", this.controls.object.position.z.toString() )
 
-        localStorage.setItem("controls.object.up.x", this.controls.object.up.x)
-        localStorage.setItem("controls.object.up.y", this.controls.object.up.y)
-        localStorage.setItem("controls.object.up.z", this.controls.object.up.z)
+        localStorage.setItem("controls.object.up.x", this.controls.object.up.x.toString() )
+        localStorage.setItem("controls.object.up.y", this.controls.object.up.y.toString() )
+        localStorage.setItem("controls.object.up.z", this.controls.object.up.z.toString() )
 
-        localStorage.setItem("controls.object.zoom", this.controls.object.zoom)
+        localStorage.setItem("controls.object.zoom", this.controls.object.zoom.toString() )
     }
 
     deserialize() {

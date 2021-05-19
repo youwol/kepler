@@ -1,4 +1,4 @@
-import { BufferGeometry } from "three"
+import { BufferAttribute, BufferGeometry } from "three"
 import { ASerie, IArray } from "@youwol/dataframe"
 import { SkinParameters } from './skinParameters'
 
@@ -31,19 +31,28 @@ export class DeformParameters extends SkinParameters {
  * @category Skins
  */
 export function deform(
-    {geometry, attribute, parameters}:
-    {geometry: BufferGeometry, attribute: IArray, parameters?: DeformParameters}): ASerie
+    {geometry, deformVector, parameters}:
+    {geometry: BufferGeometry, deformVector: ASerie, parameters?: DeformParameters}): ASerie
 {
     if (geometry === undefined) throw new Error('geometry is undefined')
-    if (attribute.length !== geometry.length) throw new Error('attribute should have 3 x nb vertices')
+    const position = geometry.getAttribute('position') as BufferAttribute
 
-    const geom = geometry.clone()
+    if (deformVector.count !== position.count) throw new Error('attribute should have 3 x nb vertices')
 
-    for (let i = 0; i < geometry.count; ++i) {
-        geom.setXYZ(i, geometry.getX(i) + parameters.scaleX*attribute[3*i],
-                       geometry.getY(i) + parameters.scaleY*attribute[3*i+1],
-                       geometry.getZ(i) + parameters.scaleZ*attribute[3*i+2])
-    }
+    //const geom = position.clone()
+    return deformVector.map( (v,i) => [
+        position.getX(i) + parameters.scaleX*v[0],
+        position.getY(i) + parameters.scaleX*v[1],
+        position.getZ(i) + parameters.scaleX*v[2]
+    ])
 
-    return geom
+    // for (let i = 0; i < position.count; ++i) {
+    //     geom.setXYZ(i,
+    //         position.getX(i) + parameters.scaleX*attribute[3*i],
+    //         position.getY(i) + parameters.scaleY*attribute[3*i+1],
+    //         position.getZ(i) + parameters.scaleZ*attribute[3*i+2]
+    //     )
+    // }
+
+    // return geom
 }

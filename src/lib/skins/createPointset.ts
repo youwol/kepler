@@ -1,6 +1,6 @@
 import {
     Points, PointsMaterial, Color, BufferGeometry,
-    Material, Box3, Vector3, TextureLoader
+    Material, Box3, Vector3, TextureLoader, BufferAttribute
 } from 'three'
 
 import { SkinParameters } from './skinParameters'
@@ -74,13 +74,13 @@ export function createPointset(
         parameters = new PointsetParameters()
     }
 
-    const geometry = createBufferGeometry(position)
+    const geometry = position instanceof BufferGeometry ? position : createBufferGeometry(position)
 
     // Check the default point size
     let tsize = parameters.size
     if (parameters.sizeAttenuation) {
         const bbox = new Box3()
-        bbox.setFromBufferAttribute(geometry.getAttribute('position'))
+        bbox.setFromBufferAttribute(geometry.getAttribute('position') as BufferAttribute)
         const size = bbox.getSize(new Vector3())
         tsize = Math.max(size.x, size.y, size.z)/400 * parameters.size
     }

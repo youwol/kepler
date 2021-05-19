@@ -1,13 +1,14 @@
 import { 
     Color, BufferGeometry, Mesh, BufferAttribute, 
     Material, MeshStandardMaterial, DoubleSide, 
-    Float32BufferAttribute, Lut
+    Float32BufferAttribute
 } from "three"
 
 import { fromValueToColor, createLut } from '../utils/lut-utils'
 import { createBufferGeometry } from './bufferUtils'
 import { IsoContoursParameters } from './isoContoursParameters'
 import { ASerie, IArray, array } from '@youwol/dataframe'
+import { ColorMap } from "../utils"
 
 /**
  * @example
@@ -144,7 +145,7 @@ class IsoContoursFill {
     min_ = 0
     max_ = 1
     color_ = new Color('#000000')
-    lutTable_: Lut = createLut('Insar', 64)
+    lutTable_: ColorMap = createLut('Insar', 64)
     params: IsoContoursParameters = undefined
 
     position_: Array<number>  = []

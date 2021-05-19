@@ -1,6 +1,6 @@
 import {
     Mesh, Color, BufferGeometry,
-    Float32BufferAttribute, FaceColors, VertexColors
+    Float32BufferAttribute, Material
 } from "three"
 
 import { fromValuesToColors } from '../utils/lut-utils'
@@ -107,9 +107,9 @@ export function paintAttribute(
         color = mesh.material['color']
         mesh.material['color'] = new Color('#ffffff')
     }
-    mesh.material.vertexColors  = (parameters.atVertex ? VertexColors : FaceColors)
-    mesh.material.polygonOffset = true
-    mesh.material.polygonOffsetFactor = 1
+    (mesh.material as Material).vertexColors  = (parameters.atVertex ? true : false) ;
+    (mesh.material as Material).polygonOffset = true ;
+    (mesh.material as Material).polygonOffsetFactor = 1 ;
 
     let colors = fromValuesToColors(attribute.array, {
         defaultColor: new Color(parameters.defaultColor),
@@ -151,6 +151,6 @@ export function paintAttribute(
         mesh.geometry.setAttribute('color', new Float32BufferAttribute(fcolors, 3))
     }
 
-    mesh.geometry.attributes.color.needsUpdate = true
-    mesh.material.needsUpdate = true
+    mesh.geometry.attributes.color.needsUpdate = true ;
+    (mesh.material as Material).needsUpdate = true
 }

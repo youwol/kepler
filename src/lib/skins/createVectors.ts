@@ -1,7 +1,6 @@
 import {
     LineSegments, LineBasicMaterial, Color, BufferGeometry,
-    VertexColors, Float32BufferAttribute,
-    NoColors, BufferAttribute, Material
+    Float32BufferAttribute, Material
 } from "three"
 
 import { PaintParameters } from './paintAttribute'
@@ -58,8 +57,9 @@ export function createVectors(
     {geometry: BufferGeometry, material?: Material, vectorField?: ASerie, attribute: ASerie, parameters?: VectorsParameters}): LineSegments
 {
     if (geometry === undefined) throw new Error('geometry is undefined')
+    const position = geometry.getAttribute('position')
     if (vectorField === undefined) throw new Error('vectorField is undefined')
-    if (vectorField.length !== geometry.length) throw new Error('vectorField should have 3 x nb vertices')
+    if (vectorField.count !== position.count) throw new Error('vectorField should have 3 x nb vertices')
     if (parameters === undefined) throw new Error('parameters is undefined (needs name of the vector field)')
 
     if (material === undefined) {
@@ -82,7 +82,7 @@ export function createVectors(
 
     // The geometry
     const vertices: number[] = []
-    const position = geometry.getAttribute('position')
+    //const position = geometry.getAttribute('position')
     const s = parameters.scale
     for (let i=0; i<position.count; ++i) {
         const x = position.getX(i)

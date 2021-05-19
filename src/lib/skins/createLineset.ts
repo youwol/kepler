@@ -59,5 +59,5 @@ export function createLineset(
         })
     }
 
-    return Line(geometry, material)
+    return new Line(geometry, material)
 }

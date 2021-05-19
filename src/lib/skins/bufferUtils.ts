@@ -16,15 +16,17 @@ export function createBufferGeometry(
     const geom = new BufferGeometry()
 
     if (position['array'] !== undefined) {
+        // ASerie
         geom.setAttribute('position', new BufferAttribute((position as ASerie).array, 3) )
     }
     else {
-        if (Array.isArray(position)) {
+        if (!Array.isArray(position)) throw new Error('poition should be an Array')
+        //if (Array.isArray(position)) {
             geom.setAttribute('position', new BufferAttribute(new Float32Array(position), 3) )
-        }
-        else {
-            geom.setAttribute('position', new BufferAttribute(position, 3) )
-        }
+        //}
+        // else {
+        //     geom.setAttribute('position', new BufferAttribute(position, 3) )
+        // }
     }
 
     if (indices !== undefined) {
@@ -32,20 +34,22 @@ export function createBufferGeometry(
             geom.setIndex( new BufferAttribute((indices as ASerie).array, 1) )
         }
         else {
-            if (Array.isArray(indices)) {
+            if (!Array.isArray(indices)) throw new Error('indices should be an Array')
+            //if (Array.isArray(indices)) {
                 console.warn('Deal with Uint16 or Uint32')
                 geom.setIndex( new BufferAttribute(new Uint32Array(indices), 1) )
-            }
-            else {
-                geom.setIndex( new BufferAttribute(indices, 1) )
-            }
+            //}
+            // else {
+            //     geom.setIndex( new BufferAttribute(indices, 1) )
+            // }
         }
 
         if (creaseAngle===0) {
             geom.computeVertexNormals()
         }
         else {
-            const normals = normalAttribute(geom.getAttribute('position').array, geom.index.array, crease)
+            const array = geom.getAttribute('position').array
+            const normals = normalAttribute(array, geom.index.array, crease)
             geom.setAttribute( 'normal', normals )
         }
     }

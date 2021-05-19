@@ -1,4 +1,4 @@
-import { Box3, Vector3, PerspectiveCamera, Object3D } from 'three'
+import { Box3, Vector3, PerspectiveCamera, Object3D, Camera } from 'three'
 //import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls'
 import { TrackballControls } from '../utils/TrackballControls'
 
@@ -15,7 +15,7 @@ export function fitScene(
     {scene, camera, controls, selection, fitRatio} : 
     {
         scene?: any, 
-        camera: PerspectiveCamera, 
+        camera: Camera, 
         controls: TrackballControls, 
         selection?: Object3D[] | Object3D, 
         fitRatio?: number
@@ -23,6 +23,7 @@ export function fitScene(
 {
     if (!camera) throw new Error('Missing camera')
     if (!controls) throw new Error('Missing trackball')
+    if ( !(camera instanceof PerspectiveCamera) ) throw new Error('Ortho camera not suppported yet')
 
     if (selection===undefined && !scene) throw new Error('Missing scene or selection array')
 

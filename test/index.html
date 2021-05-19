@@ -5,6 +5,7 @@
     <title>Testing Kepler</title>
     <script src='/projects/youwol/workspace/packages/kepler/node_modules/three/build/three.min.js'></script>
     <script src='/projects/youwol/workspace/packages/dataframe/dist/@youwol/dataframe.js'></script>
+    <script src='/projects/youwol/workspace/packages/math/dist/@youwol/math.js'></script>
     <script src='/projects/youwol/workspace/packages/attribute/dist/@youwol/attribute.js'></script>
     <script src='/projects/youwol/workspace/packages/io/dist/@youwol/io.js'></script>
     <script src='/projects/youwol/workspace/packages/kepler/dist/@youwol/kepler.js'></script>
@@ -38,6 +39,7 @@
         const dataframe = globalThis['@youwol/dataframe']
         const io        = globalThis['@youwol/io']
         const kepler    = globalThis['@youwol/kepler']
+        const math      = globalThis['@youwol/math']
         const three     = globalThis['THREE']
 
         const surfaceset = [
@@ -45,7 +47,7 @@
                 //url: "/platform/test/geophysics/arche/model_test_sphere/sphere_5120.ts",
                 //url: '/platform/test/files/gocad/ts/S1_properties.ts',
                 //url: "/platform/test/models/arche/Santos/out/horizon.ts",
-                url: "/platform/test/files/gocad/ts/output.ts",
+                url: "/platform/test/files/gocad/ts/output_HS.ts",
                 //url: "/platform/test/geophysics/arche/lolo2020-petronas/results_salt_smoothed_intersected_edited_positive.ts",
                 show: true,
                 attr: 'Uy',
@@ -60,7 +62,7 @@
                     nb: 10
                 },
                 wireframe: {
-                    show: false,
+                    show: true,
                     color: '#000000'
                 }
             }
@@ -177,12 +179,15 @@
 
                         const manager = new attribute.AttributeManager(df, [
                             new attribute.PositionDecomposer,
-                            new attribute.ComponentDecomposer
+                            new attribute.ComponentDecomposer,
+                            new attribute.AreaDecomposer
                         ])
-                        console.log('available scalr attributes:', manager.names(1) )
+
+                        console.log('available scalar attributes:', manager.names(1) )
+                        console.log('available vector attributes:', manager.names(3) )
 
                         const attr = manager.serie(1, surfaceInfo.attr)
-                        console.log(attr)
+                        console.log(math.minMaxArray(attr.array))
 
                         if (surfaceInfo.wireframe.show) {
                             scene.add( kepler.createSurface({
@@ -234,17 +239,19 @@
                                     }
                                 ) )
                             }
-                            scene.add( kepler.createIsoContours(
-                                surface,
-                                attr, {
-                                    parameters: new kepler.IsoContoursParameters({
-                                        color: '#000000',
-                                        nbr: 10,
-                                        filled: false,
-                                        opacity: 1
+                            if (surfaceInfo.isoFill.showLines) {
+                                scene.add( kepler.createIsoContours(
+                                    surface,
+                                    attr, {
+                                        parameters: new kepler.IsoContoursParameters({
+                                            color: '#000000',
+                                            nbr: 10,
+                                            filled: false,
+                                            opacity: 1
+                                        })
                                     })
-                                })
-                            )
+                                )
+                            }
                         }
                     })
                 })
