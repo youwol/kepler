@@ -49,7 +49,7 @@ export function createBufferGeometry(
         }
         else {
             const array = geom.getAttribute('position').array
-            const normals = normalAttribute(array, geom.index.array, crease)
+            const normals = normalAttribute(array as IArray, geom.index.array as IArray, crease)
             geom.setAttribute( 'normal', normals )
         }
     }

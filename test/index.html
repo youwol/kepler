@@ -49,20 +49,24 @@
                 //url: "/platform/test/models/arche/Santos/out/horizon.ts",
                 url: "/platform/test/files/gocad/ts/output_HS.ts",
                 //url: "/platform/test/geophysics/arche/lolo2020-petronas/results_salt_smoothed_intersected_edited_positive.ts",
+
+                //url: "/platform/test/models/arche/test-HS/result_grid_arche_half_space_-50m.ts",
+                //url: "/platform/test/models/arche/test-HS/result_grid_poly3d_half_space_0m.ts",
+                //url: "/platform/test/models/arche/test-HS/result_S1_arche_0m.ts",
                 show: true,
                 attr: 'Uy',
                 lut: 'Insar',
                 min: 0,
                 max: 1,
                 isoFill: {
-                    opacity: 0.8,
-                    show: false,
-                    showLines: false,
+                    opacity: 1,
+                    show: true,
+                    showLines: true,
                     lut: 'Igeoss',
-                    nb: 10
+                    nb: 20
                 },
                 wireframe: {
-                    show: true,
+                    show: false,
                     color: '#000000'
                 }
             }
@@ -232,7 +236,7 @@
                                     attr, {
                                         parameters: new kepler.IsoContoursParameters({
                                             color: '#ffffff',
-                                            nbr: 10,
+                                            nbr: surfaceInfo.isoFill.nb,
                                             filled: true,
                                             opacity: 1
                                         })
@@ -245,7 +249,7 @@
                                     attr, {
                                         parameters: new kepler.IsoContoursParameters({
                                             color: '#000000',
-                                            nbr: 10,
+                                            nbr: surfaceInfo.isoFill.nb,
                                             filled: false,
                                             opacity: 1
                                         })

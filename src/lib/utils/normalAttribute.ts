@@ -11,7 +11,7 @@ import { Float32BufferAttribute, Vector3 } from 'three'
  * @param creaseAngle In radian
  * @returns 
  */
-export function normalAttribute(coord: IArray|ArrayLike<number>, index: IArray|ArrayLike<number>, creaseAngle: number) {
+export function normalAttribute(coord: IArray, index: IArray, creaseAngle: number) {
     const ab = new Vector3()
     const cb = new Vector3()
     const vA = new Vector3()

@@ -8,7 +8,7 @@ import { fromValueToColor, createLut } from '../utils/lut-utils'
 import { createBufferGeometry } from './bufferUtils'
 import { IsoContoursParameters } from './isoContoursParameters'
 import { ASerie, IArray, array } from '@youwol/dataframe'
-import { ColorMap } from "../utils"
+import { ColorMap, generateIsos, generateIsosBySpacing, lerp } from "../utils"
 
 /**
  * @example
@@ -81,7 +81,7 @@ export function createIsoContourFilled(
             side: DoubleSide,
             vertexColors: true,
             wireframe: false, 
-            flatShading: false
+            flatShading: true
         })
         //mat.wireframe = true
         nmesh.material = mat
@@ -144,6 +144,8 @@ class IsoContoursFill {
     increment_ = 0.05
     min_ = 0
     max_ = 1
+    vmin_ = 0
+    vmax_ = 1
     color_ = new Color('#000000')
     lutTable_: ColorMap = createLut('Insar', 64)
     params: IsoContoursParameters = undefined
@@ -162,29 +164,40 @@ class IsoContoursFill {
 
         this.min_ = parameters.min
         this.max_ = parameters.max
-        this.increment_ = (this.max_ - this.min_) / parameters.nbr
-        this.color_ = new Color(parameters.color)
-        this.lutTable_ = createLut(parameters.lut, 64)
+        this.increment_ = (this.max_ - this.min_) / (parameters.nbr)
+        this.color_     = new Color(parameters.color)
+        this.lutTable_  = createLut(parameters.lut, 64)
         this.lutTable_.setMin(this.min_)
         this.lutTable_.setMax(this.max_)
     }
 
     run(attr: ASerie, geometry: BufferGeometry): any {
-        // const minmax = minMaxArray(attr.array)
-        // const vmin   = minmax[0]
-        // const vmax   = minmax[1]
+        //this.attr = array.normalize(attr.array)
+        this.attr = attr.array
 
-        this.attr = array.normalize(attr.array)
+        const minmax = array.minMax(attr.array)
+        this.vmin_   = minmax[0]
+        this.vmax_   = minmax[1]
+        this.isoValues_ = generateIsos(
+            lerp(this.params.min, this.vmin_, this.vmax_),
+            lerp(this.params.max, this.vmin_, this.vmax_),
+            this.params.nbr
+        )
 
-        // this.isoValues_ = generateIsos(
-        //     lerp(this.params.min, vmin, vmax),
-        //     lerp(this.params.max, vmin, vmax),
-        //     this.params.nbr
-        // )
+        if (this.isoValues_.length<2) {
+            return {
+                position: [],
+                index: [],
+                color: []
+            }
+        }
 
-        const index     = geometry.index
+        this.increment_ = this.isoValues_[1] - this.isoValues_[0]
+
+        const index = geometry.index
         const a     = index.array
-        this.nodes_     = geometry.getAttribute('position') as BufferAttribute
+        this.nodes_ = geometry.getAttribute('position') as BufferAttribute
+
         //this.isoValues_ = generateIsosBySpacing(this.min_, this.max_, this.increment_)
 
         for (let i=0; i<a.length; i += 3) {
@@ -198,15 +211,15 @@ class IsoContoursFill {
         }
     }
 
-    normalizedAttr(v: number) {
-        return (v-this.min_) / (this.max_-this.min_)
+    normalizeAttr(v: number) {
+        return (v-this.vmin_) / (this.vmax_-this.vmin_)
     }
 
-    getNode(i: number) {
+    private getNode(i: number) {
         return [this.nodes_.getX(i), this.nodes_.getY(i), this.nodes_.getZ(i)]
     }
 
-    classify(n0: number, n1: number, n2: number) {
+    private classify(n0: number, n1: number, n2: number) {
         const t = new TriInfo
 
         t.v1 = this.attr[n0]
@@ -263,13 +276,19 @@ class IsoContoursFill {
         this.createPolygons(t)
     }
 
-    createSegmentList(t: TriInfo) {
+    private createSegmentList(t: TriInfo) {
         this.segment_list_ = []
 
-        // snap iso contours with zero
-        const begin_value = this.increment_ * Math.round(this.min_ / this.increment_)
-        t.notIntersectedPolygonValue = this.min_
+        // Snap iso contours with zero
+        // ---------------------------
+        //const begin_value = this.increment_ * Math.round(this.min_ / (this.increment_))
+        //const begin_value = this.increment_ * (this.min_ / this.increment_)
+        const begin_value = this.isoValues_[0]
+        
+        t.notIntersectedPolygonValue = this.vmin_
+
         const max_itr = (Math.min(t.v3, this.max_) - begin_value) / this.increment_
+        
         let local_incr = this.increment_
 
         if (max_itr > 100) {
@@ -279,7 +298,6 @@ class IsoContoursFill {
         for (let d = begin_value; (d < t.v3) && (d < this.max_); d += local_incr) {
             if (d > t.v1) {
                 this.addSegment(d, t)
-                //console.log('adding ',d)
             } else {
                 t.notIntersectedPolygonValue = d
             }
@@ -298,7 +316,7 @@ class IsoContoursFill {
         // })
     }
 
-    addSegment(iso: number, t: TriInfo) {
+    private addSegment(iso: number, t: TriInfo) {
         const segment = new IsoSegment
         segment.iso = iso
         const v1 = t.v1
@@ -320,7 +338,7 @@ class IsoContoursFill {
         this.segment_list_.push(segment)
     }
 
-    createPolygons(t: TriInfo) {
+    private createPolygons(t: TriInfo) {
         let bypass = false
         if (t.reversed) {
             if (this.segment_list_.length === 0) {
@@ -413,13 +431,15 @@ class IsoContoursFill {
         }
     }
 
-    addTri(
+    //private color(iso: number)
+
+    private addTri(
         point1 : number[],
         point2 : number[],
         point3 : number[],
         iso: number)
       {
-        const c = fromValueToColor(iso, {
+        const c = fromValueToColor( this.normalizeAttr(iso), {
             defaultColor: this.color_, 
             lutTable: this.lutTable_,
             reverse: this.params.reversedLut, 
@@ -432,7 +452,7 @@ class IsoContoursFill {
         this.colors_.push(...c, ...c, ...c)
     }
 
-    addQuad(
+    private addQuad(
         point1 : number[],
         point2 : number[],
         point3 : number[],
@@ -440,7 +460,7 @@ class IsoContoursFill {
         iso: number)
     {
         //return
-        const c = fromValueToColor(iso, {
+        const c = fromValueToColor( this.normalizeAttr(iso), {
             defaultColor  : this.color_, 
             lutTable: this.lutTable_,
             reverse: this.params.reversedLut, 
@@ -456,7 +476,7 @@ class IsoContoursFill {
         this.colors_.push(...c, ...c, ...c, ...c)
     }
 
-    addPoly(
+    private addPoly(
         point1 : number[],
         point2 : number[],
         point3 : number[],
@@ -465,7 +485,7 @@ class IsoContoursFill {
         iso: number)
     {
         //return
-        const c = fromValueToColor(iso, {
+        const c = fromValueToColor( this.normalizeAttr(iso), {
             defaultColor  : this.color_, 
             lutTable: this.lutTable_,
             reverse: this.params.reversedLut, 
