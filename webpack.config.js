@@ -29,7 +29,6 @@ module.exports = {
         ]
     },
     externals: [{
-        '@youwol/math': "@youwol/math",
         '@youwol/dataframe': "@youwol/dataframe",
         'three': {
             commonjs:'three',
