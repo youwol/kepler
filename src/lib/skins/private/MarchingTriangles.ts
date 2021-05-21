@@ -1,5 +1,5 @@
 import { BufferAttribute } from 'three'
-import { ASerie, array } from '@youwol/dataframe'
+import { Serie, array } from '@youwol/dataframe'
 
 function ok(p0: number, p1: number, p2: number, min: number, max: number) {
     function _in(p: number, min: number, max: number) {
@@ -48,7 +48,7 @@ export class MarchingTriangles {
      *
      * 2) result[1] represents the connected isoline values
      */
-    isolines(prop: ASerie, isovalue: number) {
+    isolines(prop: Serie, isovalue: number) {
         let result: any = [[]]
 
         if (this.lock_ === false) {

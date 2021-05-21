@@ -7,7 +7,7 @@ import {
 import { fromValueToColor, createLut } from '../utils/lut-utils'
 import { createBufferGeometry } from './bufferUtils'
 import { IsoContoursParameters } from './isoContoursParameters'
-import { ASerie, IArray, array } from '@youwol/dataframe'
+import { Serie, IArray, array } from '@youwol/dataframe'
 import { ColorMap, generateIsos, generateIsosBySpacing, lerp } from "../utils"
 
 /**
@@ -18,9 +18,9 @@ import { ColorMap, generateIsos, generateIsosBySpacing, lerp } from "../utils"
  *     attribute: dataframe.get('u'),
  *     parameters: new IsoContoursFilledParameters({
  *         lut: 'Insar',
- *         nbr: 10,
- *         min; 0.2,
- *         max: 0.8
+ *         isoList: [1, 2, 3, 4, 7],
+ *         min; 2,
+ *         max: 10
  *     })
  * })
  * 
@@ -29,8 +29,8 @@ import { ColorMap, generateIsos, generateIsosBySpacing, lerp } from "../utils"
  * @category Skins
  */
 export function createIsoContourFilled(
-    mesh: Mesh, attribute: ASerie,
-    {material, parameters} : {material?: Material, parameters?: IsoContoursParameters} = {})
+    mesh: Mesh, attribute: Serie,
+    {material, parameters} : {material?: Material, parameters: IsoContoursParameters})
     : Mesh
 {
     if (mesh === undefined) {
@@ -61,10 +61,6 @@ export function createIsoContourFilled(
         throw new Error('attribute must be a scalar attribute (itemSize = 1)')
     }
 
-    if (parameters === undefined) {
-        parameters = new IsoContoursParameters
-    }
-
     const iso = new IsoContoursFill(parameters)
     const result = iso.run(attribute, mesh.geometry)
     if (result.position.length === 0) return undefined
@@ -81,7 +77,7 @@ export function createIsoContourFilled(
             side: DoubleSide,
             vertexColors: true,
             wireframe: false, 
-            flatShading: true
+            flatShading: false
         })
         //mat.wireframe = true
         nmesh.material = mat
@@ -95,57 +91,20 @@ export function createIsoContourFilled(
     } else {
         nmesh.material.transparent = false
     }
+
+    nmesh.geometry.computeVertexNormals()
     
     return nmesh
 }
 
-class IsoSegment {
-      p1  = [0,0,0]
-      p2  = [0,0,0]
-      //n1  = [0,0,1]
-      //n2  = [0,0,1]
-      iso = 0
-}
-
-class TriInfo {
-    reversed = false
-    p1 = [0,0,0]
-    p2 = [0,0,0]
-    p3 = [0,0,0]
-    //n1 = [1,0,0]
-    //n2 = [1,0,0]
-    //n3 = [1,0,0]
-    v1 = 0
-    v2 = 0
-    v3 = 0
-    notIntersectedPolygonValue = 0
-}
-
-const front = (container: Array<any>) => container[0]
-const back  = (container: Array<any>) => container[container.length-1]
-
-function createPoint(p1: number[], p2: number[], w: number) {
-    const W  =1.-w
-    return [
-        w*p1[0] + W*p2[0],
-        w*p1[1] + W*p2[1],
-        w*p1[2] + W*p2[2]
-    ]
-}
-
-function isoValue(v1: number, v2: number, iso: number) {
-    return 1. - (Math.abs(iso - v1) / Math.abs(v2 - v1))
-}
+// -------------------------------
 
 class IsoContoursFill {
     attr: IArray = undefined
     nodes_: BufferAttribute = undefined
     segment_list_: Array<IsoSegment> = []
-    increment_ = 0.05
-    min_ = 0
-    max_ = 1
-    vmin_ = 0
-    vmax_ = 1
+    vmin_  = 0
+    vmax_  = 1
     color_ = new Color('#000000')
     lutTable_: ColorMap = createLut('Insar', 64)
     params: IsoContoursParameters = undefined
@@ -161,30 +120,20 @@ class IsoContoursFill {
 
     constructor(parameters: IsoContoursParameters) {
         this.params = parameters
-
-        this.min_ = parameters.min
-        this.max_ = parameters.max
-        this.increment_ = (this.max_ - this.min_) / (parameters.nbr)
         this.color_     = new Color(parameters.color)
         this.lutTable_  = createLut(parameters.lut, 64)
-        this.lutTable_.setMin(this.min_)
-        this.lutTable_.setMax(this.max_)
+        this.lutTable_.setMin(0)
+        this.lutTable_.setMax(1)
+        this.isoValues_ = parameters.isoList
     }
 
-    run(attr: ASerie, geometry: BufferGeometry): any {
-        //this.attr = array.normalize(attr.array)
+    run(attr: Serie, geometry: BufferGeometry): any {
         this.attr = attr.array
-
-        const minmax = array.minMax(attr.array)
+        const minmax = array.minMax(this.attr)
         this.vmin_   = minmax[0]
         this.vmax_   = minmax[1]
-        this.isoValues_ = generateIsos(
-            lerp(this.params.min, this.vmin_, this.vmax_),
-            lerp(this.params.max, this.vmin_, this.vmax_),
-            this.params.nbr
-        )
-
-        if (this.isoValues_.length<2) {
+        
+        if (this.isoValues_.length===0) {
             return {
                 position: [],
                 index: [],
@@ -192,13 +141,9 @@ class IsoContoursFill {
             }
         }
 
-        this.increment_ = this.isoValues_[1] - this.isoValues_[0]
-
         const index = geometry.index
         const a     = index.array
         this.nodes_ = geometry.getAttribute('position') as BufferAttribute
-
-        //this.isoValues_ = generateIsosBySpacing(this.min_, this.max_, this.increment_)
 
         for (let i=0; i<a.length; i += 3) {
             this.classify(a[i], a[i+1], a[i+2])
@@ -278,42 +223,17 @@ class IsoContoursFill {
 
     private createSegmentList(t: TriInfo) {
         this.segment_list_ = []
-
-        // Snap iso contours with zero
-        // ---------------------------
-        //const begin_value = this.increment_ * Math.round(this.min_ / (this.increment_))
-        //const begin_value = this.increment_ * (this.min_ / this.increment_)
-        const begin_value = this.isoValues_[0]
-        
         t.notIntersectedPolygonValue = this.vmin_
 
-        const max_itr = (Math.min(t.v3, this.max_) - begin_value) / this.increment_
-        
-        let local_incr = this.increment_
-
-        if (max_itr > 100) {
-            local_incr = (Math.min(t.v3, this.max_) - begin_value) / 100.0
-        }
-
-        for (let d = begin_value; (d < t.v3) && (d < this.max_); d += local_incr) {
-            if (d > t.v1) {
-                this.addSegment(d, t)
+        for (let iso of this.isoValues_) {
+            if (iso<this.params.min || iso>this.params.max) continue // <-------------------------------
+            if (iso >= t.v3) break
+            if (iso > t.v1) {
+                this.addSegment(iso, t)
             } else {
-                t.notIntersectedPolygonValue = d
+                t.notIntersectedPolygonValue = iso
             }
         }
-        
-
-        // this.isoValues_.forEach( iso => {
-        //     if (iso<t.v3) {
-        //         if (iso > t.v1) {
-        //             this.addSegment(iso, t)
-        //             //console.log('adding ',d)
-        //         } else {
-        //             t.notIntersectedPolygonValue = iso
-        //         }
-        //     }
-        // })
     }
 
     private addSegment(iso: number, t: TriInfo) {
@@ -431,8 +351,6 @@ class IsoContoursFill {
         }
     }
 
-    //private color(iso: number)
-
     private addTri(
         point1 : number[],
         point2 : number[],
@@ -443,8 +361,8 @@ class IsoContoursFill {
             defaultColor: this.color_, 
             lutTable: this.lutTable_,
             reverse: this.params.reversedLut, 
-            min    : this.min_, 
-            max    : this.max_
+            // min    : this.min_, 
+            // max    : this.max_
         })
         const id = this.position_.length/3
         this.position_.push(...point1, ...point2, ...point3)
@@ -464,8 +382,8 @@ class IsoContoursFill {
             defaultColor  : this.color_, 
             lutTable: this.lutTable_,
             reverse: this.params.reversedLut, 
-            min    : this.min_, 
-            max    : this.max_
+            // min    : this.min_, 
+            // max    : this.max_
         })
         const id = this.position_.length/3
         this.position_.push(...point1, ...point2, ...point3, ...point4)
@@ -489,8 +407,8 @@ class IsoContoursFill {
             defaultColor  : this.color_, 
             lutTable: this.lutTable_,
             reverse: this.params.reversedLut, 
-            min    : this.min_, 
-            max    : this.max_
+            // min    : this.min_, 
+            // max    : this.max_
         })
         const id = this.position_.length/3
         this.position_.push(...point1, ...point2, ...point3, ...point4, ...point5)
@@ -502,4 +420,44 @@ class IsoContoursFill {
         this.colors_.push(...c, ...c, ...c, ...c, ...c)
     }
 
+}
+
+// -------------------------------
+
+class IsoSegment {
+    p1  = [0,0,0]
+    p2  = [0,0,0]
+    //n1  = [0,0,1]
+    //n2  = [0,0,1]
+    iso = 0
+}
+
+class TriInfo {
+  reversed = false
+  p1 = [0,0,0]
+  p2 = [0,0,0]
+  p3 = [0,0,0]
+  //n1 = [1,0,0]
+  //n2 = [1,0,0]
+  //n3 = [1,0,0]
+  v1 = 0
+  v2 = 0
+  v3 = 0
+  notIntersectedPolygonValue = 0
+}
+
+const front = (container: Array<any>) => container[0]
+const back  = (container: Array<any>) => container[container.length-1]
+
+function createPoint(p1: number[], p2: number[], w: number) {
+  const W  =1.-w
+  return [
+      w*p1[0] + W*p2[0],
+      w*p1[1] + W*p2[1],
+      w*p1[2] + W*p2[2]
+  ]
+}
+
+function isoValue(v1: number, v2: number, iso: number) {
+  return 1. - (Math.abs(iso - v1) / Math.abs(v2 - v1))
 }

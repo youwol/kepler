@@ -2,7 +2,7 @@ import {
     LineBasicMaterial, Color,
     Material, Line, BufferGeometry
 } from "three"
-import { ASerie } from "@youwol/dataframe"
+import { Serie } from "@youwol/dataframe"
 import { createBufferGeometry } from "./bufferUtils"
 import { SkinParameters } from "./skinParameters"
 
@@ -35,7 +35,7 @@ export class LinesetParameters extends SkinParameters {
  */
 export function createLineset(
     {position,  material, parameters}:
-    {position: ASerie|BufferGeometry, material?: Material, parameters?: LinesetParameters}): Line
+    {position: Serie|BufferGeometry, material?: Material, parameters?: LinesetParameters}): Line
 {
     if (position === undefined) {
         throw new Error('geometry is undefined')

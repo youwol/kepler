@@ -4,7 +4,7 @@ import {
     Material, Mesh
 } from "three"
 
-import { array, ASerie }   from "@youwol/dataframe"
+import { array, Serie }   from "@youwol/dataframe"
 import { IsoContoursParameters } from './isoContoursParameters'
 import { generateIsos }          from '../utils/generateIsos'
 import { MarchingTriangles }     from './private/MarchingTriangles'
@@ -18,7 +18,7 @@ import { lerp }                  from '../utils/lerp'
  *     attribute: dataframe.get('u'),
  *     parameters: new IsoContoursLineParameters({
  *         color: '#999900',
- *         nbr: 10,
+ *         isoList: [1,2,4],
  *         min; 0.2,
  *         max: 0.8
  *     })
@@ -29,8 +29,8 @@ import { lerp }                  from '../utils/lerp'
  * @category Skins
  */
 export function createIsoContourLines(
-    mesh: Mesh, attribute: ASerie,
-    {material, parameters} : {material?: Material, parameters?: IsoContoursParameters} = {}): LineSegments
+    mesh: Mesh, attribute: Serie,
+    {material, parameters} : {material?: Material, parameters: IsoContoursParameters}): LineSegments
 {
     if (mesh === undefined) {
         throw new Error('mesh is undefined')
@@ -60,10 +60,6 @@ export function createIsoContourLines(
         throw new Error('attribute must be a scalar attribute (itemSize = 1)')
     }
 
-    if (parameters === undefined) {
-        parameters = new IsoContoursParameters
-    }
-
     if (material === undefined) {
         material = new LineBasicMaterial({
             linewidth: 1,
@@ -72,21 +68,15 @@ export function createIsoContourLines(
         })
     }
     material["color"] = new Color(parameters.color)
-    // material.polygonOffset = true
-    // material.polygonOffsetFactor = 2 // positive value pushes polygon further away
-    // material.polygonOffsetUnits = 1
 
     const minmax = array.minMax(attribute.array)
     const vmin   = minmax[0]
     const vmax   = minmax[1]
 
-    // normalize
-    //let scalars = attribute.array.map( v => (v-vmin)/(vmax-vmin) )
-
-    const isoValues = generateIsos( lerp(parameters.min, vmin, vmax), lerp(parameters.max, vmin, vmax), parameters.nbr)
+    const isoValues = parameters.isoList
 
     const algo = new MarchingTriangles()
-    algo.setup(mesh.geometry.index, [lerp(parameters.min, vmin, vmax), lerp(parameters.max, vmin, vmax)])
+    algo.setup(mesh.geometry.index, [lerp(0, vmin, vmax), lerp(1, vmin, vmax)])
 
     const vertices  = mesh.geometry.getAttribute('position')
     const positions = []

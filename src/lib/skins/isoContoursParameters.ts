@@ -8,11 +8,12 @@ import { SkinParameters } from "./skinParameters"
  */
 export class IsoContoursParameters extends SkinParameters {
     public readonly filled     : boolean = true
+    public readonly useTable   : boolean = true
 
     public readonly color      : string = '#000000'
-    public readonly nbr        : number = 10
-    public readonly min        : number = 0
-    public readonly max        : number = 1
+    public readonly min        : number = Number.NEGATIVE_INFINITY
+    public readonly max        : number = Number.POSITIVE_INFINITY
+    public readonly isoList    : number[] = []
 
     public readonly opacity    : number = 1
     public readonly lut        : string = 'Rainbow'
@@ -21,27 +22,30 @@ export class IsoContoursParameters extends SkinParameters {
 
     constructor(
         {
-            filled=true, nbr=10, min=0, max=1, color,
+            isoList,
+            filled=true, min=Number.NEGATIVE_INFINITY, max=Number.POSITIVE_INFINITY, color,
             lut, 
             lockLut, 
             opacity,
             reversedLut, ...others
         } : {
-            filled?: boolean, nbr?: number, min?: number, max?: number, color?: string,
+            isoList: number[],
+            filled?: boolean, min?: number, max?: number, color?: string,
             lut?: string, 
             lockLut?: boolean, 
             opacity?: number,
             reversedLut?: boolean
-        } = {})
+        })
     {
         super(others)
 
         if (filled !== undefined) this.filled = filled
 
+        this.isoList = isoList
+
         this.color = (color!==undefined?color:'#000000')
-        this.nbr = (nbr!==undefined?nbr:10)
-        this.min = (min!==undefined?min:0 )
-        this.max = (max!==undefined?max:1 )
+        this.min = (min!==undefined?min:Number.NEGATIVE_INFINITY )
+        this.max = (max!==undefined?max:Number.POSITIVE_INFINITY )
 
         this.set('lockLut', lockLut)
         this.set('reversedLut', reversedLut)

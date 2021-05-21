@@ -3,7 +3,7 @@ import {
     Object3D, Color
 } from "three"
 
-import { ASerie, IArray, array } from "@youwol/dataframe"
+import { Serie, array } from "@youwol/dataframe"
 import { IsoContoursParameters } from "./isoContoursParameters"
 import { MarchingCubes } from "./private/MarchingCubes"
 import { ImplicitGrid3D } from './implicitGrid'
@@ -15,42 +15,42 @@ import { createSurface } from "./createSurface"
  * @see [[createIsoSurfaces]]
  * @category Skin Parameters
  */
-export class IsoSurfaceParameters extends IsoContoursParameters {
-    public readonly roughness: number
-    public readonly metalness: number
-    public readonly useTable: boolean
+// export class IsoSurfaceParameters extends IsoContoursParameters {
+//     public readonly roughness: number
+//     public readonly metalness: number
+//     public readonly useTable: boolean
 
-    constructor({roughness=0.1, metalness=0.5, useTable=true, ...others}:
-        {roughness?: number, metalness?: number, useTable?: boolean}={})
-    {
-        super(others)
-        this.roughness = roughness !== undefined ? roughness : 0.1
-        this.metalness = metalness !== undefined ? metalness : 0.5
-        this.useTable = useTable !== undefined ? useTable : true
-    }
-}
+//     constructor({roughness=0.1, metalness=0.5, useTable=true, ...others}:
+//         {roughness?: number, metalness?: number, useTable?: boolean})
+//     {
+//         super(others)
+//         this.roughness = roughness !== undefined ? roughness : 0.1
+//         this.metalness = metalness !== undefined ? metalness : 0.5
+//         this.useTable = useTable !== undefined ? useTable : true
+//     }
+// }
 
 /**
  * @category Skins
  */
 export function createIsoSurfaces({grid, attribute, material, parameters}:
-    {grid: ImplicitGrid3D, attribute: ASerie, material?: Material, parameters?: IsoSurfaceParameters}): Object3D
+    {grid: ImplicitGrid3D, attribute: Serie, material?: Material, parameters: IsoContoursParameters}): Object3D
 {
     if (grid === undefined) throw new Error('grid is undefined')
     if (attribute === undefined) throw new Error('attribute is undefined')
     if (attribute.length === grid.sizes[0]*grid.sizes[1]*grid.sizes[2]) throw new Error('attribute length mismatch')
 
-    if (parameters === undefined) {
-        parameters = new IsoSurfaceParameters()
-    }
+    // if (parameters === undefined) {
+    //     parameters = new IsoSurfaceParameters()
+    // }
 
     if (material === undefined) {
         material = new MeshStandardMaterial({
             //color: color,
             vertexColors: false,
             side: DoubleSide,
-            roughness: parameters.roughness || 0.1,
-            metalness: parameters.metalness || 0.5,
+            roughness: /* parameters.roughness || */ 0.1,
+            metalness: /* parameters.metalness || */ 0.5,
             emissive: 0x000000,
             opacity: (parameters.opacity!==undefined ? parameters.opacity : 1),
             transparent: (this.opacity < 1),
@@ -68,18 +68,19 @@ export function createIsoSurfaces({grid, attribute, material, parameters}:
     // normalize
     let scalars = attribute.array.map( v => (v-vmin)/(vmax-vmin) )
 
-    const isoValues = generateIsos(
-        lerp(parameters.min, vmin, vmax),
-        lerp(parameters.max, vmin, vmax),
-        parameters.nbr
-    )
+    // const isoValues = generateIsos(
+    //     lerp(0, vmin, vmax),
+    //     lerp(1, vmin, vmax),
+    //     parameters.nbr
+    // )
+    const isoValues = parameters.isoList
 
     let colors: Array<number> = []
     if (parameters.useTable) {
         colors = fromValuesToColors(isoValues, {
             defaultColor,
-            min: parameters.min, 
-            max: parameters.max, 
+            // min: parameters.min, 
+            // max: parameters.max, 
             lut: parameters.lut, 
             lockLut: parameters.lockLut,
             reverse: parameters.reversedLut

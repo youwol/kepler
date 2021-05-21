@@ -4,7 +4,7 @@ import {
 } from 'three'
 
 import { SkinParameters } from './skinParameters'
-import { ASerie } from '@youwol/dataframe'
+import { Serie } from '@youwol/dataframe'
 import { createBufferGeometry } from './bufferUtils'
 
 /**
@@ -61,7 +61,7 @@ export class PointsetParameters extends SkinParameters {
  */
 export function createPointset(
     {position, material, parameters}:
-    {position: ASerie | BufferGeometry, material?: Material, parameters?: PointsetParameters}): Points
+    {position: Serie | BufferGeometry, material?: Material, parameters?: PointsetParameters}): Points
 {
     if (position === undefined) {
         throw new Error('position is undefined')

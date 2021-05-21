@@ -63,7 +63,8 @@
                     show: true,
                     showLines: true,
                     lut: 'Igeoss',
-                    nb: 20
+                    nb: 20,
+                    lut: "Grayscale"
                 },
                 wireframe: {
                     show: false,
@@ -221,7 +222,8 @@
                             scene.add(surface)
                             if (attr) {
                                 kepler.paintAttribute( surface, attr, new kepler.PaintParameters({
-                                    atVertex: true
+                                    atVertex: true,
+                                    lut: surfaceInfo.isoFill.lut
                                 }) )
                             }
                         }
@@ -230,15 +232,21 @@
                         scene.add( kepler.createBBox(surface) )
 
                         if (attr) {
+                            const minmax = dataframe.array.minMax(attr.array)
+                            let isos = kepler.generateIsos(minmax[0], minmax[1], 20)
+                            //isos = [-0.2, 0, 0.2]
+
                             if (surfaceInfo.isoFill.show) {
                                 scene.add( kepler.createIsoContours(
                                     surface,
                                     attr, {
                                         parameters: new kepler.IsoContoursParameters({
                                             color: '#ffffff',
-                                            nbr: surfaceInfo.isoFill.nb,
+                                            //nbr: surfaceInfo.isoFill.nb,
+                                            isoList: isos,
                                             filled: true,
-                                            opacity: 1
+                                            opacity: 1,
+                                            lut: surfaceInfo.isoFill.lut
                                         })
                                     }
                                 ) )
@@ -249,9 +257,10 @@
                                     attr, {
                                         parameters: new kepler.IsoContoursParameters({
                                             color: '#000000',
-                                            nbr: surfaceInfo.isoFill.nb,
+                                            isoList: isos,
                                             filled: false,
-                                            opacity: 1
+                                            opacity: 1,
+                                            lut: surfaceInfo.isoFill.lut
                                         })
                                     })
                                 )

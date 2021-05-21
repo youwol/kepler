@@ -5,7 +5,7 @@ import {
 
 import { fromValuesToColors } from '../utils/lut-utils'
 import { SkinParameters } from "./skinParameters"
-import { ASerie } from '@youwol/dataframe'
+import { Serie } from '@youwol/dataframe'
 
 /**
  * @see [[paintAttribute]]
@@ -67,7 +67,7 @@ export class PaintParameters extends SkinParameters {
  * @category Skins
  */
 export function paintAttribute(
-    mesh: Mesh, attribute: ASerie, parameters?: PaintParameters)
+    mesh: Mesh, attribute: Serie, parameters?: PaintParameters)
 {
     if (mesh === undefined) {
         throw new Error('mesh is undefined')

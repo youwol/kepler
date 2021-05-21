@@ -1,5 +1,5 @@
 import { BufferGeometry, Float32BufferAttribute, BufferAttribute } from "three"
-import { ASerie, IArray, Serie } from "@youwol/dataframe"
+import { Serie, IArray} from "@youwol/dataframe"
 import { normalAttribute } from "../utils/normalAttribute"
 
 /**
@@ -7,8 +7,8 @@ import { normalAttribute } from "../utils/normalAttribute"
  * @category Buffer utils 
  */
 export function createBufferGeometry(
-    position: IArray|ASerie, 
-    indices?: IArray|ASerie, 
+    position: IArray | Serie, 
+    indices?: IArray | Serie, 
     creaseAngle?: number
 ): BufferGeometry
 {
@@ -17,7 +17,7 @@ export function createBufferGeometry(
 
     if (position['array'] !== undefined) {
         // ASerie
-        geom.setAttribute('position', new BufferAttribute((position as ASerie).array, 3) )
+        geom.setAttribute('position', new BufferAttribute((position as Serie).array, 3) )
     }
     else {
         if (!Array.isArray(position)) throw new Error('poition should be an Array')
@@ -31,7 +31,7 @@ export function createBufferGeometry(
 
     if (indices !== undefined) {
         if (indices['array'] !== undefined) {
-            geom.setIndex( new BufferAttribute((indices as ASerie).array, 1) )
+            geom.setIndex( new BufferAttribute((indices as Serie).array, 1) )
         }
         else {
             if (!Array.isArray(indices)) throw new Error('indices should be an Array')
@@ -63,7 +63,7 @@ export function createBufferGeometry(
  * @brief Add a color attribute in a BufferGeometry
  * @category Buffer utils
  */
-export function addColorToBufferGeometry(geometry: BufferGeometry, color: ASerie, name: string = 'color') {
+export function addColorToBufferGeometry(geometry: BufferGeometry, color: Serie, name: string = 'color') {
     if (color.itemSize !== 3) {
         throw new Error('Serie for color must have count = 3')
     }

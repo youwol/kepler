@@ -1,5 +1,5 @@
 import { BufferAttribute, BufferGeometry } from "three"
-import { ASerie, IArray } from "@youwol/dataframe"
+import { Serie } from "@youwol/dataframe"
 import { SkinParameters } from './skinParameters'
 
 /**
@@ -32,7 +32,7 @@ export class DeformParameters extends SkinParameters {
  */
 export function deform(
     {geometry, deformVector, parameters}:
-    {geometry: BufferGeometry, deformVector: ASerie, parameters?: DeformParameters}): ASerie
+    {geometry: BufferGeometry, deformVector: Serie, parameters?: DeformParameters}): Serie
 {
     if (geometry === undefined) throw new Error('geometry is undefined')
     const position = geometry.getAttribute('position') as BufferAttribute

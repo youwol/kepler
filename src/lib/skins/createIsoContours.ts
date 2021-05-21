@@ -1,5 +1,5 @@
 import { Mesh, Material } from "three"
-import { ASerie } from '@youwol/dataframe'
+import { Serie } from '@youwol/dataframe'
 import { IsoContoursParameters  } from './isoContoursParameters'
 import { createIsoContourLines  } from "./createIsoContourLines"
 import { createIsoContourFilled } from "./createIsoContourFilled"
@@ -32,7 +32,7 @@ import { createIsoContourFilled } from "./createIsoContourFilled"
  * ```
  * @category Skins
  */
-export function createIsoContours(mesh: Mesh, attribute: ASerie,
+export function createIsoContours(mesh: Mesh, attribute: Serie,
     {material, parameters}:{material?: Material, parameters?: IsoContoursParameters}={})
 {
     if (parameters.filled) {

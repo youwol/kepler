@@ -5,7 +5,7 @@ import {
 
 import { PaintParameters } from './paintAttribute'
 import { fromValueToColor } from '../utils/lut-utils'
-import { ASerie, array } from "@youwol/dataframe"
+import { Serie, array } from "@youwol/dataframe"
 import { createLut } from "../utils"
 
 /**
@@ -54,7 +54,7 @@ export class VectorsParameters extends PaintParameters {
  */
 export function createVectors(
     {geometry,  material, vectorField, attribute, parameters}:
-    {geometry: BufferGeometry, material?: Material, vectorField?: ASerie, attribute: ASerie, parameters?: VectorsParameters}): LineSegments
+    {geometry: BufferGeometry, material?: Material, vectorField?: Serie, attribute: Serie, parameters?: VectorsParameters}): LineSegments
 {
     if (geometry === undefined) throw new Error('geometry is undefined')
     const position = geometry.getAttribute('position')

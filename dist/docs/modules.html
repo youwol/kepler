@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>@youwol/kepler - v0.0.5-next</title>
-	<meta name="description" content="Documentation for @youwol/kepler - v0.0.5-next">
+	<title>@youwol/kepler - v0.0.7-next</title>
+	<meta name="description" content="Documentation for @youwol/kepler - v0.0.7-next">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
 	<link rel="stylesheet" href="assets/css/pages.css">
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">@youwol/kepler - v0.0.5-next</a>
+					<a href="index.html" class="title">@youwol/kepler - v0.0.7-next</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -57,7 +57,7 @@
 					<a href="modules.html">Globals</a>
 				</li>
 			</ul>
-			<h1>Project @youwol/kepler - v0.0.5-next</h1>
+			<h1>Project @youwol/kepler - v0.0.7-next</h1>
 		</div>
 	</div>
 </header>
@@ -78,7 +78,6 @@
 								<li class="tsd-kind-class"><a href="classes/bboxparameters.html" class="tsd-kind-icon">BBox<wbr>Parameters</a></li>
 								<li class="tsd-kind-class"><a href="classes/deformparameters.html" class="tsd-kind-icon">Deform<wbr>Parameters</a></li>
 								<li class="tsd-kind-class"><a href="classes/isocontoursparameters.html" class="tsd-kind-icon">Iso<wbr>Contours<wbr>Parameters</a></li>
-								<li class="tsd-kind-class"><a href="classes/isosurfaceparameters.html" class="tsd-kind-icon">Iso<wbr>Surface<wbr>Parameters</a></li>
 								<li class="tsd-kind-class"><a href="classes/linesetparameters.html" class="tsd-kind-icon">Lineset<wbr>Parameters</a></li>
 								<li class="tsd-kind-class"><a href="classes/navigationcubeparameters.html" class="tsd-kind-icon">Navigation<wbr>Cube<wbr>Parameters</a></li>
 								<li class="tsd-kind-class"><a href="classes/paintparameters.html" class="tsd-kind-icon">Paint<wbr>Parameters</a></li>
@@ -126,7 +125,6 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function"><a href="modules.html#createbbox" class="tsd-kind-icon">createBBox</a></li>
 								<li class="tsd-kind-function"><a href="modules.html#createisocontours" class="tsd-kind-icon">create<wbr>Iso<wbr>Contours</a></li>
-								<li class="tsd-kind-function"><a href="modules.html#createisosurfaces" class="tsd-kind-icon">create<wbr>Iso<wbr>Surfaces</a></li>
 								<li class="tsd-kind-function"><a href="modules.html#createlineset" class="tsd-kind-icon">create<wbr>Lineset</a></li>
 								<li class="tsd-kind-function"><a href="modules.html#createpointset" class="tsd-kind-icon">create<wbr>Pointset</a></li>
 								<li class="tsd-kind-function"><a href="modules.html#createsurface" class="tsd-kind-icon">create<wbr>Surface</a></li>
@@ -134,6 +132,12 @@
 								<li class="tsd-kind-function"><a href="modules.html#deform" class="tsd-kind-icon">deform</a></li>
 								<li class="tsd-kind-function"><a href="modules.html#installnavigationcube" class="tsd-kind-icon">install<wbr>Navigation<wbr>Cube</a></li>
 								<li class="tsd-kind-function"><a href="modules.html#paintattribute" class="tsd-kind-icon">paint<wbr>Attribute</a></li>
+							</ul>
+							<h3>Utils Functions</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-function"><a href="modules.html#generateisos" class="tsd-kind-icon">generate<wbr>Isos</a></li>
+								<li class="tsd-kind-function"><a href="modules.html#generateisosbynumber" class="tsd-kind-icon">generate<wbr>Isos<wbr>ByNumber</a></li>
+								<li class="tsd-kind-function"><a href="modules.html#generateisosbyspacing" class="tsd-kind-icon">generate<wbr>Isos<wbr>BySpacing</a></li>
 							</ul>
 						</section>
 					</div>
@@ -542,7 +546,7 @@
 					<a name="createisocontours" class="tsd-anchor"></a>
 					<h3>create<wbr>Iso<wbr>Contours</h3>
 					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>Iso<wbr>Contours<span class="tsd-signature-symbol">(</span>mesh<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Mesh</span>, attribute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span>, __namedParameters<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">{ </span>material<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Material</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="classes/isocontoursparameters.html" class="tsd-signature-type">IsoContoursParameters</a><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Mesh</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">BufferGeometry</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Material</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Material</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">LineSegments</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">BufferGeometry</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Material</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Material</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Iso<wbr>Contours<span class="tsd-signature-symbol">(</span>mesh<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Mesh</span>, attribute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Serie</span>, __namedParameters<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">{ </span>material<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Material</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="classes/isocontoursparameters.html" class="tsd-signature-type">IsoContoursParameters</a><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Mesh</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">BufferGeometry</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Material</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Material</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">LineSegments</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">BufferGeometry</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Material</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Material</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -583,7 +587,7 @@
 									<h5>mesh: <span class="tsd-signature-type">Mesh</span></h5>
 								</li>
 								<li>
-									<h5>attribute: <span class="tsd-signature-type">ASerie</span></h5>
+									<h5>attribute: <span class="tsd-signature-type">Serie</span></h5>
 								</li>
 								<li>
 									<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>material<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Material</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="classes/isocontoursparameters.html" class="tsd-signature-type">IsoContoursParameters</a><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = ...</span></h5>
@@ -602,44 +606,10 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function">
-					<a name="createisosurfaces" class="tsd-anchor"></a>
-					<h3>create<wbr>Iso<wbr>Surfaces</h3>
-					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>Iso<wbr>Surfaces<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>attribute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>grid<span class="tsd-signature-symbol">: </span><a href="interfaces/implicitgrid3d.html" class="tsd-signature-type">ImplicitGrid3D</a><span class="tsd-signature-symbol">; </span>material<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Material</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="classes/isosurfaceparameters.html" class="tsd-signature-type">IsoSurfaceParameters</a><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Object3D</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>attribute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>grid<span class="tsd-signature-symbol">: </span><a href="interfaces/implicitgrid3d.html" class="tsd-signature-type">ImplicitGrid3D</a><span class="tsd-signature-symbol">; </span>material<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Material</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="classes/isosurfaceparameters.html" class="tsd-signature-type">IsoSurfaceParameters</a><span class="tsd-signature-symbol"> }</span></h5>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter">
-											<h5>attribute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span></h5>
-										</li>
-										<li class="tsd-parameter">
-											<h5>grid<span class="tsd-signature-symbol">: </span><a href="interfaces/implicitgrid3d.html" class="tsd-signature-type">ImplicitGrid3D</a></h5>
-										</li>
-										<li class="tsd-parameter">
-											<h5><span class="tsd-flag ts-flagOptional">Optional</span> material<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Material</span></h5>
-										</li>
-										<li class="tsd-parameter">
-											<h5><span class="tsd-flag ts-flagOptional">Optional</span> parameters<span class="tsd-signature-symbol">?: </span><a href="classes/isosurfaceparameters.html" class="tsd-signature-type">IsoSurfaceParameters</a></h5>
-										</li>
-									</ul>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Object3D</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function">
 					<a name="createlineset" class="tsd-anchor"></a>
 					<h3>create<wbr>Lineset</h3>
 					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>Lineset<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>material<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Material</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="classes/linesetparameters.html" class="tsd-signature-type">LinesetParameters</a><span class="tsd-signature-symbol">; </span>position<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">BufferGeometry</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Line</span></li>
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Lineset<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>material<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Material</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="classes/linesetparameters.html" class="tsd-signature-type">LinesetParameters</a><span class="tsd-signature-symbol">; </span>position<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">BufferGeometry</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Line</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -648,7 +618,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>material<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Material</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="classes/linesetparameters.html" class="tsd-signature-type">LinesetParameters</a><span class="tsd-signature-symbol">; </span>position<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">BufferGeometry</span><span class="tsd-signature-symbol"> }</span></h5>
+									<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>material<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Material</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="classes/linesetparameters.html" class="tsd-signature-type">LinesetParameters</a><span class="tsd-signature-symbol">; </span>position<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">BufferGeometry</span><span class="tsd-signature-symbol"> }</span></h5>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter">
 											<h5><span class="tsd-flag ts-flagOptional">Optional</span> material<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Material</span></h5>
@@ -657,7 +627,7 @@
 											<h5><span class="tsd-flag ts-flagOptional">Optional</span> parameters<span class="tsd-signature-symbol">?: </span><a href="classes/linesetparameters.html" class="tsd-signature-type">LinesetParameters</a></h5>
 										</li>
 										<li class="tsd-parameter">
-											<h5>position<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">BufferGeometry</span></h5>
+											<h5>position<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">BufferGeometry</span></h5>
 										</li>
 									</ul>
 								</li>
@@ -670,7 +640,7 @@
 					<a name="createpointset" class="tsd-anchor"></a>
 					<h3>create<wbr>Pointset</h3>
 					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>Pointset<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>material<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Material</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="classes/pointsetparameters.html" class="tsd-signature-type">PointsetParameters</a><span class="tsd-signature-symbol">; </span>position<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">BufferGeometry</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Points</span></li>
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Pointset<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>material<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Material</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="classes/pointsetparameters.html" class="tsd-signature-type">PointsetParameters</a><span class="tsd-signature-symbol">; </span>position<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">BufferGeometry</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Points</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -679,7 +649,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>material<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Material</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="classes/pointsetparameters.html" class="tsd-signature-type">PointsetParameters</a><span class="tsd-signature-symbol">; </span>position<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">BufferGeometry</span><span class="tsd-signature-symbol"> }</span></h5>
+									<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>material<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Material</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="classes/pointsetparameters.html" class="tsd-signature-type">PointsetParameters</a><span class="tsd-signature-symbol">; </span>position<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">BufferGeometry</span><span class="tsd-signature-symbol"> }</span></h5>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter">
 											<h5><span class="tsd-flag ts-flagOptional">Optional</span> material<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Material</span></h5>
@@ -688,7 +658,7 @@
 											<h5><span class="tsd-flag ts-flagOptional">Optional</span> parameters<span class="tsd-signature-symbol">?: </span><a href="classes/pointsetparameters.html" class="tsd-signature-type">PointsetParameters</a></h5>
 										</li>
 										<li class="tsd-parameter">
-											<h5>position<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">BufferGeometry</span></h5>
+											<h5>position<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">BufferGeometry</span></h5>
 										</li>
 									</ul>
 								</li>
@@ -772,7 +742,7 @@
 					<a name="createvectors" class="tsd-anchor"></a>
 					<h3>create<wbr>Vectors</h3>
 					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>Vectors<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>attribute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>geometry<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BufferGeometry</span><span class="tsd-signature-symbol">; </span>material<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Material</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="classes/vectorsparameters.html" class="tsd-signature-type">VectorsParameters</a><span class="tsd-signature-symbol">; </span>vectorField<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">LineSegments</span></li>
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Vectors<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>attribute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol">; </span>geometry<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BufferGeometry</span><span class="tsd-signature-symbol">; </span>material<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Material</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="classes/vectorsparameters.html" class="tsd-signature-type">VectorsParameters</a><span class="tsd-signature-symbol">; </span>vectorField<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">LineSegments</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -781,10 +751,10 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>attribute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>geometry<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BufferGeometry</span><span class="tsd-signature-symbol">; </span>material<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Material</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="classes/vectorsparameters.html" class="tsd-signature-type">VectorsParameters</a><span class="tsd-signature-symbol">; </span>vectorField<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol"> }</span></h5>
+									<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>attribute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol">; </span>geometry<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BufferGeometry</span><span class="tsd-signature-symbol">; </span>material<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Material</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="classes/vectorsparameters.html" class="tsd-signature-type">VectorsParameters</a><span class="tsd-signature-symbol">; </span>vectorField<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol"> }</span></h5>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter">
-											<h5>attribute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span></h5>
+											<h5>attribute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Serie</span></h5>
 										</li>
 										<li class="tsd-parameter">
 											<h5>geometry<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BufferGeometry</span></h5>
@@ -796,7 +766,7 @@
 											<h5><span class="tsd-flag ts-flagOptional">Optional</span> parameters<span class="tsd-signature-symbol">?: </span><a href="classes/vectorsparameters.html" class="tsd-signature-type">VectorsParameters</a></h5>
 										</li>
 										<li class="tsd-parameter">
-											<h5><span class="tsd-flag ts-flagOptional">Optional</span> vector<wbr>Field<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ASerie</span></h5>
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> vector<wbr>Field<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Serie</span></h5>
 										</li>
 									</ul>
 								</li>
@@ -809,7 +779,7 @@
 					<a name="deform" class="tsd-anchor"></a>
 					<h3>deform</h3>
 					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">deform<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>deformVector<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>geometry<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BufferGeometry</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="classes/deformparameters.html" class="tsd-signature-type">DeformParameters</a><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span></li>
+						<li class="tsd-signature tsd-kind-icon">deform<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>deformVector<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol">; </span>geometry<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BufferGeometry</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="classes/deformparameters.html" class="tsd-signature-type">DeformParameters</a><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Serie</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -827,10 +797,10 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>deformVector<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>geometry<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BufferGeometry</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="classes/deformparameters.html" class="tsd-signature-type">DeformParameters</a><span class="tsd-signature-symbol"> }</span></h5>
+									<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>deformVector<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol">; </span>geometry<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BufferGeometry</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="classes/deformparameters.html" class="tsd-signature-type">DeformParameters</a><span class="tsd-signature-symbol"> }</span></h5>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter">
-											<h5>deform<wbr>Vector<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span></h5>
+											<h5>deform<wbr>Vector<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Serie</span></h5>
 										</li>
 										<li class="tsd-parameter">
 											<h5>geometry<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BufferGeometry</span></h5>
@@ -841,7 +811,7 @@
 									</ul>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">ASerie</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Serie</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -869,7 +839,7 @@
 					<a name="paintattribute" class="tsd-anchor"></a>
 					<h3>paint<wbr>Attribute</h3>
 					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">paint<wbr>Attribute<span class="tsd-signature-symbol">(</span>mesh<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Mesh</span>, attribute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span>, parameters<span class="tsd-signature-symbol">?: </span><a href="classes/paintparameters.html" class="tsd-signature-type">PaintParameters</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">paint<wbr>Attribute<span class="tsd-signature-symbol">(</span>mesh<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Mesh</span>, attribute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Serie</span>, parameters<span class="tsd-signature-symbol">?: </span><a href="classes/paintparameters.html" class="tsd-signature-type">PaintParameters</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -900,13 +870,128 @@
 									<h5>mesh: <span class="tsd-signature-type">Mesh</span></h5>
 								</li>
 								<li>
-									<h5>attribute: <span class="tsd-signature-type">ASerie</span></h5>
+									<h5>attribute: <span class="tsd-signature-type">Serie</span></h5>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> parameters: <a href="classes/paintparameters.html" class="tsd-signature-type">PaintParameters</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Utils Functions</h2>
+				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="generateisos" class="tsd-anchor"></a>
+					<h3>generate<wbr>Isos</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">generate<wbr>Isos<span class="tsd-signature-symbol">(</span>min<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, max<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, nbrOrSpacing<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, useSpacing<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Generate iso-values given a min, max and the number of isos to generate</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>min: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The minimum value</p>
+									</div>
+								</li>
+								<li>
+									<h5>max: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The maximum value</p>
+									</div>
+								</li>
+								<li>
+									<h5>nbrOrSpacing: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 10</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Represent either the number of iso-contours (useSpacing=false)
+										or the spacing between iso-contours (useSpacing=true).</p>
+									</div>
+								</li>
+								<li>
+									<h5>useSpacing: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>If the generation is using or not the spacing between iso-contours.
+										Also, the generated iso values are snapped to zero in both cases.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="generateisosbynumber" class="tsd-anchor"></a>
+					<h3>generate<wbr>Isos<wbr>ByNumber</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">generate<wbr>Isos<wbr>ByNumber<span class="tsd-signature-symbol">(</span>min<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, max<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, nbr<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Generate iso-values given the min, max and the number</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>min: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>max: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>nbr: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 10</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="generateisosbyspacing" class="tsd-anchor"></a>
+					<h3>generate<wbr>Isos<wbr>BySpacing</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">generate<wbr>Isos<wbr>BySpacing<span class="tsd-signature-symbol">(</span>min<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, max<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, spacing<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Generate iso-values by using spacing.
+										Also, iso-values are snapped to zero, meaning that they alway pass through zero even
+									if 0 is not part of the iso values.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>min: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>max: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>spacing: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -965,9 +1050,6 @@
 						<a href="classes/isocontoursparameters.html" class="tsd-kind-icon">Iso<wbr>Contours<wbr>Parameters</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="classes/isosurfaceparameters.html" class="tsd-kind-icon">Iso<wbr>Surface<wbr>Parameters</a>
-					</li>
-					<li class=" tsd-kind-class">
 						<a href="classes/keyboard.html" class="tsd-kind-icon">Keyboard</a>
 					</li>
 					<li class=" tsd-kind-class">
@@ -1022,9 +1104,6 @@
 						<a href="modules.html#createisocontours" class="tsd-kind-icon">create<wbr>Iso<wbr>Contours</a>
 					</li>
 					<li class=" tsd-kind-function">
-						<a href="modules.html#createisosurfaces" class="tsd-kind-icon">create<wbr>Iso<wbr>Surfaces</a>
-					</li>
-					<li class=" tsd-kind-function">
 						<a href="modules.html#createlineset" class="tsd-kind-icon">create<wbr>Lineset</a>
 					</li>
 					<li class=" tsd-kind-function">
@@ -1041,6 +1120,15 @@
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="modules.html#fitscene" class="tsd-kind-icon">fit<wbr>Scene</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="modules.html#generateisos" class="tsd-kind-icon">generate<wbr>Isos</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="modules.html#generateisosbynumber" class="tsd-kind-icon">generate<wbr>Isos<wbr>ByNumber</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="modules.html#generateisosbyspacing" class="tsd-kind-icon">generate<wbr>Isos<wbr>BySpacing</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="modules.html#installnavigationcube" class="tsd-kind-icon">install<wbr>Navigation<wbr>Cube</a>

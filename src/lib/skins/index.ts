@@ -11,7 +11,7 @@ export * from './createLineset'
 export * from './createSurface'
 export * from './paintAttribute'
 export * from './createIsoContours'
-export * from './createIsoSurfaces'
+//export * from './createIsoSurfaces'
 export * from './createVectors'
 
 export * from './createNavigationCube'
