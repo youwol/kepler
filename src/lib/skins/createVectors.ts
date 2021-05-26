@@ -5,7 +5,7 @@ import {
 
 import { PaintParameters } from './paintAttribute'
 import { fromValueToColor } from '../utils/lut-utils'
-import { Serie, array } from "@youwol/dataframe"
+import { Serie, array, createFrom, IArray } from "@youwol/dataframe"
 import { createLut } from "../utils"
 
 /**
@@ -80,28 +80,45 @@ export function createVectors(
 
     const lines = new LineSegments
 
-    // The geometry
-    const vertices: number[] = []
-    //const position = geometry.getAttribute('position')
+    const pos = Serie.create({array: geometry.getAttribute('position').array as IArray, itemSize: 3})
     const s = parameters.scale
-    for (let i=0; i<position.count; ++i) {
-        const x = position.getX(i)
-        const y = position.getY(i)
-        const z = position.getZ(i)
-        let ux = vectorField.array[3*i]
-        let uy = vectorField.array[3*i+1]
-        let uz = vectorField.array[3*i+2]
+    const vertices: number[] = []
+    pos.forEach( (p,i) => {
+        const u = vectorField.itemAt(i)
         if (parameters.project) {
-            uz = 0
+            u[2] = 0
         }
         if (parameters.normalize) {
-            const l = Math.sqrt(ux**2 + uy**2 + uz**2)
-            ux /= l
-            uy /= l
-            uz /= l
+            const l = Math.sqrt(u[0]**2 + u[1]**2 + u[2]**2)
+            u[0] /= l
+            u[1] /= l
+            u[2] /= l
         }
-        vertices.push(x-s*ux, y-s*uy, z-s*uz, x+s*ux, y+s*uy, z+s*uz)
-    }
+        vertices.push(p[0]-s*u[0], p[1]-s*u[1], p[2]-s*u[2], p[0]+s*u[0], p[1]+s*u[1], p[2]+s*u[2])
+    })
+
+    // The geometry
+    // const vertices: number[] = []
+    // const position = geometry.getAttribute('position')
+    // const s = parameters.scale
+    // for (let i=0; i<position.count; ++i) {
+    //     const x = position.getX(i)
+    //     const y = position.getY(i)
+    //     const z = position.getZ(i)
+    //     let ux = vectorField.array[3*i]
+    //     let uy = vectorField.array[3*i+1]
+    //     let uz = vectorField.array[3*i+2]
+    //     if (parameters.project) {
+    //         uz = 0
+    //     }
+    //     if (parameters.normalize) {
+    //         const l = Math.sqrt(ux**2 + uy**2 + uz**2)
+    //         ux /= l
+    //         uy /= l
+    //         uz /= l
+    //     }
+    //     vertices.push(x-s*ux, y-s*uy, z-s*uz, x+s*ux, y+s*uy, z+s*uz)
+    // }
 
     lines.geometry = new BufferGeometry
     lines.geometry.setAttribute( 'position', new Float32BufferAttribute(vertices, 3) )

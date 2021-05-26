@@ -92,6 +92,7 @@ export function createIsoContourLines(
     // const colors    = []
 
     for (let i = 0; i < isoValues.length; ++i) {
+        if (isoValues[i]<parameters.min || isoValues[i]>parameters.max) continue
         let result = algo.isolines(attribute, isoValues[i])
         //let color: any
         // if (parameters.useTable) {

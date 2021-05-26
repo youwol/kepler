@@ -47,14 +47,14 @@
                 //url: "/platform/test/geophysics/arche/model_test_sphere/sphere_5120.ts",
                 //url: '/platform/test/files/gocad/ts/S1_properties.ts',
                 //url: "/platform/test/models/arche/Santos/out/horizon.ts",
-                url: "/platform/test/files/gocad/ts/output_HS.ts",
+                url: "/platform/test/files/gocad/ts/output.ts",
                 //url: "/platform/test/geophysics/arche/lolo2020-petronas/results_salt_smoothed_intersected_edited_positive.ts",
 
                 //url: "/platform/test/models/arche/test-HS/result_grid_arche_half_space_-50m.ts",
                 //url: "/platform/test/models/arche/test-HS/result_grid_poly3d_half_space_0m.ts",
                 //url: "/platform/test/models/arche/test-HS/result_S1_arche_0m.ts",
                 show: true,
-                attr: 'Uy',
+                attr: 'U',
                 lut: 'Insar',
                 min: 0,
                 max: 1,
@@ -62,9 +62,11 @@
                     opacity: 1,
                     show: true,
                     showLines: true,
-                    lut: 'Igeoss',
-                    nb: 20,
-                    lut: "Grayscale"
+                    lut: 'Insar',
+                    nb : 20,
+                    min: -1e7,
+                    max: 1e7,
+                    reversedLut: false
                 },
                 wireframe: {
                     show: false,
@@ -80,7 +82,6 @@
 
         function init() {
             scene = new three.Scene
-            scene.background = new three.Color( 0xaaaaaa )
 
             camera = new three.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 100000 )
             camera.position.z = 100
@@ -145,7 +146,7 @@
             })
             
             Promise.all(promises).then( _ => {
-                kepler.changeBackground( {scene, color: '#aaaaaa'} )
+                kepler.changeBackground( {scene, color: '#888888'} )
 
                 scene.add( kepler.createDefaultLights({object: scene, scaling: 10, intensity: 1}) )
 
@@ -182,22 +183,26 @@
                     dfs.forEach( df => {
                         let skin
 
+                        let position = df.series['positions']
+                        //position = math.add([ position, math.mult(df.series['U'], 500) ])
+
                         const manager = new attribute.AttributeManager(df, [
                             new attribute.PositionDecomposer,
                             new attribute.ComponentDecomposer,
-                            new attribute.AreaDecomposer
+                            new attribute.AreaDecomposer,
+                            new attribute.VectorNormDecomposer
                         ])
 
                         console.log('available scalar attributes:', manager.names(1) )
                         console.log('available vector attributes:', manager.names(3) )
 
                         const attr = manager.serie(1, surfaceInfo.attr)
-                        console.log(math.minMaxArray(attr.array))
+                        if (attr) console.log(math.minMaxArray(attr.array))
 
                         if (surfaceInfo.wireframe.show) {
                             scene.add( kepler.createSurface({
-                                positions: df.get('positions'),
-                                indices  : df.get('indices'),
+                                positions: position,
+                                indices  : df.series['indices'],
                                 parameters: new kepler.SurfaceParameters({
                                     wireframe: true, 
                                     color: surfaceInfo.wireframe.color,
@@ -208,8 +213,8 @@
                         
                         // surface
                         const surface = kepler.createSurface({
-                            positions: df.get('positions'),
-                            indices  : df.get('indices'),
+                            positions: position,
+                            indices  : df.series['indices'],
                             parameters: new kepler.SurfaceParameters({
                                 flat: false, 
                                 wireframe: false, 
@@ -233,8 +238,9 @@
 
                         if (attr) {
                             const minmax = dataframe.array.minMax(attr.array)
-                            let isos = kepler.generateIsos(minmax[0], minmax[1], 20)
+                            //let isos = kepler.generateIsos(minmax[0], minmax[1], 20)
                             //isos = [-0.2, 0, 0.2]
+                            let isos = kepler.generateIsos(minmax[0], minmax[1], surfaceInfo.isoFill.nb)
 
                             if (surfaceInfo.isoFill.show) {
                                 scene.add( kepler.createIsoContours(
@@ -242,11 +248,12 @@
                                     attr, {
                                         parameters: new kepler.IsoContoursParameters({
                                             color: '#ffffff',
-                                            //nbr: surfaceInfo.isoFill.nb,
                                             isoList: isos,
                                             filled: true,
-                                            opacity: 1,
-                                            lut: surfaceInfo.isoFill.lut
+                                            opacity: surfaceInfo.isoFill.opacity,
+                                            lut: surfaceInfo.isoFill.lut,
+                                            min: surfaceInfo.isoFill.min,
+                                            max: surfaceInfo.isoFill.max
                                         })
                                     }
                                 ) )
@@ -259,8 +266,9 @@
                                             color: '#000000',
                                             isoList: isos,
                                             filled: false,
-                                            opacity: 1,
-                                            lut: surfaceInfo.isoFill.lut
+                                            lut: surfaceInfo.isoFill.lut,
+                                            min: surfaceInfo.isoFill.min,
+                                            max: surfaceInfo.isoFill.max
                                         })
                                     })
                                 )

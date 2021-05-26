@@ -25,8 +25,8 @@ export class DeformParameters extends SkinParameters {
 /**
  * @example
  * ```ts
- * const s = createSurface( df.get('positions').array, df.get('indices').array )
- * const newGeom = deform( s.geometry, df.get('U').array )
+ * const s = createSurface( df.series['positions'].array, df.series['indices'].array )
+ * const newGeom = deform( s.geometry, df.series['U'].array )
  * ```
  * @category Skins
  */

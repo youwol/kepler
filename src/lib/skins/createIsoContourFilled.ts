@@ -1,6 +1,6 @@
 import { 
     Color, BufferGeometry, Mesh, BufferAttribute, 
-    Material, MeshStandardMaterial, DoubleSide, 
+    Material, MeshStandardMaterial, DoubleSide, MeshPhongMaterial,
     Float32BufferAttribute
 } from "three"
 
@@ -68,11 +68,12 @@ export function createIsoContourFilled(
     const nmesh = new Mesh()
     nmesh.geometry = createBufferGeometry(result.position, result.index)
     nmesh.geometry.setAttribute('color', new Float32BufferAttribute(result.color, 3))
+    nmesh.geometry.setAttribute('normal', new Float32BufferAttribute(result.normal, 3))
 
     if (material !== undefined) {
         nmesh.material = material
     } else {
-        const mat = new MeshStandardMaterial({
+        const mat = new MeshPhongMaterial({
             color: new Color(parameters.color),
             side: DoubleSide,
             vertexColors: true,
@@ -113,6 +114,8 @@ class IsoContoursFill {
     index_ : Array<number>    = []
     colors_: Array<number>    = []
     isoValues_: Array<number> = []
+    normals_: Array<number>   = []
+    nnormals_: BufferAttribute = undefined
 
     get position()  {return this.position_}
     get index()     {return this.index_}
@@ -145,6 +148,12 @@ class IsoContoursFill {
         const a     = index.array
         this.nodes_ = geometry.getAttribute('position') as BufferAttribute
 
+        this.nnormals_ = geometry.getAttribute('normal') as BufferAttribute
+        if (this.nnormals_===undefined) {
+            geometry.computeVertexNormals()
+            this.nnormals_ = geometry.getAttribute('normal') as BufferAttribute
+        }
+
         for (let i=0; i<a.length; i += 3) {
             this.classify(a[i], a[i+1], a[i+2])
         }
@@ -152,7 +161,8 @@ class IsoContoursFill {
         return {
             position: this.position_,
             index: this.index_,
-            color: this.colors_
+            color: this.colors_,
+            normal: this.normals_
         }
     }
 
@@ -169,45 +179,56 @@ class IsoContoursFill {
 
         t.v1 = this.attr[n0]
         t.p1 = this.getNode(n0)
+        t.n1 = [this.nnormals_.getX(n0), this.nnormals_.getY(n0), this.nnormals_.getZ(n0)]
 
         t.v2 = this.attr[n1]
         t.p2 = this.getNode(n1)
+        t.n2 = [this.nnormals_.getX(n1), this.nnormals_.getY(n1), this.nnormals_.getZ(n1)]
 
         t.v3 = this.attr[n2]
         t.p3 = this.getNode(n2)
+        t.n3 = [this.nnormals_.getX(n2), this.nnormals_.getY(n2), this.nnormals_.getZ(n2)]
 
+        let nn1: number[], nn2: number[], nn3: number[]
         let vv1: number[], vv2: number[], vv3: number[]
         let hh1=0, hh2=0, hh3=0
 
         if (t.v1 <= t.v2 && t.v1 <= t.v3) {
             vv1 = t.p1
             hh1 = t.v1
+            nn1 = t.n1
             if (t.v2 <= t.v3) {
                 vv2 = t.p2; vv3 = t.p3
                 hh2 = t.v2; hh3 = t.v3
+                nn2 = t.n2; nn3 = t.n3
             } else {
                 vv2 = t.p3; vv3 = t.p2
                 hh2 = t.v3; hh3 = t.v2
+                nn2 = t.n3; nn3 = t.n2
                 t.reversed = true
             }
         } else if (t.v2 <= t.v1 && t.v2 <= t.v3) {
-            vv1 = t.p2; hh1 = t.v2;
+            vv1 = t.p2; hh1 = t.v2; nn1 = t.n2
             if (t.v1 <= t.v3) {
                 vv2 = t.p1; vv3 = t.p3
                 hh2 = t.v1; hh3 = t.v3
+                nn2 = t.n1; nn3 = t.n3
                 t.reversed = true
             } else {
                 vv2 = t.p3; vv3 = t.p1
                 hh2 = t.v3; hh3 = t.v1
+                nn2 = t.n3; nn3 = t.n1
             }
         } else if (t.v3 <= t.v1 && t.v3 <= t.v2) {
-            vv1 = t.p3; hh1 = t.v3;
+            vv1 = t.p3; hh1 = t.v3; nn1 = t.n3
             if (t.v1 <= t.v2) {
                 vv2 = t.p1; vv3 = t.p2
                 hh2 = t.v1; hh3 = t.v2
+                nn2 = t.n1; nn3 = t.n2
             } else {
                 vv2 = t.p2; vv3 = t.p1
                 hh2 = t.v2; hh3 = t.v1
+                nn2 = t.n2; nn3 = t.n1
                 t.reversed = true
             }
         } else {
@@ -216,9 +237,11 @@ class IsoContoursFill {
 
         t.p1 = vv1; t.p2 = vv2; t.p3 = vv3
         t.v1 = hh1; t.v2 = hh2; t.v3 = hh3
+        t.n1 = nn1; t.n2 = nn2; t.n3 = nn3
 
         this.createSegmentList(t)
         this.createPolygons(t)
+        n1 = n2
     }
 
     private createSegmentList(t: TriInfo) {
@@ -226,7 +249,6 @@ class IsoContoursFill {
         t.notIntersectedPolygonValue = this.vmin_
 
         for (let iso of this.isoValues_) {
-            if (iso<this.params.min || iso>this.params.max) continue // <-------------------------------
             if (iso >= t.v3) break
             if (iso > t.v1) {
                 this.addSegment(iso, t)
@@ -247,106 +269,153 @@ class IsoContoursFill {
         const p3 = t.p3
 
         if (iso < t.v2) {
-            segment.p1 = createPoint(p1, p2, isoValue(v1, v2, iso))
-            segment.p2 = createPoint(p1, p3, isoValue(v1, v3, iso))
+            const w1   = isoValue(v1, v2, iso)
+            const w2   = isoValue(v1, v3, iso)
+            segment.p1 = createPoint(p1, p2, w1)
+            segment.p2 = createPoint(p1, p3, w2)
+            segment.n1 = createPoint(t.n1, t.n2, w1)
+            segment.n2 = createPoint(t.n1, t.n3, w2)
         }
         else {
-            segment.p1 = createPoint(p2, p3, isoValue(v2, v3, iso))
-            segment.p2 = createPoint(p1, p3, isoValue(v1, v3, iso))
+            const w1   = isoValue(v2, v3, iso)
+            const w2   = isoValue(v1, v3, iso)
+            segment.p1 = createPoint(p2, p3, w1)
+            segment.p2 = createPoint(p1, p3, w2)
+            segment.n1 = createPoint(t.n2, t.n3, w1)
+            segment.n2 = createPoint(t.n1, t.n3, w2)
         }
 
         this.segment_list_.push(segment)
     }
 
     private createPolygons(t: TriInfo) {
+        if (
+            (t.v1<this.params.min || t.v1>this.params.max) &&
+            (t.v2<this.params.min || t.v2>this.params.max) &&
+            (t.v3<this.params.min || t.v3>this.params.max)
+        ) {
+            return // <-------------------------------
+        }
+
+        const negate = (n: number[]) => [-n[0], -n[1], -n[2]]
+
         let bypass = false
         if (t.reversed) {
             if (this.segment_list_.length === 0) {
-                this.addTri(t.p1, t.p3, t.p2, t.notIntersectedPolygonValue)
+                this.addTri(
+                    t.p1, t.p3, t.p2,
+                    t.n1, t.n2, t.n3,
+                    t.notIntersectedPolygonValue)
                 return
             }
 
-            //draw polygons in CCW
-
-            // The first one
             let seg = front(this.segment_list_)
 
-            if (seg.iso < t.v2)
-                this.addTri(t.p1, seg.p2, seg.p1, t.notIntersectedPolygonValue)
+            if (seg.iso < t.v2) {
+                this.addTri(t.p1, seg.p2, seg.p1,
+                    t.n1, seg.n2, seg.n1,
+                    t.notIntersectedPolygonValue)
+            }
             else {
                 bypass = true
-                this.addQuad(t.p1, seg.p2, seg.p1, t.p2, t.notIntersectedPolygonValue)
+                this.addQuad(t.p1, seg.p2, seg.p1, t.p2,
+                    t.n1, seg.n2, seg.n1, t.n2,
+                    t.notIntersectedPolygonValue)
             }
 
-            // inside the face
             for (let i=1; i<this.segment_list_.length; ++i) {
-                const seg1 = this.segment_list_[i] // IsoSegment
+                const seg1 = this.segment_list_[i]
             
                 if (seg1.iso < t.v2) {
-                    this.addQuad(seg.p1, seg1.p1, seg1.p2, seg.p2, seg.iso)
+                    this.addQuad(seg.p1, seg1.p1, seg1.p2, seg.p2,
+                        negate(seg.n1), negate(seg1.n1), negate(seg1.n2), negate(seg.n2),
+                        seg.iso)
                 }
                 else {
                     if (bypass) {
-                        this.addQuad(seg.p1, seg.p2, seg1.p2, seg1.p1, seg.iso)
+                        this.addQuad(seg.p1, seg.p2, seg1.p2, seg1.p1,
+                            seg.n1, seg.n2, seg1.n2, seg1.n1,
+                            seg.iso)
                     }
                     else {
                         bypass = true
-                        this.addPoly(t.p2, seg.p1, seg.p2, seg1.p2, seg1.p1, seg.iso)
+                        this.addPoly(t.p2, seg.p1, seg.p2, seg1.p2, seg1.p1,
+                            t.n2, seg.n2, seg.n2, seg1.n2, seg1.n1,
+                            seg.iso)
                     }
                 }
                 seg = seg1
             }
 
-            // the last one
             seg = back(this.segment_list_)
-            if (bypass)
-                this.addTri(seg.p1, seg.p2, t.p3, seg.iso)
+            if (bypass) {
+                this.addTri(seg.p1, seg.p2, t.p3,
+                    seg.n1, seg.n2, t.n3,
+                    seg.iso)
+            }
             else {
-                this.addQuad(t.p2, seg.p1, seg.p2, t.p3, seg.iso)
+                this.addQuad(t.p2, seg.p1, seg.p2, t.p3,
+                    t.n2, seg.n1, seg.n2, t.n3,
+                    seg.iso)
             }
         }
 
         //draw polygons in CW
         else {
             if (this.segment_list_.length === 0) {
-                this.addTri(t.p1, t.p2, t.p3, t.notIntersectedPolygonValue)
+                this.addTri(t.p1, t.p2, t.p3,
+                    t.n1, t.n2, t.n3,
+                    t.notIntersectedPolygonValue)
                 return
             }
 
             let seg = front(this.segment_list_)
 
-            // The first one
-            if (seg.iso < t.v2)
-                this.addTri(t.p1, seg.p1, seg.p2, t.notIntersectedPolygonValue)
+            if (seg.iso < t.v2) {
+                this.addTri(t.p1, seg.p1, seg.p2,
+                    t.n1, seg.n1, seg.n2,
+                    t.notIntersectedPolygonValue)
+            }
             else {
                 bypass = true
-                this.addQuad(t.p1, t.p2, seg.p1, seg.p2, t.notIntersectedPolygonValue)
+                this.addQuad(t.p1, t.p2, seg.p1, seg.p2,
+                    t.n1, t.n2, seg.n1, seg.n2,
+                    t.notIntersectedPolygonValue)
             }
 
-            // inside the face
             for (let i=1; i < this.segment_list_.length; ++i) {
                 const seg1 = this.segment_list_[i]
                 if (seg1.iso < t.v2) {
-                    this.addQuad(seg.p1, seg1.p1, seg1.p2, seg.p2, seg.iso)
+                    this.addQuad(seg.p1, seg1.p1, seg1.p2, seg.p2,
+                        seg.n1, seg1.n1, seg1.n2, seg.n2,
+                        seg.iso)
                 }
                 else {
                     if (bypass) {
-                        this.addQuad(seg.p1, seg1.p1, seg1.p2, seg.p2, seg.iso)
+                        this.addQuad(seg.p1, seg1.p1, seg1.p2, seg.p2,
+                            seg.n1, seg1.n1, seg1.n2, seg.n2,
+                            seg.iso)
                     }
                     else {
                         bypass = true
-                        this.addPoly(t.p2, seg1.p1, seg1.p2, seg.p2, seg.p1, seg.iso)
+                        this.addPoly(t.p2, seg1.p1, seg1.p2, seg.p2, seg.p1,
+                            t.n2, seg1.n1, seg1.n2, seg.n2, seg.n1,
+                            seg.iso)
                     }
                 }
                 seg = seg1
             }
 
-            // the last one
             seg = back(this.segment_list_)
-            if (bypass)
-                this.addTri(seg.p1, t.p3, seg.p2, seg.iso)
+            if (bypass) {
+                this.addTri(seg.p1, t.p3, seg.p2,
+                    seg.n1, t.n3, seg.n2,
+                    seg.iso)
+            }
             else {
-                this.addQuad(t.p2, t.p3, seg.p2, seg.p1, seg.iso)
+                this.addQuad(t.p2, t.p3, seg.p2, seg.p1,
+                    t.n2, t.n3, seg.n2, seg.n1,
+                    seg.iso)
             }
         }
     }
@@ -355,6 +424,9 @@ class IsoContoursFill {
         point1 : number[],
         point2 : number[],
         point3 : number[],
+        n1: number[],
+        n2: number[],
+        n3: number[],
         iso: number)
       {
         const c = fromValueToColor( this.normalizeAttr(iso), {
@@ -368,6 +440,7 @@ class IsoContoursFill {
         this.position_.push(...point1, ...point2, ...point3)
         this.index_.push(id, id+1, id+2)
         this.colors_.push(...c, ...c, ...c)
+        this.normals_.push(...n1, ...n2, ...n3)
     }
 
     private addQuad(
@@ -375,6 +448,10 @@ class IsoContoursFill {
         point2 : number[],
         point3 : number[],
         point4 : number[],
+        n1: number[],
+        n2: number[],
+        n3: number[],
+        n4: number[],
         iso: number)
     {
         //return
@@ -392,6 +469,7 @@ class IsoContoursFill {
             id, id+2, id+3
         )
         this.colors_.push(...c, ...c, ...c, ...c)
+        this.normals_.push(...n1, ...n2, ...n3, ...n4)
     }
 
     private addPoly(
@@ -400,6 +478,11 @@ class IsoContoursFill {
         point3 : number[],
         point4 : number[],
         point5 : number[],
+        n1: number[],
+        n2: number[],
+        n3: number[],
+        n4: number[],
+        n5: number[],
         iso: number)
     {
         //return
@@ -418,6 +501,7 @@ class IsoContoursFill {
             id, id+3, id+4
         )
         this.colors_.push(...c, ...c, ...c, ...c, ...c)
+        this.normals_.push(...n1, ...n2, ...n3, ...n4, ...n5)
     }
 
 }
@@ -427,8 +511,8 @@ class IsoContoursFill {
 class IsoSegment {
     p1  = [0,0,0]
     p2  = [0,0,0]
-    //n1  = [0,0,1]
-    //n2  = [0,0,1]
+    n1  = [0,0,1]
+    n2  = [0,0,1]
     iso = 0
 }
 
@@ -437,9 +521,9 @@ class TriInfo {
   p1 = [0,0,0]
   p2 = [0,0,0]
   p3 = [0,0,0]
-  //n1 = [1,0,0]
-  //n2 = [1,0,0]
-  //n3 = [1,0,0]
+  n1 = [1,0,0]
+  n2 = [1,0,0]
+  n3 = [1,0,0]
   v1 = 0
   v2 = 0
   v3 = 0
