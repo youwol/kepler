@@ -1,6 +1,2 @@
 export * from './skins'
-export * from './commands'
-export * from './utils/keyboard'
-export * from './utils/renderFunctions'
-export * from './utils/TrackballControls'
 export * from './utils/generateIsos'

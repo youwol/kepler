@@ -6,7 +6,6 @@ import {
 
 import { array, Serie }   from "@youwol/dataframe"
 import { IsoContoursParameters } from './isoContoursParameters'
-import { generateIsos }          from '../utils/generateIsos'
 import { MarchingTriangles }     from './private/MarchingTriangles'
 import { lerp }                  from '../utils/lerp'
 

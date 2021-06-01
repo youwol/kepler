@@ -14,8 +14,5 @@ export * from './createIsoContours'
 //export * from './createIsoSurfaces'
 export * from './createVectors'
 
-export * from './createNavigationCube'
-
-//export * from './installNavigationCube'
 //export * from './createIsoContourLines'
 //export * from './createIsoContourFilled'

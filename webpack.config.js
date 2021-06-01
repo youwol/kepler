@@ -30,6 +30,7 @@ module.exports = {
     },
     externals: [{
         '@youwol/dataframe': "@youwol/dataframe",
+        "@youwol/three-extra": "@youwol/three-extra",
         'three': {
             commonjs:'three',
             commonjs2:'three',

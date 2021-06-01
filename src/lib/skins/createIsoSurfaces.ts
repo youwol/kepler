@@ -7,8 +7,7 @@ import { Serie, array } from "@youwol/dataframe"
 import { IsoContoursParameters } from "./isoContoursParameters"
 import { MarchingCubes } from "./private/MarchingCubes"
 import { ImplicitGrid3D } from './implicitGrid'
-import { fromValuesToColors, generateIsos } from "../utils"
-import { lerp } from '../utils/lerp'
+import { fromValuesToColors } from "../utils"
 import { createSurface } from "./createSurface"
 
 /**

@@ -3,14 +3,15 @@
 <head>
     <meta charset="utf-8">
     <title>Testing Kepler</title>
-    <script src='/projects/youwol/workspace/packages/kepler/node_modules/three/build/three.min.js'></script>
     <script src='/projects/youwol/workspace/packages/dataframe/dist/@youwol/dataframe.js'></script>
     <script src='/projects/youwol/workspace/packages/math/dist/@youwol/math.js'></script>
     <script src='/projects/youwol/workspace/packages/attribute/dist/@youwol/attribute.js'></script>
     <script src='/projects/youwol/workspace/packages/io/dist/@youwol/io.js'></script>
+
+    <script src='/projects/youwol/workspace/packages/three-extra/node_modules/three/build/three.min.js'></script>
+    <script src='/projects/youwol/workspace/packages/three-extra/dist/@youwol/three-extra.js'></script>
     <script src='/projects/youwol/workspace/packages/kepler/dist/@youwol/kepler.js'></script>
     
-    <script src='/projects/youwol/workspace/packages/kepler/node_modules/three/examples/js/controls/TrackballControls.js'></script>
     <script src="https://kit.fontawesome.com/daa834e337.js" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="style.css">
@@ -35,20 +36,25 @@
     </div>
 
     <script>
-        const attribute = globalThis['@youwol/attribute']
-        const dataframe = globalThis['@youwol/dataframe']
-        const io        = globalThis['@youwol/io']
-        const kepler    = globalThis['@youwol/kepler']
-        const math      = globalThis['@youwol/math']
         const three     = globalThis['THREE']
+        
+        const dataframe = globalThis['@youwol/dataframe']
+        const math      = globalThis['@youwol/math']
+        const attribute = globalThis['@youwol/attribute']
+
+        const io        = globalThis['@youwol/io']
+
+        const extra     = globalThis['@youwol/three-extra']
+        const kepler    = globalThis['@youwol/kepler']
+        
 
         const surfaceset = [
             {
                 //url: "/platform/test/geophysics/arche/model_test_sphere/sphere_5120.ts",
                 //url: '/platform/test/files/gocad/ts/S1_properties.ts',
                 //url: "/platform/test/models/arche/Santos/out/horizon.ts",
-                url: "/platform/test/files/gocad/ts/output.ts",
-                //url: "/platform/test/geophysics/arche/lolo2020-petronas/results_salt_smoothed_intersected_edited_positive.ts",
+                //url: "/platform/test/files/gocad/ts/output.ts",
+                url: "/platform/test/geophysics/arche/lolo2020-petronas/results_salt_smoothed_intersected_edited_positive.ts",
 
                 //url: "/platform/test/models/arche/test-HS/result_grid_arche_half_space_-50m.ts",
                 //url: "/platform/test/models/arche/test-HS/result_grid_poly3d_half_space_0m.ts",
@@ -62,7 +68,7 @@
                     opacity: 1,
                     show: true,
                     showLines: true,
-                    lut: 'Insar',
+                    lut: 'Spectrum',
                     nb : 20,
                     min: -1e7,
                     max: 1e7,
@@ -91,24 +97,24 @@
             renderer.setSize( window.innerWidth, window.innerHeight )
             document.body.appendChild( renderer.domElement )
 
-            renderFct = new kepler.RenderFunctions({renderer, scene, camera})
+            renderFct = new extra.RenderFunctions({renderer, scene, camera})
 
             window.addEventListener( 'resize', onWindowResize )
 
-            controls = new three.TrackballControls( camera, renderer.domElement )
+            controls = new extra.TrackballControls( camera, renderer.domElement )
             // controls.rotateSpeed = 1.0
             // controls.zoomSpeed = 1.2
             // controls.panSpeed = 0.8
             renderFct.add( controls.update )
 
-            const cube = new kepler.installNavigationCube(
-                new kepler.NavigationCubeParameters({
+            const cube = new extra.installNavigationCube(
+                new extra.NavigationCubeParameters({
                     scene, 
                     camera, 
                     renderer,
                     controls, 
                     renderFunctions: renderFct, // will also add the cube in renderFct
-                    labels: ['East', 'West', 'Up', 'Down', 'South', 'North'],
+                    //labels: ['East', 'West', 'Up', 'Down', 'South', 'North'],
 
                     domElement : document.getElementById('orientCubeWrapper'),
                     domHome    : document.getElementById('goHome'), 
@@ -125,9 +131,6 @@
         }
 
         function animate() {
-            //controls.update()
-            //renderer.render( scene, camera )
-            //cube.update()
             renderFct.render()
             requestAnimationFrame( animate )
         }
@@ -146,28 +149,34 @@
             })
             
             Promise.all(promises).then( _ => {
-                kepler.changeBackground( {scene, color: '#888888'} )
+                extra.changeBackground( {scene, color: '#888888'} )
 
-                scene.add( kepler.createDefaultLights({object: scene, scaling: 10, intensity: 1}) )
+                scene.add( extra.createDefaultLights({object: scene, scaling: 10, intensity: 1}) )
 
-                const keyboard = new kepler.Keyboard()
-                keyboard.addKey('u', e => kepler.changeView('up', {scene, camera, controls}) )
-                keyboard.addKey('d', e => kepler.changeView('down', {scene, camera, controls}) )
-                keyboard.addKey('s', e => kepler.changeView('south', {scene, camera, controls}) )
-                keyboard.addKey('n', e => kepler.changeView('north', {scene, camera, controls}) )
-                keyboard.addKey('e', e => kepler.changeView('east', {scene, camera, controls}) )
-                keyboard.addKey('w', e => kepler.changeView('west', {scene, camera, controls}) )
-                keyboard.addKey('f', e => kepler.zoomToModel({scene, camera, controls, duration:300}) )
+                const keyboard = new extra.Keyboard(document, 'keydown')
+                keyboard.setUpEvent(e => controls.constraint = extra.CONSTRAINT.NONE)
+
+                keyboard.addKey({key:'u', cb:e => extra.changeView('up', {scene, camera, controls}) })
+                keyboard.addKey({key:'d', cb:e => extra.changeView('down', {scene, camera, controls}) })
+                keyboard.addKey({key:'s', cb:e => extra.changeView('south', {scene, camera, controls}) })
+                keyboard.addKey({key:'n', cb:e => extra.changeView('north', {scene, camera, controls}) })
+                keyboard.addKey({key:'e', cb:e => extra.changeView('east', {scene, camera, controls}) })
+                keyboard.addKey({key:'w', cb:e => extra.changeView('west', {scene, camera, controls}) })
+                keyboard.addKey({key:'f', cb:e => extra.zoomToModel({scene, camera, controls, duration:300}) })
+
+                keyboard.addKey({key:'x', cb:e => controls.constraint = extra.CONSTRAINT.X})
+                keyboard.addKey({key:'y', cb:e => controls.constraint = extra.CONSTRAINT.Y})
+                keyboard.addKey({key:'z', cb:e => controls.constraint = extra.CONSTRAINT.Z})
 
                 renderer.domElement.addEventListener('dblclick', event => {
-                    kepler.zoomToIntersection( {scene, event, camera, controls} )
+                    extra.zoomToIntersection( {scene, event, camera, controls} )
                 })
 
                 const LOADER = document.getElementById('js-loader');
                 LOADER.remove();
             })
             .then( () => {
-                kepler.changeView('up', {scene, camera, controls})
+                extra.changeView('up', {scene, camera, controls})
             })
         }
 
