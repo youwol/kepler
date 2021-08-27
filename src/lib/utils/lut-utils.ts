@@ -1,13 +1,13 @@
 import { Color } from "three"
 import { array, IArray } from "@youwol/dataframe"
-import { ColorMap } from './colorMap'
+import { ColorMap, generateColorMap } from './colorMap'
 
 /**
  * Create a new Lut and register several tables in it
  * @category Lookup Table 
  */
-export function createLut(name: string = "rainbow", nbColors = 512) {
-    return new ColorMap(name, nbColors)
+export function createLut(name: string = "rainbow", nbColors = 32, duplicate = 1) {
+    return generateColorMap(name, nbColors, duplicate)
 }
 
 /**
@@ -44,10 +44,10 @@ export function fromValueToColor(
  */
 export function fromValuesToColors(
     values: IArray, 
-    {defaultColor, lut, min=0, max=1, lockLut=true, reverse=false}:
-    {defaultColor: Color, lut: string|ColorMap, min?: number, max?: number, lockLut?: boolean, reverse?: boolean}): number[]
+    {defaultColor, lut, duplicateLut=1, min=0, max=1, lockLut=true, reverse=false}:
+    {defaultColor: Color, lut: string|ColorMap, duplicateLut?:number, min?: number, max?: number, lockLut?: boolean, reverse?: boolean}): number[]
 {
-    const lutTable = ( lut instanceof ColorMap ? lut : createLut(lut, 256) )
+    const lutTable = ( lut instanceof ColorMap ? lut : createLut(lut, 32, duplicateLut) )
     const minmax = array.minMax(values)
     const vmin = minmax[0]
     const vmax = minmax[1]

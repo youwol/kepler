@@ -124,7 +124,7 @@ class IsoContoursFill {
     constructor(parameters: IsoContoursParameters) {
         this.params = parameters
         this.color_     = new Color(parameters.color)
-        this.lutTable_  = createLut(parameters.lut, 64)
+        this.lutTable_  = createLut(parameters.lut, 64, parameters.duplicateLut)
         this.lutTable_.setMin(0)
         this.lutTable_.setMax(1)
         this.isoValues_ = parameters.isoList

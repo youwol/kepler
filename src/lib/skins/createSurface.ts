@@ -4,7 +4,7 @@ import {
 } from "three"
 
 import { SkinParameters } from "./skinParameters"
-import { IArray } from '@youwol/dataframe'
+import { IArray, Serie } from '@youwol/dataframe'
 import { createBufferGeometry } from "@youwol/three-extra"
 
 /**
@@ -67,10 +67,10 @@ export class SurfaceParameters extends SkinParameters {
  */
 export function createSurface(
     {positions, indices, material, parameters}:
-    {positions: IArray, indices: IArray, material?: Material, parameters?: SurfaceParameters}): Mesh
+    {positions: IArray | Serie, indices: IArray | Serie, material?: Material, parameters?: SurfaceParameters}): Mesh
 {
     if (positions === undefined) throw new Error('positions is undefined')
-    if (indices === undefined) throw new Error('indices is undefined')
+    if (indices === undefined)   throw new Error('indices is undefined')
 
     if (parameters === undefined) {
         parameters = new SurfaceParameters()

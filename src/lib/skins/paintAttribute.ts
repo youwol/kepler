@@ -1,6 +1,6 @@
 import {
     Mesh, Color, BufferGeometry,
-    Float32BufferAttribute, Material
+    Float32BufferAttribute, Material, Object3D
 } from "three"
 
 import { fromValuesToColors } from '../utils/lut-utils'
@@ -13,6 +13,7 @@ import { Serie } from '@youwol/dataframe'
  */
 export class PaintParameters extends SkinParameters {
     public readonly lut: string
+    public readonly duplicateLut: number = 1
     public readonly lockLut: boolean = false
     public readonly reversedLut: boolean
     public readonly min: number
@@ -21,10 +22,11 @@ export class PaintParameters extends SkinParameters {
     public readonly atVertex: boolean
 
     constructor(
-        {name, lut, min, max, lockLut, defaultColor, atVertex, ...others}:
+        {name, lut, duplicateLut, min, max, lockLut, defaultColor, atVertex, ...others}:
         {
             name?: string, 
             lut?: string, 
+            duplicateLut?,
             min?: number, 
             max?: number, 
             lockLut?: boolean, 
@@ -35,6 +37,7 @@ export class PaintParameters extends SkinParameters {
         super(others)
         this.defaultColor = defaultColor || '#aaaaaa'
         this.lut = lut || 'Rainbow'
+        if (duplicateLut !== undefined) this.duplicateLut = duplicateLut
         this.min = min !==undefined ? min : 0
         this.max = max !==undefined ? max : 1
         this.atVertex = atVertex !==undefined ? atVertex : true
@@ -67,16 +70,25 @@ export class PaintParameters extends SkinParameters {
  * @category Skins
  */
 export function paintAttribute(
-    mesh: Mesh, attribute: Serie, parameters?: PaintParameters)
+    mesh: Object3D, attribute: Serie, parameters?: PaintParameters)
 {
+    console.warn('deal with Group of Object3D')
+
     if (mesh === undefined) {
         throw new Error('mesh is undefined')
     }
-    if (mesh.geometry === undefined) {
+
+    const geometry = mesh['geometry']
+    if (geometry === undefined) {
         throw new Error('geometry of mesh is undefined')
     }
-    if (mesh.geometry instanceof BufferGeometry === false) {
+    if (geometry instanceof BufferGeometry === false) {
         throw new Error('geometry of mesh is not a BufferGeometry')
+    }
+
+    const material = mesh['material']
+    if (material === undefined) {
+        throw new Error('material of mesh is undefined')
     }
 
     if (attribute.itemSize !== 1) {
@@ -87,29 +99,14 @@ export function paintAttribute(
         parameters = new PaintParameters()
     }
 
-    // let newMesh = new Mesh()
-    // newMesh.geometry = new BufferGeometry()
-    // newMesh.geometry.setAttribute('position', mesh.getAttribute('position'))
-    // if (mesh.indices !== undefined) newMesh.geometry.setIndex( mesh.index )
-    // if (mesh.geometry.getAttribute('normal')!== undefined) newMesh.geometry.setAttribute( 'normal', mesh.geometry.getAttribute('normal') )
-
-    // const nbV = mesh.geometry.getAttribute('position').count
-    // const nbS = attribute.length
-    // if (nbV !== nbS) {
-    //     throw new Error(`number of vertices (${nbV}) is different from number of scalars attribute (${nbS})`)
-    // }
-
-    //on en est là !!
-    //Attentojn on est sur newMesh !!!
-
     let color = new Color('#aaaaaa')
-    if (mesh.material.hasOwnProperty('color')) {
-        color = mesh.material['color']
-        mesh.material['color'] = new Color('#ffffff')
+    if (material.hasOwnProperty('color')) {
+        color = material['color']
+        material['color'] = new Color('#ffffff')
     }
-    (mesh.material as Material).vertexColors  = (parameters.atVertex ? true : false) ;
-    (mesh.material as Material).polygonOffset = true ;
-    (mesh.material as Material).polygonOffsetFactor = 1 ;
+    (material as Material).vertexColors  = (parameters.atVertex ? true : false) ;
+    (material as Material).polygonOffset = true ;
+    (material as Material).polygonOffsetFactor = 1 ;
 
     let colors = fromValuesToColors(attribute.array, {
         defaultColor: new Color(parameters.defaultColor),
@@ -117,6 +114,7 @@ export function paintAttribute(
         min: parameters.min, 
         max: parameters.max, 
         lut: parameters.lut, 
+        duplicateLut: parameters.duplicateLut, 
         lockLut: parameters.lockLut
     })
 
@@ -127,30 +125,36 @@ export function paintAttribute(
     //     direction: InterpolateDirection.INCREASING
     // })
     
-    if (parameters.atVertex) {
-        mesh.geometry.setAttribute('color', new Float32BufferAttribute(colors, 3))
+    if (mesh.type === 'Points') {
+        geometry.setAttribute('color', new Float32BufferAttribute(colors, 3))
     }
     else {
-        const faces         = mesh.geometry.index // 438
-        const nbVertPerFace = 3
-        const nbColorComps  = 3
-        let fcolors = new Float32Array(faces.count * nbVertPerFace * nbColorComps)
-
-        let j = 0
-
-        const setColor = (i: number) => {
-            for (let k=0; k<3; ++k) fcolors[j+k] = colors[i+k]
-            j += 3
+        if (parameters.atVertex) {
+            geometry.setAttribute('color', new Float32BufferAttribute(colors, 3))
         }
+        else {
+            const faces         = geometry.index // 438
+            const nbVertPerFace = 3
+            const nbColorComps  = 3
+            let fcolors = new Float32Array(faces.count * nbVertPerFace * nbColorComps)
 
-        for (let i=0; i<faces.count; i+=3) {
-            setColor( faces.array[i  ] )
-            setColor( faces.array[i+1] )
-            setColor( faces.array[i+2] )
+            let j = 0
+            const setColor = (i: number) => {
+                for (let k=0; k<3; ++k) {
+                    fcolors[j+k] = colors[i+k]
+                }
+                j += 3
+            }
+
+            for (let i=0; i<faces.count; i+=3) {
+                setColor( faces.array[i  ] )
+                setColor( faces.array[i+1] )
+                setColor( faces.array[i+2] )
+            }
+            geometry.setAttribute('color', new Float32BufferAttribute(fcolors, 3))
         }
-        mesh.geometry.setAttribute('color', new Float32BufferAttribute(fcolors, 3))
     }
 
-    mesh.geometry.attributes.color.needsUpdate = true ;
-    (mesh.material as Material).needsUpdate = true
+    geometry.attributes.color.needsUpdate = true ;
+    (material as Material).needsUpdate = true
 }

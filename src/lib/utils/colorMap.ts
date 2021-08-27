@@ -5,6 +5,19 @@
 
 import { Color } from "three"
 
+export function generateColorMap(name: string, numberofcolors: number, duplicate: number) {
+    const map = ColorMapKeywords[ name ] || ColorMapKeywords.Rainbow
+    const newMap = []
+    let start = 0
+    for (let i=0; i<duplicate; ++i) {
+        map.forEach( m => {
+            newMap.push([start+m[0]/duplicate, m[1]])
+        })
+        start += 1/duplicate
+    }
+    return new ColorMap(newMap, numberofcolors)
+}
+
 /**
  * @category Color Lookup Table
  */
@@ -14,9 +27,18 @@ export class ColorMap {
     private n = 256
     private minV = 0
     private maxV = 1
+    private canvas_: HTMLCanvasElement
 
-    constructor(colormap: string, numberofcolors: number) {
+    constructor(colormap: string | Array<Array<number>>, numberofcolors: number) {
         this.setColorMap(colormap, numberofcolors)
+    }
+
+    get mapColors() {
+        return this.map
+    }
+
+    get canvas() {
+        return this.canvas_
     }
 
     set(value: any) {
@@ -37,7 +59,13 @@ export class ColorMap {
     }
 
     setColorMap(colormap: any, numberofcolors: any) {
-        this.map = ColorMapKeywords[ colormap ] || ColorMapKeywords.Rainbow
+        if (Array.isArray(colormap)) {
+            this.map = colormap
+        }
+        else {
+            this.map = ColorMapKeywords[ colormap ] || ColorMapKeywords.Rainbow
+        }
+        
         this.n = numberofcolors || 32
         let step = 1.0 / this.n
 
@@ -96,6 +124,7 @@ export class ColorMap {
     }
 
     updateCanvas(canvas: any) {
+        this.canvas_ = canvas
         let ctx = canvas.getContext('2d', { alpha: false })
         let imageData = ctx.getImageData(0, 0, 1, this.n)
         let data = imageData.data
