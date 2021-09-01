@@ -1,6 +1,6 @@
 {
   "name": "@youwol/kepler",
-  "version": "0.0.9-next",
+  "version": "0.0.10",
   "description": "Scientific visualization based on three.js",
   "author": "fmaerten@youwol.com",
   "keywords": [],
