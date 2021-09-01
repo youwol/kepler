@@ -5,7 +5,7 @@ import {
 } from "three"
 
 import { fromValueToColor, createLut } from '../utils/lut-utils'
-import { createBufferGeometry } from '@youwol/three-extra'
+import { createBufferGeometry } from '../utils'
 import { IsoContoursParameters } from './isoContoursParameters'
 import { Serie, IArray, array } from '@youwol/dataframe'
 import { ColorMap, generateIsos, generateIsosBySpacing, lerp } from "../utils"

@@ -1,5 +1,5 @@
 import {
-    Mesh, Color, BufferGeometry,
+    Color, BufferGeometry,
     Float32BufferAttribute, Material, Object3D
 } from "three"
 

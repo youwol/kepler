@@ -5,7 +5,7 @@ import {
 
 import { SkinParameters } from "./skinParameters"
 import { IArray, Serie } from '@youwol/dataframe'
-import { createBufferGeometry } from "@youwol/three-extra"
+import { createBufferGeometry } from '../utils'
 
 /**
  * @see [[createSurface]]

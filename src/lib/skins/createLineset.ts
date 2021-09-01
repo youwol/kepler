@@ -3,7 +3,7 @@ import {
     Material, Line, BufferGeometry
 } from "three"
 import { Serie } from "@youwol/dataframe"
-import { createBufferGeometry } from "@youwol/three-extra"
+import { createBufferGeometry } from '../utils'
 import { SkinParameters } from "./skinParameters"
 
 /**
