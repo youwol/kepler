@@ -1,4 +1,4 @@
-import { Mesh, Material } from "three"
+import { Mesh, Material, Group } from "three"
 import { Serie } from '@youwol/dataframe'
 import { IsoContoursParameters  } from './isoContoursParameters'
 import { createIsoContourLines  } from "./createIsoContourLines"
@@ -35,10 +35,20 @@ import { createIsoContourFilled } from "./createIsoContourFilled"
 export function createIsoContours(mesh: Mesh, attribute: Serie,
     {material, parameters}:{material?: Material, parameters?: IsoContoursParameters}={})
 {
+    const both = parameters.filled && parameters.lined
+    if (both) {
+        const group = new Group()
+        group.add( createIsoContourFilled(mesh, attribute, {material, parameters}) )
+        group.add( createIsoContourLines (mesh, attribute, {material, parameters}) )
+        return group
+    }
+
     if (parameters.filled) {
         return createIsoContourFilled(mesh, attribute, {material, parameters})
     }
     else {
         return createIsoContourLines(mesh, attribute, {material, parameters})
     }
+
+    
 }

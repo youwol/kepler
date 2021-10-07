@@ -836,11 +836,6 @@
   resolved "https://registry.yarnpkg.com/@youwol/math/-/math-0.0.7.tgz#911ca407890759cb721412f73927a4ff89e0f8b7"
   integrity sha512-Ym3FVThkaooW2Ix/zFUNaZMovHp0yPiZWeEbAGf0Pw/oc8zoh9+MrlpzVIQR8eLT1SsM1wfteIdpqPQhazdq5w==
 
-"@youwol/three-extra@^0.x":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@youwol/three-extra/-/three-extra-0.0.1.tgz#79f948b9ab7a985523759ae6b8e3d623d7833657"
-  integrity sha512-5QGqAMf90zRwm3CgXnaHKhIcGO9OAW5ba/yI2vdU3PbkZOD3jKzV9SCttnZ9v6vC+Cbq7gfUbXSQ3aUqa11MeQ==
-
 abab@^2.0.3, abab@^2.0.5:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/abab/-/abab-2.0.5.tgz#c0b678fb32d60fc1219c784d6a826fe385aeb79a"

@@ -5,14 +5,16 @@
     <title>Testing Kepler</title>
     <script src='/projects/youwol/workspace/packages/dataframe/dist/@youwol/dataframe.js'></script>
     <script src='/projects/youwol/workspace/packages/math/dist/@youwol/math.js'></script>
+    <script src='/projects/youwol/workspace/packages/geometry/dist/@youwol/geometry.js'></script>
     <script src='/projects/youwol/workspace/packages/attribute/dist/@youwol/attribute.js'></script>
     <script src='/projects/youwol/workspace/packages/io/dist/@youwol/io.js'></script>
+    <script src='/projects/mesh.js'></script>
 
     <script src='/projects/youwol/workspace/packages/three-extra/node_modules/three/build/three.min.js'></script>
     <script src='/projects/youwol/workspace/packages/three-extra/dist/@youwol/three-extra.js'></script>
     <script src='/projects/youwol/workspace/packages/kepler/dist/@youwol/kepler.js'></script>
     
-    <script src="https://kit.fontawesome.com/daa834e337.js" crossorigin="anonymous"></script>
+    <!-- <script src="https://kit.fontawesome.com/daa834e337.js" crossorigin="anonymous"></script> -->
 
     <link rel="stylesheet" href="style.css">
 </head>
@@ -40,316 +42,386 @@
         
         const dataframe = globalThis['@youwol/dataframe']
         const math      = globalThis['@youwol/math']
+        const geometry  = globalThis['@youwol/geometry']
         const attribute = globalThis['@youwol/attribute']
 
         const io        = globalThis['@youwol/io']
 
         const extra     = globalThis['@youwol/three-extra']
         const kepler    = globalThis['@youwol/kepler']
+        let mesh      = undefined 
         
+        globalThis['MeshModule']().then( m => {
+            mesh = m
+        }).then( _ => {
+            //console.log(mesh)
+            ALL() ;
+        })
 
         const surfaceset = [
-            {
-                //url: "/platform/test/geophysics/arche/model_test_sphere/sphere_5120.ts",
-                //url: '/platform/test/files/gocad/ts/S1_properties.ts',
-                //url: "/platform/test/models/arche/Santos/out/horizon.ts",
-                //url: "/platform/test/files/gocad/ts/output.ts",
-                //url: "/platform/test/geophysics/arche/lolo2020-petronas/results_salt_smoothed_intersected_edited_positive.ts",
-                url: "/projects/youwol/workspace/packages/geophysics/examples/galapagos/fernandina/synthetic/chamber.gcd",
+                {
+                    //url: "/platform/test/geophysics/arche/model_test_sphere/sphere_5120.ts",
+                    //url: '/test/files/gocad/ts/sphere2420.ts',
+                    //url: "/platform/test/files/gocad/ts/GalapagosObs.ts",
+                    //url: "/platform/test/files/gocad/ts/triangle.ts",
+                    //url: "/platform/test/models/arche/Santos/out/horizon.ts",
 
-                //url: "/platform/test/models/arche/test-HS/result_grid_arche_half_space_-50m.ts",
-                //url: "/platform/test/models/arche/test-HS/result_grid_poly3d_half_space_0m.ts",
-                //url: "/platform/test/models/arche/test-HS/result_S1_arche_0m.ts",
-                show: true,
-                attr: '',
-                lut: 'Insar',
-                min: 0,
-                max: 1,
-                isoFill: {
-                    opacity: 1,
-                    show: false,
-                    showLines: true,
+                    url: [
+                        "/projects/youwol/workspace/packages/geophysics/examples/synthetic/insar.gcd",
+                        "/projects/youwol/workspace/packages/geophysics/examples/synthetic/result-insar.gcd"
+                    ],
+
+                    //url: "/platform/test/files/gocad/ts/output.ts",
+                    //url: "/platform/test/geophysics/arche/lolo2020-petronas/results_salt_smoothed_intersected_edited_positive.ts",
+                    //url: "/projects/youwol/workspace/packages/geophysics/examples/galapagos/fernandina/synthetic/chamber.gcd",
+
+                    //url: "/platform/components/cassini/wasm/loadCassini/result_DebugModel.ts",
+                    //url: "/platform/components/cassini/wasm/loadCassini/result_Dno.ts",
+                    //url: "/platform/components/cassini/wasm/loadCassini/result_Exxon.ts",
+                    //url: "/platform/components/cassini/wasm/loadCassini/result_OsebergBIG.ts",
+                    //url: "/platform/components/cassini/wasm/loadCassini/result_Oseberg.ts",
+                    //url: "/platform/components/cassini/wasm/loadCassini/result_Kharir.ts",
+                    //url: "/platform/components/cassini/wasm/loadCassini/result_Rabanel.ts",
+                    //url: "/platform/components/cassini/wasm/loadCassini/result_seg_faulted.ts",
+                    //url: "/platform/components/cassini/wasm/loadCassini/result_steep_fold.ts",
+                    //url: "/platform/components/cassini/wasm/loadCassini/result_Total.ts",
+                    //url: "/platform/components/cassini/wasm/loadCassini/result_gentle_throw.ts",
+                    //url: "/platform/components/cassini/wasm/loadCassini/result_Chevron.ts",
+                    //url: "/platform/components/cassini/wasm/loadCassini/test.ts",
+
+                    //url: "/platform/test/models/arche/test-HS/result_grid_arche_half_space_-50m.ts",
+                    //url: "/platform/test/models/arche/test-HS/result_grid_poly3d_half_space_0m.ts",
+                    //url: "/platform/test/models/arche/test-HS/result_S1_arche_0m.ts",
+                    show: true,
+                    attr: 'insar',
                     lut: 'Insar',
-                    duplicateLut: 5,
-                    nb : 50,
-                    min: -1e7,
-                    max: 1e7,
-                    reversedLut: false
+                    min: 0,
+                    max: 1,
+                    opacity: 1,
+                    borders: {
+                        show: true,
+                        color: "#000000"
+                    },
+                    wireframe: {
+                        show: false,
+                        color: '#000000'
+                    },
+                    iso: {
+                        opacity: 1,
+                        show: true,
+                        showFill: true,
+                        showLines: true,
+                        lut: 'Insar',
+                        duplicateLut: 1,
+                        nb :   20,
+                        min: -1e7,
+                        max:  1e7,
+                        reversedLut: false
+                    }
                 },
-                wireframe: {
+                {
+                    url: "/projects/youwol/workspace/packages/geophysics/examples/synthetic/surface.gcd",
                     show: true,
-                    color: '#000000'
-                }
-            },
-            {
-                //url: "/platform/test/geophysics/arche/model_test_sphere/sphere_5120.ts",
-                //url: '/platform/test/files/gocad/ts/S1_properties.ts',
-                //url: "/platform/test/models/arche/Santos/out/horizon.ts",
-                //url: "/platform/test/files/gocad/ts/output.ts",
-                //url: "/platform/test/geophysics/arche/lolo2020-petronas/results_salt_smoothed_intersected_edited_positive.ts",
-                url: "/projects/youwol/workspace/packages/geophysics/examples/galapagos/fernandina/synthetic/result-insar.gcd",
-
-                //url: "/platform/test/models/arche/test-HS/result_grid_arche_half_space_-50m.ts",
-                //url: "/platform/test/models/arche/test-HS/result_grid_poly3d_half_space_0m.ts",
-                //url: "/platform/test/models/arche/test-HS/result_S1_arche_0m.ts",
-                show: true,
-                attr: 'cost',
-                lut: 'Insar',
-                min: 0,
-                max: 1,
-                isoFill: {
-                    opacity: 0.7,
-                    show: true,
-                    showLines: false,
-                    lut: 'Igeoss',
-                    duplicateLut: 5,
-                    nb : 50,
-                    min: -1e7,
-                    max: 1e7,
-                    reversedLut: true
-                },
-                wireframe: {
-                    show: false,
-                    color: '#000000'
-                }
-            }
-        ]
-
-        let scene, camera, light, renderer, controls, cube, renderFct
-
-        init()
-        load()
-
-        function init() {
-            scene = new three.Scene
-
-            camera = new three.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 100000 )
-            camera.position.z = 100
-
-            renderer = new three.WebGLRenderer({alpha: true})
-            renderer.setPixelRatio( window.devicePixelRatio )
-            renderer.setSize( window.innerWidth, window.innerHeight )
-            document.body.appendChild( renderer.domElement )
-
-            renderFct = new extra.RenderFunctions({renderer, scene, camera})
-
-            window.addEventListener( 'resize', onWindowResize )
-
-            controls = new extra.TrackballControls( camera, renderer.domElement )
-            // controls.rotateSpeed = 1.0
-            // controls.zoomSpeed = 1.2
-            // controls.panSpeed = 0.8
-            renderFct.add( controls.update )
-
-            const cube = new extra.installNavigationCube(
-                new extra.NavigationCubeParameters({
-                    scene, 
-                    camera, 
-                    renderer,
-                    controls, 
-                    renderFunctions: renderFct, // will also add the cube in renderFct
-                    //labels: ['East', 'West', 'Up', 'Down', 'South', 'North'],
-
-                    domElement : document.getElementById('orientCubeWrapper'),
-                    domHome    : document.getElementById('goHome'), 
-                    domSaveHome: document.getElementById('saveHome')
-                })
-            )
-        }
-
-        function onWindowResize() {
-            camera.aspect = window.innerWidth / window.innerHeight
-            camera.updateProjectionMatrix()
-            renderer.setSize( window.innerWidth, window.innerHeight )
-            controls.handleResize()
-        }
-
-        function animate() {
-            renderFct.render()
-            requestAnimationFrame( animate )
-        }
-        requestAnimationFrame( animate )
-
-        function load() {
-            const promises = []
-
-            surfaceset.forEach( surface => {
-                if (surface.show===true) {
-                    const promise = doSurface(surface)
-                    if (promise) {
-                        if (Array.isArray(promise)) promises.push(...promise)
-                        else promises.push(promise)
+                    attr: '',
+                    lut: 'Insar',
+                    min: 0,
+                    max: 1,
+                    opacity: 1,
+                    borders: {
+                        show: true,
+                        color: "#000000"
+                    },
+                    wireframe: {
+                        show: false,
+                        color: '#000000'
+                    },
+                    iso: {
+                        opacity: 1,
+                        show: false,
+                        showFill: true,
+                        showLines: true,
+                        lut: 'Insar',
+                        duplicateLut: 1,
+                        nb :   20,
+                        min: -1e7,
+                        max:  1e7,
+                        reversedLut: false
                     }
                 }
-            })
-            
-            Promise.all(promises).then( _ => {
-                extra.changeBackground( {scene, color: '#888888'} )
+            ]
 
-                scene.add( extra.createDefaultLights({object: scene, scaling: 10, intensity: 1}) )
+        
 
-                const keyboard = new extra.Keyboard(document, 'keydown')
-                keyboard.setUpEvent(e => controls.constraint = extra.CONSTRAINT.NONE)
+        function ALL() {
 
-                keyboard.addKey({key:'u', cb:e => extra.changeView('up', {scene, camera, controls}) })
-                keyboard.addKey({key:'d', cb:e => extra.changeView('down', {scene, camera, controls}) })
-                keyboard.addKey({key:'s', cb:e => extra.changeView('south', {scene, camera, controls}) })
-                keyboard.addKey({key:'n', cb:e => extra.changeView('north', {scene, camera, controls}) })
-                keyboard.addKey({key:'e', cb:e => extra.changeView('east', {scene, camera, controls}) })
-                keyboard.addKey({key:'w', cb:e => extra.changeView('west', {scene, camera, controls}) })
-                keyboard.addKey({key:'f', cb:e => extra.zoomToModel({scene, camera, controls, duration:300}) })
+            //console.log(mesh)
 
-                keyboard.addKey({key:'x', cb:e => controls.constraint = extra.CONSTRAINT.X})
-                keyboard.addKey({key:'y', cb:e => controls.constraint = extra.CONSTRAINT.Y})
-                keyboard.addKey({key:'z', cb:e => controls.constraint = extra.CONSTRAINT.Z})
+            function createSurfaceBorders(m, color) {
 
-                renderer.domElement.addEventListener('dblclick', event => {
-                    extra.zoomToIntersection( {scene, event, camera, controls} )
+                // Build the HE-surface (aka, HalfEdge-surface)
+                const vertices  = m.geometry.getAttribute('position')
+                const triangles = m.geometry.index
+
+                const surface = new mesh.Mesh(vertices.array, triangles.array)
+                // console.log('verts ', surface.nVertices())
+                // console.log('faces ', surface.nFaces())
+                // console.log('edges ', surface.nEdges())
+                // console.log('hedges', surface.nHalfedges())
+                // console.log('bounds', surface.nBoundaries())
+                const borders = surface.borders()
+                // console.log('Border', borders.length)
+                // console.log('Border', borders)
+
+                const indices = []
+                let id = 0
+                for (let i=0; i<borders.length/6; ++i) {
+                    indices.push(id++, id++)
+                }
+
+                const geometry = new THREE.BufferGeometry()
+                geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(borders), 3))
+                geometry.setIndex(indices)
+
+                const material = new THREE.LineBasicMaterial({
+                    linewidth: 1,
+                    color: new THREE.Color(color?color:"#000000")
                 })
 
-                const LOADER = document.getElementById('js-loader');
-                LOADER.remove();
-            })
-            .then( () => {
-                extra.changeView('up', {scene, camera, controls})
-            })
-        }
-
-        function doSurface(surfaceInfo) {
-            if (Array.isArray(surfaceInfo.url)) {
-                const promises = []
-                surfaceInfo.url.forEach( url => {
-                    console.log("fetching", url)
-                    const promise = doOneSurface(url)
-                    if (promise) promises.push(promise)
-                })
-                return promises
-            }
-            else {
-                console.log("fetching", surfaceInfo.url)
-                return doOneSurface(surfaceInfo.url)
+                return new THREE.LineSegments(geometry, material)
             }
 
-            function doOneSurface(url) {
-                const promise = fetch(surfaceInfo.url)
-                    .then( res => {
-                        if ( res.ok ) return res.text()
-                        return undefined
+            let scene, camera, light, renderer, controls, cube, renderFct
+
+            init()
+            load()
+
+            function init() {
+                scene = new three.Scene
+
+                camera = new three.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 100000 )
+                camera.position.z = 100
+
+                renderer = new three.WebGLRenderer({alpha: true})
+                renderer.setPixelRatio( window.devicePixelRatio )
+                renderer.setSize( window.innerWidth, window.innerHeight )
+                document.body.appendChild( renderer.domElement )
+
+                renderFct = new extra.RenderFunctions({renderer, scene, camera})
+
+                window.addEventListener( 'resize', onWindowResize )
+
+                controls = new extra.TrackballControls( camera, renderer.domElement )
+                // controls.rotateSpeed = 1.0
+                // controls.zoomSpeed = 1.2
+                // controls.panSpeed = 0.8
+                renderFct.add( controls.update )
+
+                const cube = new extra.installNavigationCube(
+                    new extra.NavigationCubeParameters({
+                        scene, 
+                        camera, 
+                        renderer,
+                        controls, 
+                        renderFunctions: renderFct, // will also add the cube in renderFct
+                        //labels: ['East', 'West', 'Up', 'Down', 'South', 'North'],
+
+                        domElement : document.getElementById('orientCubeWrapper'),
+                        domHome    : document.getElementById('goHome'), 
+                        domSaveHome: document.getElementById('saveHome')
                     })
-                    .then( buffer => {
-                        //console.log( kepler.generateColorMap('Insar', 32, 3) )
+                )
+            }
 
-                        if (! buffer) return undefined
-                        const dfs = io.decodeGocadTS(buffer, {shared: false, merge: false})
-                        dfs.forEach( df => {
-                            let skin
+            function onWindowResize() {
+                camera.aspect = window.innerWidth / window.innerHeight
+                camera.updateProjectionMatrix()
+                renderer.setSize( window.innerWidth, window.innerHeight )
+                controls.handleResize()
+            }
 
-                            let position = df.series['positions']
-                            //position = math.add([ position, math.mult(df.series['U'], 500) ])
+            function animate() {
+                renderFct.render()
+                requestAnimationFrame( animate )
+            }
+            requestAnimationFrame( animate )
 
-                            const manager = new attribute.AttributeManager(df, [
-                                new attribute.PositionDecomposer,
-                                new attribute.ComponentDecomposer,
-                                new attribute.AreaDecomposer,
-                                new attribute.VectorNormDecomposer
-                            ])
+            function load() {
+                const promises = []
 
-                            console.log('available scalar attributes:', manager.names(1) )
-                            console.log('available vector attributes:', manager.names(3) )
+                surfaceset.forEach( surface => {
+                    if (surface.show===true) {
+                        const promise = doSurface(surface)
+                        if (promise) {
+                            if (Array.isArray(promise)) promises.push(...promise)
+                            else promises.push(promise)
+                        }
+                    }
+                })
+                
+                Promise.all(promises).then( _ => {
+                    extra.changeBackground( {scene, color: '#888888'} )
 
-                            const attr = manager.serie(1, surfaceInfo.attr)
-                            if (attr) console.log(math.minMaxArray(attr.array))
+                    scene.add( extra.createDefaultLights({object: scene, scaling: 10, intensity: 1}) )
 
-                            if (surfaceInfo.wireframe.show) {
-                                scene.add( kepler.createSurface({
+                    const keyboard = new extra.Keyboard(document, 'keydown')
+                    keyboard.setUpEvent(e => controls.constraint = extra.CONSTRAINT.NONE)
+
+                    keyboard.addKey({key:'u', cb:e => extra.changeView('up', {scene, camera, controls}) })
+                    keyboard.addKey({key:'d', cb:e => extra.changeView('down', {scene, camera, controls}) })
+                    keyboard.addKey({key:'s', cb:e => extra.changeView('south', {scene, camera, controls}) })
+                    keyboard.addKey({key:'n', cb:e => extra.changeView('north', {scene, camera, controls}) })
+                    keyboard.addKey({key:'e', cb:e => extra.changeView('east', {scene, camera, controls}) })
+                    keyboard.addKey({key:'w', cb:e => extra.changeView('west', {scene, camera, controls}) })
+                    keyboard.addKey({key:'f', cb:e => extra.zoomToModel({scene, camera, controls, duration:300}) })
+
+                    keyboard.addKey({key:'x', cb:e => controls.constraint = extra.CONSTRAINT.X})
+                    keyboard.addKey({key:'y', cb:e => controls.constraint = extra.CONSTRAINT.Y})
+                    keyboard.addKey({key:'z', cb:e => controls.constraint = extra.CONSTRAINT.Z})
+
+                    renderer.domElement.addEventListener('dblclick', event => {
+                        extra.zoomToIntersection( {scene, event, camera, controls} )
+                    })
+
+                    const LOADER = document.getElementById('js-loader');
+                    LOADER.remove();
+                })
+                .then( () => {
+                    extra.changeView('up', {scene, camera, controls})
+                })
+            }
+
+            function doSurface(surfaceInfo) {
+                if (Array.isArray(surfaceInfo.url)) {
+                    const promises = []
+                    surfaceInfo.url.forEach( url => {
+                        //console.log("fetching", url)
+                        const promise = doOneSurface(url)
+                        if (promise) promises.push(promise)
+                    })
+                    return promises
+                }
+                else {
+                    //console.log("fetching", surfaceInfo.url)
+                    return doOneSurface(surfaceInfo.url)
+                }
+
+                function doOneSurface(url) {
+                    const promise = fetch(url)
+                        .then( res => {
+                            if ( res.ok ) return res.text()
+                            return undefined
+                        })
+                        .then( buffer => {
+                            //console.log( kepler.generateColorMap('Insar', 32, 3) )
+
+                            if (! buffer) return undefined
+                            const dfs = io.decodeGocadTS(buffer, {shared: false, merge: false})
+                            dfs.forEach( df => {
+                                let skin
+
+                                let position = df.series['positions']
+                                //position = math.add([ position, math.mult(df.series['U'], 500) ])
+
+                                const manager = new attribute.AttributeManager(df, [
+                                    new attribute.PositionDecomposer,
+                                    new attribute.ComponentDecomposer,
+                                    new attribute.AreaDecomposer,
+                                    new attribute.VectorNormDecomposer
+                                ])
+
+                                console.log('available scalar attributes:', manager.names(1) )
+                                console.log('available vector attributes:', manager.names(3) )
+
+                                const attr = manager.serie(1, surfaceInfo.attr)
+                                if (attr) {
+                                    console.log('attribute:', surfaceInfo.attr)
+                                    console.log(math.minMaxArray(attr.array))
+                                }
+
+                                if (surfaceInfo.wireframe.show) {
+                                    scene.add( kepler.createSurface({
+                                        positions: position,
+                                        indices  : df.series['indices'],
+                                        parameters: new kepler.SurfaceParameters({
+                                            wireframe: true, 
+                                            color: surfaceInfo.wireframe.color,
+                                            opacity: 1.0
+                                        })
+                                    }) )
+                                }
+
+                                const randColor = () => "#" + Math.floor(Math.random()*16777215).toString(16)
+                                
+                                // surface
+                                const surface = kepler.createSurface({
                                     positions: position,
                                     indices  : df.series['indices'],
                                     parameters: new kepler.SurfaceParameters({
-                                        wireframe: true, 
-                                        color: surfaceInfo.wireframe.color,
-                                        opacity: 1.0
+                                        flat: true, 
+                                        wireframe: false, 
+                                        color: randColor(),
+                                        opacity: surfaceInfo.opacity,
+                                        creaseAngle: 0
                                     })
-                                }) )
-                            }
-                            
-                            // surface
-                            const surface = kepler.createSurface({
-                                positions: position,
-                                indices  : df.series['indices'],
-                                parameters: new kepler.SurfaceParameters({
-                                    flat: false, 
-                                    wireframe: false, 
-                                    color: '#aaaaaa',
-                                    opacity: 1.0,
-                                    creaseAngle: 0
                                 })
-                            })
-                            if (surfaceInfo.isoFill.show===false) {
-                                scene.add(surface)
+                                if (surfaceInfo.iso.show===false) {
+                                    scene.add(surface)
+                                    if (attr) {
+                                        kepler.paintAttribute( surface, attr, new kepler.PaintParameters({
+                                            atVertex: true,
+                                            lut: surfaceInfo.iso.lut,
+                                            duplicateLut: surfaceInfo.iso.duplicateLut
+                                        }) )
+                                    }
+                                }
+
+                                // BBox
+                                //console.log(surface)
+                                
+                                if (surfaceInfo.borders.show) {
+                                    const borders = createSurfaceBorders(surface, surfaceInfo.borders.color)
+                                    scene.add( borders )
+                                }
+
                                 if (attr) {
-                                    kepler.paintAttribute( surface, attr, new kepler.PaintParameters({
-                                        atVertex: true,
-                                        lut: surfaceInfo.isoFill.lut,
-                                        duplicateLut: surfaceInfo.isoFill.duplicateLut
-                                    }) )
-                                }
-                            }
+                                    const minmax = dataframe.array.minMax(attr.array)
+                                    //let isos = kepler.generateIsos(minmax[0], minmax[1], 20)
+                                    //isos = [-0.2, 0, 0.2]
+                                    let isos = kepler.generateIsos(minmax[0], minmax[1], surfaceInfo.iso.nb)
 
-                            // BBox
-                            scene.add( kepler.createBBox(surface) )
-
-                            if (attr) {
-                                const minmax = dataframe.array.minMax(attr.array)
-                                //let isos = kepler.generateIsos(minmax[0], minmax[1], 20)
-                                //isos = [-0.2, 0, 0.2]
-                                let isos = kepler.generateIsos(minmax[0], minmax[1], surfaceInfo.isoFill.nb)
-
-                                if (surfaceInfo.isoFill.show) {
-                                    const iso = kepler.createIsoContours(
-                                        surface,
-                                        attr, {
-                                            parameters: new kepler.IsoContoursParameters({
-                                                color: '#ffffff',
-                                                isoList: isos,
-                                                filled: true,
-                                                opacity: surfaceInfo.isoFill.opacity,
-                                                lut: surfaceInfo.isoFill.lut,
-                                                duplicateLut: surfaceInfo.isoFill.duplicateLut,
-                                                min: surfaceInfo.isoFill.min,
-                                                max: surfaceInfo.isoFill.max
-                                            })
-                                        }
-                                    )
-                                    scene.add( iso )
-                                    // const cb = new kepler.Colorbar({
-                                    //     lutName: surfaceInfo.isoFill.lut,
-                                    //     min: minmax[0],
-                                    //     max: minmax[1]
-                                    // })
-                                    // renderFct.add(cb.render)
+                                    if (surfaceInfo.iso.show) {
+                                        const iso = kepler.createIsoContours(
+                                            surface,
+                                            attr, {
+                                                parameters: new kepler.IsoContoursParameters({
+                                                    color: '#ffffff',
+                                                    lineColor: '#000000',
+                                                    isoList: isos,
+                                                    filled: surfaceInfo.iso.showFill,
+                                                    lined: surfaceInfo.iso.showLines,
+                                                    opacity: surfaceInfo.iso.opacity,
+                                                    lut: surfaceInfo.iso.lut,
+                                                    duplicateLut: surfaceInfo.iso.duplicateLut,
+                                                    min: surfaceInfo.iso.min,
+                                                    max: surfaceInfo.iso.max
+                                                })
+                                            }
+                                        )
+                                        scene.add( iso )
+                                        // const cb = new kepler.Colorbar({
+                                        //     lutName: surfaceInfo.iso.lut,
+                                        //     min: minmax[0],
+                                        //     max: minmax[1]
+                                        // })
+                                        // renderFct.add(cb.render)
+                                    }
                                 }
-                                if (surfaceInfo.isoFill.showLines) {
-                                    scene.add( kepler.createIsoContours(
-                                        surface,
-                                        attr, {
-                                            parameters: new kepler.IsoContoursParameters({
-                                                color: '#000000',
-                                                isoList: isos,
-                                                filled: false,
-                                                lut: surfaceInfo.isoFill.lut,
-                                                duplicateLut: surfaceInfo.isoFill.duplicateLut,
-                                                min: surfaceInfo.isoFill.min,
-                                                max: surfaceInfo.isoFill.max
-                                            })
-                                        })
-                                    )
-                                }
-                            }
+                            })
                         })
-                    })
-                return promise
+                    return promise
+                }
             }
-        }
+    }
 
     </script>
 </body>

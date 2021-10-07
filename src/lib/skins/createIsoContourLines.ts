@@ -66,7 +66,7 @@ export function createIsoContourLines(
             linejoin: 'round' // ignored by WebGLRenderer
         })
     }
-    material["color"] = new Color(parameters.color)
+    material["color"] = new Color(parameters.lineColor)
 
     const minmax = array.minMax(attribute.array)
     const vmin   = minmax[0]

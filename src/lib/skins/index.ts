@@ -14,6 +14,7 @@ export * from './createIsoContours'
 //export * from './createIsoSurfaces'
 export * from './createVectors'
 export * from './colorbar'
+//export * from './createSurfaceBorders'
 
 //export * from './createIsoContourLines'
 //export * from './createIsoContourFilled'

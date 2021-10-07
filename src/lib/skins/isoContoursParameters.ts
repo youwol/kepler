@@ -8,9 +8,11 @@ import { SkinParameters } from "./skinParameters"
  */
 export class IsoContoursParameters extends SkinParameters {
     public readonly filled     : boolean = true
+    public readonly lined      : boolean = true
     public readonly useTable   : boolean = true
 
-    public readonly color      : string = '#000000'
+    public readonly color      : string = '#ffffff'
+    public readonly lineColor  : string = '#000000'
     public readonly min        : number = Number.NEGATIVE_INFINITY
     public readonly max        : number = Number.POSITIVE_INFINITY
     public readonly isoList    : number[] = []
@@ -24,7 +26,12 @@ export class IsoContoursParameters extends SkinParameters {
     constructor(
         {
             isoList,
-            filled=true, min=Number.NEGATIVE_INFINITY, max=Number.POSITIVE_INFINITY, color,
+            filled=true,
+            lined=true, 
+            min=Number.NEGATIVE_INFINITY, 
+            max=Number.POSITIVE_INFINITY, 
+            color,
+            lineColor,
             lut,
             duplicateLut,
             lockLut, 
@@ -32,7 +39,12 @@ export class IsoContoursParameters extends SkinParameters {
             reversedLut, ...others
         } : {
             isoList: number[],
-            filled?: boolean, min?: number, max?: number, color?: string,
+            filled?: boolean,
+            lined?:boolean, 
+            min?: number, 
+            max?: number, 
+            color?: string,
+            lineColor?: string,
             lut?: string,
             duplicateLut?: number, 
             lockLut?: boolean, 
@@ -43,10 +55,12 @@ export class IsoContoursParameters extends SkinParameters {
         super(others)
 
         if (filled !== undefined) this.filled = filled
+        if (lined !== undefined) this.lined = lined
 
         this.isoList = isoList
 
         this.color = (color!==undefined?color:'#000000')
+        this.lineColor = (lineColor!==undefined?lineColor:'#000000')
         this.min = (min!==undefined?min:Number.NEGATIVE_INFINITY )
         this.max = (max!==undefined?max:Number.POSITIVE_INFINITY )
 
