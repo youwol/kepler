@@ -101,6 +101,22 @@ function weightedNormal( normals: Vector3[], vector: Vector3, creaseAngle: numbe
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // class Face {
 
 // 	constructor() {

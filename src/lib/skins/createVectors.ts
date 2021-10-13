@@ -127,7 +127,7 @@ export function createVectors(
     const defaultColor = new Color(parameters.color)
     const lutTable = createLut(parameters.lut, 256)
 
-    const mm = array.minMax(attribute.array)
+    const mm = attribute ? array.minMax(attribute.array) : [0,1]
 
     if (parameters.lockLut) {
         lutTable.setMin(0)

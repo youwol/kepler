@@ -25,12 +25,12 @@
 
     <div class='home-container'>
         <span>
-            <div class='buttonIcon'>
+            <!-- <div class='buttonIcon'>
                 <div id='goHome'><i class='fa fa-home'></i></div>
             </div>
             <div class='buttonIcon'>
                 <div id='saveHome'><i class='fa fa-clinic-medical'></i></div>
-            </div>
+            </div> -->
             <div class='right-container'>
                 <div id='orientCubeWrapper'></div>
             </div>
@@ -60,20 +60,18 @@
 
         const surfaceset = [
                 {
-                    //url: "/platform/test/geophysics/arche/model_test_sphere/sphere_5120.ts",
-                    //url: '/test/files/gocad/ts/sphere2420.ts',
-                    //url: "/platform/test/files/gocad/ts/GalapagosObs.ts",
-                    //url: "/platform/test/files/gocad/ts/triangle.ts",
-                    //url: "/platform/test/models/arche/Santos/out/horizon.ts",
 
-                    url: [
-                        "/projects/youwol/workspace/packages/geophysics/examples/synthetic/insar.gcd",
-                        "/projects/youwol/workspace/packages/geophysics/examples/synthetic/result-insar.gcd"
-                    ],
+                    // url: [
+                    //     "/projects/youwol/workspace/packages/geophysics/examples/synthetic/data.gcd",
+                    //     "/projects/youwol/workspace/packages/geophysics/examples/synthetic/result-dikes.gcd"
+                    // ],
 
-                    //url: "/platform/test/files/gocad/ts/output.ts",
-                    //url: "/platform/test/geophysics/arche/lolo2020-petronas/results_salt_smoothed_intersected_edited_positive.ts",
-                    //url: "/projects/youwol/workspace/packages/geophysics/examples/galapagos/fernandina/synthetic/chamber.gcd",
+                    // url: [
+                    //     "/projects/youwol/workspace/packages/geophysics/examples/mud/data.gcd",
+                    //     "/projects/youwol/workspace/packages/geophysics/examples/mud/result-insar.gcd"
+                    // ],
+
+                    //url: "/platform/components/cassini/wasm/loadCassini/fault_S1.ts",
 
                     //url: "/platform/components/cassini/wasm/loadCassini/result_DebugModel.ts",
                     //url: "/platform/components/cassini/wasm/loadCassini/result_Dno.ts",
@@ -86,18 +84,16 @@
                     //url: "/platform/components/cassini/wasm/loadCassini/result_steep_fold.ts",
                     //url: "/platform/components/cassini/wasm/loadCassini/result_Total.ts",
                     //url: "/platform/components/cassini/wasm/loadCassini/result_gentle_throw.ts",
-                    //url: "/platform/components/cassini/wasm/loadCassini/result_Chevron.ts",
+                    url: "/platform/components/cassini/wasm/loadCassini/result_Chevron.ts",
                     //url: "/platform/components/cassini/wasm/loadCassini/test.ts",
 
-                    //url: "/platform/test/models/arche/test-HS/result_grid_arche_half_space_-50m.ts",
-                    //url: "/platform/test/models/arche/test-HS/result_grid_poly3d_half_space_0m.ts",
-                    //url: "/platform/test/models/arche/test-HS/result_S1_arche_0m.ts",
                     show: true,
-                    attr: 'insar',
+                    attr: '',
                     lut: 'Insar',
                     min: 0,
                     max: 1,
                     opacity: 1,
+                    flat: false,
                     borders: {
                         show: true,
                         color: "#000000"
@@ -108,20 +104,25 @@
                     },
                     iso: {
                         opacity: 1,
-                        show: true,
+                        show: false,
                         showFill: true,
                         showLines: true,
                         lut: 'Insar',
                         duplicateLut: 1,
                         nb :   20,
-                        min: -1e7,
-                        max:  1e7,
+                        min: -1e10,
+                        max:  1e10,
                         reversedLut: false
+                    },
+                    vectors: {
+                        show: false,
+                        attr: 'dikes',
+                        scale: 300
                     }
                 },
                 {
-                    url: "/projects/youwol/workspace/packages/geophysics/examples/synthetic/surface.gcd",
-                    show: true,
+                    url: "/projects/youwol/workspace/packages/geophysics/examples/mud/Mud_Volcano_top_cut_remeshed_1315.gcd",
+                    show: false,
                     attr: '',
                     lut: 'Insar',
                     min: 0,
@@ -146,6 +147,9 @@
                         min: -1e7,
                         max:  1e7,
                         reversedLut: false
+                    },
+                    vectors: {
+                        show: false
                     }
                 }
             ]
@@ -223,11 +227,11 @@
                         renderer,
                         controls, 
                         renderFunctions: renderFct, // will also add the cube in renderFct
-                        //labels: ['East', 'West', 'Up', 'Down', 'South', 'North'],
+                        labels: ['East', 'West', 'Up', 'Down', 'South', 'North'],
 
                         domElement : document.getElementById('orientCubeWrapper'),
-                        domHome    : document.getElementById('goHome'), 
-                        domSaveHome: document.getElementById('saveHome')
+                        //domHome    : document.getElementById('goHome'), 
+                        //domSaveHome: document.getElementById('saveHome')
                     })
                 )
             }
@@ -261,7 +265,11 @@
                 Promise.all(promises).then( _ => {
                     extra.changeBackground( {scene, color: '#888888'} )
 
-                    scene.add( extra.createDefaultLights({object: scene, scaling: 10, intensity: 1}) )
+                    //scene.add( extra.createDefaultLights({object: scene, scaling: 10, intensity: 1}) )
+
+                    const hemiLight = new THREE.HemisphereLight( 0xffffff, 0x444444 );
+				    hemiLight.position.set( 0, 2, 0 );
+				    scene.add( hemiLight );
 
                     const keyboard = new extra.Keyboard(document, 'keydown')
                     keyboard.setUpEvent(e => controls.constraint = extra.CONSTRAINT.NONE)
@@ -332,6 +340,12 @@
                                 console.log('available scalar attributes:', manager.names(1) )
                                 console.log('available vector attributes:', manager.names(3) )
 
+                                {
+                                    console.log('x:', math.minMaxArray(manager.serie(1, 'x').array))
+                                    console.log('y:', math.minMaxArray(manager.serie(1, 'y').array))
+                                    console.log('z:', math.minMaxArray(manager.serie(1, 'z').array))
+                                }
+
                                 const attr = manager.serie(1, surfaceInfo.attr)
                                 if (attr) {
                                     console.log('attribute:', surfaceInfo.attr)
@@ -357,11 +371,11 @@
                                     positions: position,
                                     indices  : df.series['indices'],
                                     parameters: new kepler.SurfaceParameters({
-                                        flat: true, 
+                                        flat: surfaceInfo.flat, 
                                         wireframe: false, 
                                         color: randColor(),
                                         opacity: surfaceInfo.opacity,
-                                        creaseAngle: 0
+                                        creaseAngle: 0 // degrees !!!
                                     })
                                 })
                                 if (surfaceInfo.iso.show===false) {
@@ -381,6 +395,19 @@
                                 if (surfaceInfo.borders.show) {
                                     const borders = createSurfaceBorders(surface, surfaceInfo.borders.color)
                                     scene.add( borders )
+                                }
+
+                                if (surfaceInfo.vectors !== undefined && surfaceInfo.vectors.show === true) {
+                                    const vattr = manager.serie(3, surfaceInfo.vectors.attr)
+                                    if (vattr) {
+                                        scene.add( kepler.createVectors({
+                                            geometry: surface.geometry,
+                                            vectorField: vattr,
+                                            parameters: new kepler.VectorsParameters({
+                                                scale: surfaceInfo.vectors.scale,
+                                            })
+                                        }) )
+                                    }
                                 }
 
                                 if (attr) {

@@ -48,7 +48,7 @@ export function createBufferGeometry(
             }
         }
 
-        if (creaseAngle===0) {
+        if (crease === 0) {
             geom.computeVertexNormals()
         }
         else {
