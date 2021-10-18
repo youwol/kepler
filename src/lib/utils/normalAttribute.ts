@@ -1,8 +1,9 @@
-import { IArray } from '@youwol/dataframe';
-import { Float32BufferAttribute, Vector3 } from 'three'
+import { IArray, Vector } from '@youwol/dataframe';
+import { BufferAttribute, Float32BufferAttribute, Vector3 } from 'three'
 
 // See also https://stackoverflow.com/questions/27055644/three-js-maintaining-creases-when-smooth-shading-custom-geometry
 // See https://github.com/mrdoob/three.js/blob/master/examples/jsm/loaders/VRMLLoader.js
+// See https://codepen.io/Ni55aN/pen/zROmoe?editors=0010
 
 /**
  * Get the normals as a BufferAttribute using a crease angle
@@ -18,57 +19,76 @@ export function normalAttribute(coord: IArray, index: IArray, creaseAngle: numbe
     const vB = new Vector3()
     const vC = new Vector3()
 
+    const normalAttribute = new BufferAttribute( new Float32Array(coord.length), 3 );
+
     const faces = []
     const vertexNormals = {}
 
-    // prepare face and raw vertex normals
-    for ( let i=0, l=index.length; i<l; i+=3 ) {
+    // Prepare face and raw vertex normals
+    for (let i=0, l=index.length; i<l; i += 3) {
+        // Compute face normals
         const a = index[ i ]
         const b = index[ i + 1 ]
         const c = index[ i + 2 ]
-        const face = new Face( a, b, c )
-
-        vA.fromArray( coord, a * 3 )
-        vB.fromArray( coord, b * 3 )
-        vC.fromArray( coord, c * 3 )
-
-        cb.subVectors( vC, vB )
-        ab.subVectors( vA, vB )
-        cb.cross( ab )
-
+        const face = new Face(a, b, c)
+        vA.fromArray(coord, 3*a)
+        vB.fromArray(coord, 3*b)
+        vC.fromArray(coord, 3*c)
+        cb.subVectors(vC, vB)
+        ab.subVectors(vA, vB)
+        cb.cross(ab)
         cb.normalize()
-
-        face.normal.copy( cb )
-
-        if ( vertexNormals[ a ] === undefined ) vertexNormals[ a ] = []
-        if ( vertexNormals[ b ] === undefined ) vertexNormals[ b ] = []
-        if ( vertexNormals[ c ] === undefined ) vertexNormals[ c ] = []
-
-        vertexNormals[ a ].push( face.normal )
-        vertexNormals[ b ].push( face.normal )
-        vertexNormals[ c ].push( face.normal )
-
+        face.normal.copy(cb)
         faces.push( face )
+
+        // Then, fill vertexNormals (one array for each vertex)
+        if (vertexNormals[a] === undefined) vertexNormals[a] = []
+        if (vertexNormals[b] === undefined) vertexNormals[b] = []
+        if (vertexNormals[c] === undefined) vertexNormals[c] = []
+        vertexNormals[a].push(face.normal)
+        vertexNormals[b].push(face.normal)
+        vertexNormals[c].push(face.normal)
     }
 
-    // compute vertex normals and build final geometry
-
+    // Compute vertex normals and build final geometry
     const normals = []
 
-    for ( let i = 0, l = faces.length; i < l; i ++ ) {
+    //let n = 0
+
+    for (let i = 0, l = faces.length; i < l; ++i) {
         const face = faces[ i ]
-        const nA = weightedNormal( vertexNormals[ face.a ], face.normal, creaseAngle )
-        const nB = weightedNormal( vertexNormals[ face.b ], face.normal, creaseAngle )
-        const nC = weightedNormal( vertexNormals[ face.c ], face.normal, creaseAngle )
-        vA.fromArray( coord, face.a * 3 )
-        vB.fromArray( coord, face.b * 3 )
-        vC.fromArray( coord, face.c * 3 )
-        normals.push( nA.x, nA.y, nA.z )
-        normals.push( nB.x, nB.y, nB.z )
-        normals.push( nC.x, nC.y, nC.z )
+        const nA = weightedNormal( vertexNormals[face.a], face.normal, creaseAngle )
+        const nB = weightedNormal( vertexNormals[face.b], face.normal, creaseAngle )
+        const nC = weightedNormal( vertexNormals[face.c], face.normal, creaseAngle )
+
+        // const xa = normalAttribute.getX(face.a)
+        // const ya = normalAttribute.getY(face.a)
+        // const za = normalAttribute.getZ(face.a)
+        // const xb = normalAttribute.getX(face.b)
+        // const yb = normalAttribute.getY(face.b)
+        // const zb = normalAttribute.getZ(face.b)
+        // const xc = normalAttribute.getX(face.c)
+        // const yc = normalAttribute.getY(face.c)
+        // const zc = normalAttribute.getZ(face.c)
+        // normalAttribute.setXYZ( face.a, xa+nA.x, ya+nA.y, za+nA.z )
+        // normalAttribute.setXYZ( face.b, xb+nB.x, yb+nB.y, zb+nB.z )
+        // normalAttribute.setXYZ( face.c, xc+nC.x, yc+nC.y, zc+nC.z )
+
+        normalAttribute.setXYZ( face.a, nA.x, nA.y, nA.z )
+        normalAttribute.setXYZ( face.b, nB.x, nB.y, nB.z )
+        normalAttribute.setXYZ( face.c, nC.x, nC.y, nC.z )
     }
 
-    return new Float32BufferAttribute( normals, 3 )
+    // Normalization
+    for (let i=0; i<normalAttribute.count; ++i) {
+        const x = normalAttribute.getX(i)
+        const y = normalAttribute.getY(i)
+        const z = normalAttribute.getZ(i)
+        const d = Math.sqrt(x**2 + y**2 + z**2)
+        normalAttribute.setXYZ(i, x/d, y/d, z/d)
+    }
+
+    return normalAttribute
 }
 
 class Face {
@@ -89,19 +109,49 @@ function weightedNormal( normals: Vector3[], vector: Vector3, creaseAngle: numbe
 
     if ( creaseAngle === 0 ) {
         normal.copy( vector )
-    } else {
-        for ( let i = 0, l = normals.length; i < l; i++ ) {
-            const angle = normals[ i ].angleTo( vector )
+    }
+    else {
+        for (let i=0, l=normals.length; i<l; ++i ) {
+            const n = normals[i]
+            const angle = n.angleTo( vector )
             if ( angle < creaseAngle ) {
-                normal.add( normals[ i ] )
+                normal.add(n)
             }
         }
     }
-    return normal.normalize()
+    return normal//.normalize()
 }
 
+// -----------------------------------------------------------
+
+/*
+const calcNormal = (normals: Vector3[], normal: Vector3, angle: number) =>
+	normals.
+        filter( n => n.angleTo( normal ) < angle * Math.PI / 180 ).
+        reduce( (a, b) => a.clone().add( b ) ).normalize()
 
 
+const computeVertexNormals = (geometry, angle) => {
+	geometry.computeFaceNormals() ; // TODO
+	
+	const vertices = geometry.vertices.map( () => [] ); // vertices with normals array
+
+	geometry.faces.map( face => {
+		vertices[ face.a ].push( face.normal );
+		vertices[ face.b ].push( face.normal );
+		vertices[ face.c ].push( face.normal );
+	});
+
+	geometry.faces.map( face => {
+		face.vertexNormals[ 0 ] = calcNormal( vertices[ face.a ], face.normal, angle );
+		face.vertexNormals[ 1 ] = calcNormal( vertices[ face.b ], face.normal, angle );
+		face.vertexNormals[ 2 ] = calcNormal( vertices[ face.c ], face.normal, angle );
+	});
+
+	if ( geometry.faces.length > 0 ) 
+		geometry.normalsNeedUpdate = true;
+}
+*/
 
 
 

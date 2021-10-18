@@ -71,6 +71,8 @@
                     //     "/projects/youwol/workspace/packages/geophysics/examples/mud/result-insar.gcd"
                     // ],
 
+                    url: "/platform/components/arch-node/examples/ex1/surface-node.gcd",
+
                     //url: "/platform/components/cassini/wasm/loadCassini/fault_S1.ts",
 
                     //url: "/platform/components/cassini/wasm/loadCassini/result_DebugModel.ts",
@@ -84,27 +86,27 @@
                     //url: "/platform/components/cassini/wasm/loadCassini/result_steep_fold.ts",
                     //url: "/platform/components/cassini/wasm/loadCassini/result_Total.ts",
                     //url: "/platform/components/cassini/wasm/loadCassini/result_gentle_throw.ts",
-                    url: "/platform/components/cassini/wasm/loadCassini/result_Chevron.ts",
+                    //url: "/platform/components/cassini/wasm/loadCassini/result_Chevron.ts",
                     //url: "/platform/components/cassini/wasm/loadCassini/test.ts",
 
                     show: true,
-                    attr: '',
+                    attr: 'Uy',
                     lut: 'Insar',
                     min: 0,
                     max: 1,
                     opacity: 1,
-                    flat: false,
+                    flat: true,
                     borders: {
                         show: true,
                         color: "#000000"
                     },
                     wireframe: {
-                        show: false,
+                        show: true,
                         color: '#000000'
                     },
                     iso: {
                         opacity: 1,
-                        show: false,
+                        show: true,
                         showFill: true,
                         showLines: true,
                         lut: 'Insar',
@@ -121,9 +123,9 @@
                     }
                 },
                 {
-                    url: "/projects/youwol/workspace/packages/geophysics/examples/mud/Mud_Volcano_top_cut_remeshed_1315.gcd",
-                    show: false,
-                    attr: '',
+                    url: "/platform/components/arch-node/examples/ex1/grid-node.gcd",
+                    show: true,
+                    attr: 'Ux',
                     lut: 'Insar',
                     min: 0,
                     max: 1,
@@ -138,7 +140,7 @@
                     },
                     iso: {
                         opacity: 1,
-                        show: false,
+                        show: true,
                         showFill: true,
                         showLines: true,
                         lut: 'Insar',
@@ -375,7 +377,7 @@
                                         wireframe: false, 
                                         color: randColor(),
                                         opacity: surfaceInfo.opacity,
-                                        creaseAngle: 0 // degrees !!!
+                                        creaseAngle: 30 // degrees !!!
                                     })
                                 })
                                 if (surfaceInfo.iso.show===false) {

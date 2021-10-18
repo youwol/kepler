@@ -27,7 +27,7 @@ export class IsoContoursParameters extends SkinParameters {
         {
             isoList,
             filled=true,
-            lined=true, 
+            lined=false, 
             min=Number.NEGATIVE_INFINITY, 
             max=Number.POSITIVE_INFINITY, 
             color,
