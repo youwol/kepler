@@ -13,7 +13,7 @@
     "test": "jest -c ./jest.config.js --rootDir .",
     "test-coverage": "jest -c ./jest.config.js --rootDir . --collect-coverage --collectCoverageFrom=./src/lib/**/*.ts ",
     "doc": "rm -fr  dist/docs && typedoc src/ --exclude src/lib --exclude src/tests --disableSources --out dist/docs --includeVersion --hideGenerator --theme pages-plugin --media ./media",
-    "serve": "http-server ../../../../../ -p 83 -o projects/youwol/workspace/packages/kepler/test",
+    "serve": "http-server ../../../../../ -p 83 -o projects/youwol-workspace/workspace/packages/kepler/test",
     "upgrade-youwol": "yarn upgrade @youwol/math @youwol/attribute @youwol/dataframe @youwol/io",
     "publish-npm-public": "yarn build:prod && yarn test-coverage && yarn publish --access public"
   },

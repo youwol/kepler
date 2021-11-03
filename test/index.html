@@ -3,18 +3,18 @@
 <head>
     <meta charset="utf-8">
     <title>Testing Kepler</title>
-    <script src='/projects/youwol/workspace/packages/dataframe/dist/@youwol/dataframe.js'></script>
-    <script src='/projects/youwol/workspace/packages/math/dist/@youwol/math.js'></script>
-    <script src='/projects/youwol/workspace/packages/geometry/dist/@youwol/geometry.js'></script>
-    <script src='/projects/youwol/workspace/packages/attribute/dist/@youwol/attribute.js'></script>
-    <script src='/projects/youwol/workspace/packages/io/dist/@youwol/io.js'></script>
+    <script src='/projects/youwol-workspace/workspace/packages/dataframe/dist/@youwol/dataframe.js'></script>
+    <script src='/projects/youwol-workspace/workspace/packages/math/dist/@youwol/math.js'></script>
+    <script src='/projects/youwol-workspace/workspace/packages/geometry/dist/@youwol/geometry.js'></script>
+    <script src='/projects/youwol-workspace/workspace/packages/attribute/dist/@youwol/attribute.js'></script>
+    <script src='/projects/youwol-workspace/workspace/packages/io/dist/@youwol/io.js'></script>
     <script src='/projects/mesh.js'></script>
 
-    <script src='/projects/youwol/workspace/packages/three-extra/node_modules/three/build/three.min.js'></script>
-    <script src='/projects/youwol/workspace/packages/three-extra/dist/@youwol/three-extra.js'></script>
-    <script src='/projects/youwol/workspace/packages/kepler/dist/@youwol/kepler.js'></script>
+    <script src='/projects/youwol-workspace/workspace/packages/three-extra/node_modules/three/build/three.min.js'></script>
+    <script src='/projects/youwol-workspace/workspace/packages/three-extra/dist/@youwol/three-extra.js'></script>
+    <script src='/projects/youwol-workspace/workspace/packages/kepler/dist/@youwol/kepler.js'></script>
     
-    <!-- <script src="https://kit.fontawesome.com/daa834e337.js" crossorigin="anonymous"></script> -->
+    <script src="https://kit.fontawesome.com/daa834e337.js" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="style.css">
 </head>
@@ -25,12 +25,12 @@
 
     <div class='home-container'>
         <span>
-            <!-- <div class='buttonIcon'>
+            <div class='buttonIcon'>
                 <div id='goHome'><i class='fa fa-home'></i></div>
             </div>
             <div class='buttonIcon'>
                 <div id='saveHome'><i class='fa fa-clinic-medical'></i></div>
-            </div> -->
+            </div>
             <div class='right-container'>
                 <div id='orientCubeWrapper'></div>
             </div>
@@ -61,17 +61,47 @@
         const surfaceset = [
                 {
 
-                    // url: [
-                    //     "/projects/youwol/workspace/packages/geophysics/examples/synthetic/data.gcd",
-                    //     "/projects/youwol/workspace/packages/geophysics/examples/synthetic/result-dikes.gcd"
-                    // ],
+                    //url: "/projects/youwol-workspace/workspace/packages/geophysics/examples/synthetic/data.gcd",
 
                     // url: [
-                    //     "/projects/youwol/workspace/packages/geophysics/examples/mud/data.gcd",
-                    //     "/projects/youwol/workspace/packages/geophysics/examples/mud/result-insar.gcd"
+                    //     "/projects/youwol-workspace/workspace/packages/geophysics/examples/mud/data.gcd",
+                    //     "/projects/youwol-workspace/workspace/packages/geophysics/examples/mud/result-insar.gcd"
                     // ],
 
-                    url: "/platform/components/arch-node/examples/ex1/surface-node.gcd",
+                    //url: "/test/models/arch/test_half_space/simulations-obs_grid.ts",
+                    //url: "/test/models/arch/galapagos-all/model2/result-forward-dikes.ts",
+                    url: "/test/models/arch/salt-2-caverns/simulations-obs_grids.ts",
+                    //url: "/test/models/arch/caverns-subsidence/simulations-AOI_grid_2021-precision.ts",
+                    //url: "/test/models/arch/test_half_space/simulations-obs_grid.ts",
+                    // url: [
+                    //     "/test/models/KemOne/surfaces/00-Plio-Quaternaire.ts",	
+                    //     "/test/models/KemOne/surfaces/03-Aquitanien-Moy.ts",	
+                    //     "/test/models/KemOne/surfaces/06-Marnes-Top.ts",	
+                    //     "/test/models/KemOne/surfaces/09-Infra-Sel.ts", 
+                    //     "/test/models/KemOne/surfaces/faults.ts", 
+                    //     "/test/models/KemOne/surfaces/01-Miocene.ts", 
+                    //     "/test/models/KemOne/surfaces/04-Aquitanien-Inf.ts", 
+                    //     "/test/models/KemOne/surfaces/07-Marnes-Mid.ts", 
+                    //     "/test/models/KemOne/surfaces/10-Serie-Rouge.ts", 
+                    //     "/test/models/KemOne/surfaces/02-Aquitanien-Sup.ts",	
+                    //     "/test/models/KemOne/surfaces/05-Sel-Sup.ts", 
+                    //     "/test/models/KemOne/surfaces/08-Marnes-Base.ts",	
+                    //     "/test/models/KemOne/surfaces/11-Serie-Grise.ts",
+
+                    //     "/test/models/KemOne/3D_model/00-Plio-Quaternaire.ts",
+                    //     "/test/models/KemOne/3D_model/03-Aquitanien-Moy.ts",	
+                    //     "/test/models/KemOne/3D_model/06-Marnes-Top.ts",	
+                    //     "/test/models/KemOne/3D_model/09-Infra-Sel.ts", 
+                    //     "/test/models/KemOne/3D_model/faults.ts", 
+                    //     "/test/models/KemOne/3D_model/01-Miocene.ts", 
+                    //     "/test/models/KemOne/3D_model/04-Aquitanien-Inf.ts", 
+                    //     "/test/models/KemOne/3D_model/07-Marnes-Mid.ts", 
+                    //     "/test/models/KemOne/3D_model/10-Serie-Rouge.ts", 
+                    //     "/test/models/KemOne/3D_model/02-Aquitanien-Sup.ts",	
+                    //     "/test/models/KemOne/3D_model/05-Sel-Sup.ts", 
+                    //     "/test/models/KemOne/3D_model/08-Marnes-Base.ts",	
+                    //     "/test/models/KemOne/3D_model/11-Serie-Grise.ts",
+                    // ],
 
                     //url: "/platform/components/cassini/wasm/loadCassini/fault_S1.ts",
 
@@ -90,18 +120,18 @@
                     //url: "/platform/components/cassini/wasm/loadCassini/test.ts",
 
                     show: true,
-                    attr: 'Uy',
+                    attr: 'stress1xx',
                     lut: 'Insar',
                     min: 0,
                     max: 1,
                     opacity: 1,
-                    flat: true,
+                    flat: false,
                     borders: {
                         show: true,
                         color: "#000000"
                     },
                     wireframe: {
-                        show: true,
+                        show: false,
                         color: '#000000'
                     },
                     iso: {
@@ -111,7 +141,7 @@
                         showLines: true,
                         lut: 'Insar',
                         duplicateLut: 1,
-                        nb :   20,
+                        nb :   10,
                         min: -1e10,
                         max:  1e10,
                         reversedLut: false
@@ -119,19 +149,34 @@
                     vectors: {
                         show: false,
                         attr: 'dikes',
-                        scale: 300
+                        scale: .03
                     }
                 },
+                // --------------------------------------------------------------------
                 {
-                    url: "/platform/components/arch-node/examples/ex1/grid-node.gcd",
+                    //url: "/test/models/arch/galapagos-all/model2/simulations-all_magma_chambers_600_georef.ts",
+                    //url: "/projects/youwol-workspace/workspace/packages/geophysics/examples/synthetic/result-dikes.gcd",
+                    url: "/test/models/arch/salt-2-caverns/simulations-salt_caverns_synth.ts",
+                    // url: "/test/models/arch/caverns-subsidence/simulations-caverns_2021-precision.ts",
+                    //url: "/test/models/arch/caverns-subsidence/test.ts",
+                    //url: "/test/models/arch/test_half_space/simulations-Fault_S1.ts",
+                    // url: [
+                    //     "/test/models/KemOne/wells_caverns_derricks/derrick_01.ts", 
+                    //     "/test/models/KemOne/wells_caverns_derricks/derrick_02.ts", 
+                    //     "/test/models/KemOne/wells_caverns_derricks/salt_cavern_01_small.ts", 
+                    //     "/test/models/KemOne/wells_caverns_derricks/salt_cavern_02_small.ts", 
+                    //     "/test/models/KemOne/wells_caverns_derricks/well_01_small.ts", 
+                    //     //"/test/models/KemOne/wells_caverns_derricks/well_02_small.ts"
+                    // ],
                     show: true,
-                    attr: 'Ux',
+                    attr: 'U1y',
                     lut: 'Insar',
                     min: 0,
                     max: 1,
                     opacity: 1,
+                    flat: true,
                     borders: {
-                        show: true,
+                        show: false,
                         color: "#000000"
                     },
                     wireframe: {
@@ -140,9 +185,10 @@
                     },
                     iso: {
                         opacity: 1,
-                        show: true,
+                        show: false,
                         showFill: true,
-                        showLines: true,
+                        showLines: false,
+                        creaseAngle: 0,
                         lut: 'Insar',
                         duplicateLut: 1,
                         nb :   20,
@@ -151,12 +197,20 @@
                         reversedLut: false
                     },
                     vectors: {
-                        show: false
+                        show: true,
+                        attr: 'iDikes',
+                        scale: .03
                     }
                 }
             ]
 
-        
+        const randColor = () => {
+                const color = new THREE.Color( 0xffffff )
+                color.setHex( Math.random() * 0xffffff )
+                console.log('=========>', '#'+color.getHexString())
+                return '#'+color.getHexString()
+                //return '#aaaaaa'
+            }
 
         function ALL() {
 
@@ -229,11 +283,11 @@
                         renderer,
                         controls, 
                         renderFunctions: renderFct, // will also add the cube in renderFct
-                        labels: ['East', 'West', 'Up', 'Down', 'South', 'North'],
+                        labels: ['Right', 'Left', 'Up', 'Down', 'Front', 'Back'],
 
                         domElement : document.getElementById('orientCubeWrapper'),
-                        //domHome    : document.getElementById('goHome'), 
-                        //domSaveHome: document.getElementById('saveHome')
+                        domHome    : document.getElementById('goHome'), 
+                        domSaveHome: document.getElementById('saveHome')
                     })
                 )
             }
@@ -325,6 +379,9 @@
                             //console.log( kepler.generateColorMap('Insar', 32, 3) )
 
                             if (! buffer) return undefined
+
+                            const scolor = randColor()
+
                             const dfs = io.decodeGocadTS(buffer, {shared: false, merge: false})
                             dfs.forEach( df => {
                                 let skin
@@ -336,7 +393,8 @@
                                     new attribute.PositionDecomposer,
                                     new attribute.ComponentDecomposer,
                                     new attribute.AreaDecomposer,
-                                    new attribute.VectorNormDecomposer
+                                    new attribute.VectorNormDecomposer,
+                                    new attribute.EigenValuesDecomposer
                                 ])
 
                                 console.log('available scalar attributes:', manager.names(1) )
@@ -365,8 +423,8 @@
                                         })
                                     }) )
                                 }
-
-                                const randColor = () => "#" + Math.floor(Math.random()*16777215).toString(16)
+                                
+                                //const randColor = () => "#" + Math.floor(Math.random()*16777215).toString(16)
                                 
                                 // surface
                                 const surface = kepler.createSurface({
@@ -375,7 +433,7 @@
                                     parameters: new kepler.SurfaceParameters({
                                         flat: surfaceInfo.flat, 
                                         wireframe: false, 
-                                        color: randColor(),
+                                        color: scolor,
                                         opacity: surfaceInfo.opacity,
                                         creaseAngle: 30 // degrees !!!
                                     })

@@ -93,7 +93,7 @@ export function createIsoContourFilled(
         nmesh.material.transparent = false
     }
 
-    nmesh.geometry.computeVertexNormals()
+    //nmesh.geometry.computeVertexNormals()
     
     return nmesh
 }
