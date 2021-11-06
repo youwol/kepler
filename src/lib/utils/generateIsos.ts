@@ -42,6 +42,11 @@ export function generateIsosByNumber(min: number, max: number, nbr: number = 10)
  */
 export function generateIsosBySpacing(min: number, max: number, spacing: number): Array<number> {
     const r = []
+    if (max<min) throw new Error('Min should be less than max')
+    if (Math.abs(max-min)/spacing>500) {
+        spacing = Math.abs(max-min)/500
+        console.warn('WARNING: increeasing the spacing to '+spacing+' in order to avoid too many isos')
+    }
     if (min<0 && max>0) {
         let value = spacing
         while (value >= min+spacing) r.push(value -= spacing)

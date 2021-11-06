@@ -3,16 +3,16 @@
 <head>
     <meta charset="utf-8">
     <title>Testing Kepler</title>
-    <script src='/projects/youwol-workspace/workspace/packages/dataframe/dist/@youwol/dataframe.js'></script>
-    <script src='/projects/youwol-workspace/workspace/packages/math/dist/@youwol/math.js'></script>
-    <script src='/projects/youwol-workspace/workspace/packages/geometry/dist/@youwol/geometry.js'></script>
-    <script src='/projects/youwol-workspace/workspace/packages/attribute/dist/@youwol/attribute.js'></script>
-    <script src='/projects/youwol-workspace/workspace/packages/io/dist/@youwol/io.js'></script>
-    <script src='/projects/mesh.js'></script>
+    <script src='/devs/workspace/packages/dataframe/dist/@youwol/dataframe.js'></script>
+    <script src='/devs/workspace/packages/math/dist/@youwol/math.js'></script>
+    <script src='/devs/workspace/packages/geometry/dist/@youwol/geometry.js'></script>
+    <script src='/devs/workspace/packages/attribute/dist/@youwol/attribute.js'></script>
+    <script src='/devs/workspace/packages/io/dist/@youwol/io.js'></script>
+    <script src='/devs/workspace/packages/mesh.js'></script>
 
-    <script src='/projects/youwol-workspace/workspace/packages/three-extra/node_modules/three/build/three.min.js'></script>
-    <script src='/projects/youwol-workspace/workspace/packages/three-extra/dist/@youwol/three-extra.js'></script>
-    <script src='/projects/youwol-workspace/workspace/packages/kepler/dist/@youwol/kepler.js'></script>
+    <script src='/devs/workspace/packages/three-extra/node_modules/three/build/three.min.js'></script>
+    <script src='/devs/workspace/packages/three-extra/dist/@youwol/three-extra.js'></script>
+    <script src='/devs/workspace/packages/kepler/dist/@youwol/kepler.js'></script>
     
     <script src="https://kit.fontawesome.com/daa834e337.js" crossorigin="anonymous"></script>
 
@@ -60,19 +60,8 @@
 
         const surfaceset = [
                 {
-
-                    //url: "/projects/youwol-workspace/workspace/packages/geophysics/examples/synthetic/data.gcd",
-
-                    // url: [
-                    //     "/projects/youwol-workspace/workspace/packages/geophysics/examples/mud/data.gcd",
-                    //     "/projects/youwol-workspace/workspace/packages/geophysics/examples/mud/result-insar.gcd"
-                    // ],
-
-                    //url: "/test/models/arch/test_half_space/simulations-obs_grid.ts",
-                    //url: "/test/models/arch/galapagos-all/model2/result-forward-dikes.ts",
-                    url: "/test/models/arch/salt-2-caverns/simulations-obs_grids.ts",
-                    //url: "/test/models/arch/caverns-subsidence/simulations-AOI_grid_2021-precision.ts",
-                    //url: "/test/models/arch/test_half_space/simulations-obs_grid.ts",
+                    // url: "/data/arch/mud/simulations-grid.ts",
+                    url: "/data/arch/sphere/simulations-grids.ts",
                     // url: [
                     //     "/test/models/KemOne/surfaces/00-Plio-Quaternaire.ts",	
                     //     "/test/models/KemOne/surfaces/03-Aquitanien-Moy.ts",	
@@ -87,7 +76,6 @@
                     //     "/test/models/KemOne/surfaces/05-Sel-Sup.ts", 
                     //     "/test/models/KemOne/surfaces/08-Marnes-Base.ts",	
                     //     "/test/models/KemOne/surfaces/11-Serie-Grise.ts",
-
                     //     "/test/models/KemOne/3D_model/00-Plio-Quaternaire.ts",
                     //     "/test/models/KemOne/3D_model/03-Aquitanien-Moy.ts",	
                     //     "/test/models/KemOne/3D_model/06-Marnes-Top.ts",	
@@ -102,25 +90,8 @@
                     //     "/test/models/KemOne/3D_model/08-Marnes-Base.ts",	
                     //     "/test/models/KemOne/3D_model/11-Serie-Grise.ts",
                     // ],
-
-                    //url: "/platform/components/cassini/wasm/loadCassini/fault_S1.ts",
-
-                    //url: "/platform/components/cassini/wasm/loadCassini/result_DebugModel.ts",
-                    //url: "/platform/components/cassini/wasm/loadCassini/result_Dno.ts",
-                    //url: "/platform/components/cassini/wasm/loadCassini/result_Exxon.ts",
-                    //url: "/platform/components/cassini/wasm/loadCassini/result_OsebergBIG.ts",
-                    //url: "/platform/components/cassini/wasm/loadCassini/result_Oseberg.ts",
-                    //url: "/platform/components/cassini/wasm/loadCassini/result_Kharir.ts",
-                    //url: "/platform/components/cassini/wasm/loadCassini/result_Rabanel.ts",
-                    //url: "/platform/components/cassini/wasm/loadCassini/result_seg_faulted.ts",
-                    //url: "/platform/components/cassini/wasm/loadCassini/result_steep_fold.ts",
-                    //url: "/platform/components/cassini/wasm/loadCassini/result_Total.ts",
-                    //url: "/platform/components/cassini/wasm/loadCassini/result_gentle_throw.ts",
-                    //url: "/platform/components/cassini/wasm/loadCassini/result_Chevron.ts",
-                    //url: "/platform/components/cassini/wasm/loadCassini/test.ts",
-
                     show: true,
-                    attr: 'stress1xx',
+                    attr: 'Syz',
                     lut: 'Insar',
                     min: 0,
                     max: 1,
@@ -139,11 +110,13 @@
                         show: true,
                         showFill: true,
                         showLines: true,
-                        lut: 'Insar',
                         duplicateLut: 1,
-                        nb :   10,
-                        min: -1e10,
-                        max:  1e10,
+                        nb :   40,
+                        spacing: 0.02,
+                        // min: -1e10,
+                        // max:  1e10,
+                        min: -0.28,
+                        max:  0.28,
                         reversedLut: false
                     },
                     vectors: {
@@ -154,12 +127,8 @@
                 },
                 // --------------------------------------------------------------------
                 {
-                    //url: "/test/models/arch/galapagos-all/model2/simulations-all_magma_chambers_600_georef.ts",
-                    //url: "/projects/youwol-workspace/workspace/packages/geophysics/examples/synthetic/result-dikes.gcd",
-                    url: "/test/models/arch/salt-2-caverns/simulations-salt_caverns_synth.ts",
-                    // url: "/test/models/arch/caverns-subsidence/simulations-caverns_2021-precision.ts",
-                    //url: "/test/models/arch/caverns-subsidence/test.ts",
-                    //url: "/test/models/arch/test_half_space/simulations-Fault_S1.ts",
+                    // url: "/data/arch/mud/simulations-Mud_Volcano_top_9421.ts",
+                    url: "/data/arch/sphere/sphere_5120.ts",
                     // url: [
                     //     "/test/models/KemOne/wells_caverns_derricks/derrick_01.ts", 
                     //     "/test/models/KemOne/wells_caverns_derricks/derrick_02.ts", 
@@ -169,7 +138,7 @@
                     //     //"/test/models/KemOne/wells_caverns_derricks/well_02_small.ts"
                     // ],
                     show: true,
-                    attr: 'U1y',
+                    attr: 'z',
                     lut: 'Insar',
                     min: 0,
                     max: 1,
@@ -185,13 +154,13 @@
                     },
                     iso: {
                         opacity: 1,
-                        show: false,
+                        show: true,
                         showFill: true,
                         showLines: false,
                         creaseAngle: 0,
-                        lut: 'Insar',
                         duplicateLut: 1,
-                        nb :   20,
+                        nb :   10,
+                        spacing: 0.01,
                         min: -1e7,
                         max:  1e7,
                         reversedLut: false
@@ -406,10 +375,12 @@
                                     console.log('z:', math.minMaxArray(manager.serie(1, 'z').array))
                                 }
 
-                                const attr = manager.serie(1, surfaceInfo.attr)
+                                let attr = manager.serie(1, surfaceInfo.attr)
                                 if (attr) {
-                                    console.log('attribute:', surfaceInfo.attr)
-                                    console.log(math.minMaxArray(attr.array))
+                                    console.log('attribute', surfaceInfo.attr, math.minMaxArray(attr.array))
+
+                                    // const f = new attribute.Fringes(surfaceInfo.attr, 0.1)
+                                    // attr = f.serie(df, 1, surfaceInfo.attr)
                                 }
 
                                 if (surfaceInfo.wireframe.show) {
@@ -435,7 +406,7 @@
                                         wireframe: false, 
                                         color: scolor,
                                         opacity: surfaceInfo.opacity,
-                                        creaseAngle: 30 // degrees !!!
+                                        creaseAngle: 0 // degrees !!!
                                     })
                                 })
                                 if (surfaceInfo.iso.show===false) {
@@ -443,7 +414,7 @@
                                     if (attr) {
                                         kepler.paintAttribute( surface, attr, new kepler.PaintParameters({
                                             atVertex: true,
-                                            lut: surfaceInfo.iso.lut,
+                                            lut: surfaceInfo.lut,
                                             duplicateLut: surfaceInfo.iso.duplicateLut
                                         }) )
                                     }
@@ -474,7 +445,15 @@
                                     const minmax = dataframe.array.minMax(attr.array)
                                     //let isos = kepler.generateIsos(minmax[0], minmax[1], 20)
                                     //isos = [-0.2, 0, 0.2]
-                                    let isos = kepler.generateIsos(minmax[0], minmax[1], surfaceInfo.iso.nb)
+                                    // let isos = kepler.generateIsos(minmax[0], minmax[1], surfaceInfo.iso.nb)
+                                    //let isos = kepler.generateIsosBySpacing(minmax[0], minmax[1], surfaceInfo.iso.spacing)
+                                    let iso = undefined
+                                    if (surfaceInfo.iso.spacing) {
+                                        isos = kepler.generateIsosBySpacing(surfaceInfo.iso.min, surfaceInfo.iso.max, surfaceInfo.iso.spacing)
+                                    }
+                                    else {
+                                        isos = kepler.generateIsos(minmax[0], minmax[1], surfaceInfo.iso.nb)
+                                    }
 
                                     if (surfaceInfo.iso.show) {
                                         const iso = kepler.createIsoContours(
@@ -487,7 +466,7 @@
                                                     filled: surfaceInfo.iso.showFill,
                                                     lined: surfaceInfo.iso.showLines,
                                                     opacity: surfaceInfo.iso.opacity,
-                                                    lut: surfaceInfo.iso.lut,
+                                                    lut: surfaceInfo.lut,
                                                     duplicateLut: surfaceInfo.iso.duplicateLut,
                                                     min: surfaceInfo.iso.min,
                                                     max: surfaceInfo.iso.max
@@ -496,7 +475,7 @@
                                         )
                                         scene.add( iso )
                                         // const cb = new kepler.Colorbar({
-                                        //     lutName: surfaceInfo.iso.lut,
+                                        //     lutName: surfaceInfo.lut,
                                         //     min: minmax[0],
                                         //     max: minmax[1]
                                         // })
