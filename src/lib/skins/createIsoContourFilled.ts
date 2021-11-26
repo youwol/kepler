@@ -302,10 +302,6 @@ class IsoContoursFill {
         let bypass = false
         if (t.reversed) {
             if (this.segment_list_.length === 0) {
-                // add_triangle(
-                //     t.p1, t.p3, t.p2, 
-                //     t.normal_p1, t.normal_p3, t.normal_p2, 
-                //     t.not_intersected_polygon_value);
                 this.addTri(
                     t.p1, t.p3, t.p2,
                     t.n1, t.n3, t.n2,
@@ -316,20 +312,12 @@ class IsoContoursFill {
             let seg = front(this.segment_list_)
 
             if (seg.iso < t.v2) {
-                // add_triangle(
-                //     t.p1, seg->point2_, seg->point1_, 
-                //     t.normal_p1, seg->normal2_, seg->normal1_, 
-                //     t.not_intersected_polygon_value);
                 this.addTri(t.p1, seg.p2, seg.p1,
                     t.n1, seg.n2, seg.n1,
                     t.notIntersectedPolygonValue)
             }
             else {
                 bypass = true
-                // add_quad(
-                //     t.p1, seg->point2_, seg->point1_, t.p2, 
-                //     t.normal_p1, seg->normal2_, seg->normal1_, t.normal_p2, 
-                //     t.not_intersected_polygon_value);
                 this.addQuad(t.p1, seg.p2, seg.p1, t.p2,
                     t.n1, seg.n2, seg.n1, t.n2,
                     t.notIntersectedPolygonValue)
@@ -339,31 +327,18 @@ class IsoContoursFill {
                 const seg1 = this.segment_list_[i]
             
                 if (seg1.iso < t.v2) {
-                    // add_quad(
-                    //     seg->point1_, seg1->point1_, seg1->point2_, seg->point2_, 
-                    //     -seg->normal1_, -seg1->normal1_, -seg1->normal2_, -seg->normal2_, 
-                    //     seg->iso_value_);
                     this.addQuad(seg.p1, seg1.p1, seg1.p2, seg.p2,
                         negate(seg.n1), negate(seg1.n1), negate(seg1.n2), negate(seg.n2),
                         seg.iso)
                 }
                 else {
                     if (bypass) {
-                        // add_quad(
-                        //     seg->point1_, seg->point2_, seg1->point2_, seg1->point1_, 
-                        //     seg->normal1_, seg->normal2_, seg1->normal2_, seg1->normal1_, 
-                        //     seg->iso_value_);
                         this.addQuad(seg.p1, seg.p2, seg1.p2, seg1.p1,
                             seg.n1, seg.n2, seg1.n2, seg1.n1,
                             seg.iso)
                     }
                     else {
                         bypass = true
-                        // add_poly(
-                        //     t.p2, seg->point1_, seg->point2_, seg1->point2_, seg1->point1_,
-                        //     t.normal_p2, seg->normal1_, seg->normal2_, seg1->normal2_, seg1->normal1_,
-                        //     seg->iso_value_);
-
                         this.addPoly(
                             t.p2, seg.p1, seg.p2, seg1.p2, seg1.p1,
                             t.n2, seg.n1, seg.n2, seg1.n2, seg1.n1,
@@ -375,19 +350,11 @@ class IsoContoursFill {
 
             seg = back(this.segment_list_)
             if (bypass) {
-                // add_triangle(
-                //     seg->point1_, seg->point2_, t.p3, 
-                //     seg->normal1_, seg->normal2_, t.normal_p3, 
-                //     seg->iso_value_);
                 this.addTri(seg.p1, seg.p2, t.p3,
                     seg.n1, seg.n2, t.n3,
                     seg.iso)
             }
             else {
-                // add_quad(
-                //     t.p2, seg->point1_, seg->point2_, t.p3, 
-                //     t.normal_p2, seg->normal1_, seg->normal2_, t.normal_p3, 
-                //     seg->iso_value_);
                 this.addQuad(t.p2, seg.p1, seg.p2, t.p3,
                     t.n2, seg.n1, seg.n2, t.n3,
                     seg.iso)
@@ -397,10 +364,6 @@ class IsoContoursFill {
         //draw polygons in CW
         else {
             if (this.segment_list_.length === 0) {
-                // add_triangle(
-                //     t.p1, t.p2, t.p3, 
-                //     t.normal_p1, t.normal_p2, t.normal_p3, 
-                //     t.not_intersected_polygon_value);
                 this.addTri(t.p1, t.p2, t.p3,
                     t.n1, t.n2, t.n3,
                     t.notIntersectedPolygonValue)
@@ -410,20 +373,12 @@ class IsoContoursFill {
             let seg = front(this.segment_list_)
 
             if (seg.iso < t.v2) {
-                // add_triangle(
-                //     t.p1, seg->point1_, seg->point2_, 
-                //     t.normal_p1, seg->normal1_, seg->normal2_, 
-                //     t.not_intersected_polygon_value);
                 this.addTri(t.p1, seg.p1, seg.p2,
                     t.n1, seg.n1, seg.n2,
                     t.notIntersectedPolygonValue)
             }
             else {
                 bypass = true
-                // add_quad(
-                //     t.p1, t.p2, seg->point1_, seg->point2_, 
-                //     t.normal_p1, t.normal_p2, seg->normal1_, seg->normal2_, 
-                //     t.not_intersected_polygon_value);
                 this.addQuad(t.p1, t.p2, seg.p1, seg.p2,
                     t.n1, t.n2, seg.n1, seg.n2,
                     t.notIntersectedPolygonValue)
@@ -432,30 +387,18 @@ class IsoContoursFill {
             for (let i=1; i < this.segment_list_.length; ++i) {
                 const seg1 = this.segment_list_[i]
                 if (seg1.iso < t.v2) {
-                    // add_quad(
-                    //     seg->point1_, seg1->point1_, seg1->point2_, seg->point2_, 
-                    //     seg->normal1_, seg1->normal1_, seg1->normal2_, seg->normal2_, 
-                    //     seg->iso_value_);
                     this.addQuad(seg.p1, seg1.p1, seg1.p2, seg.p2,
                         seg.n1, seg1.n1, seg1.n2, seg.n2,
                         seg.iso)
                 }
                 else {
                     if (bypass) {
-                        // add_quad(
-                        //     seg->point1_, seg1->point1_, seg1->point2_, seg->point2_, 
-                        //     seg->normal1_, seg1->normal1_, seg1->normal2_, seg->normal2_, 
-                        //     seg->iso_value_);
                         this.addQuad(seg.p1, seg1.p1, seg1.p2, seg.p2,
                             seg.n1, seg1.n1, seg1.n2, seg.n2,
                             seg.iso)
                     }
                     else {
                         bypass = true
-                        // add_poly(
-                        //     t.p2, seg1->point1_, seg1->point2_, seg->point2_, seg->point1_,
-                        //     t.normal_p2, seg1->normal1_, seg1->normal2_, seg->normal2_, seg->normal1_,
-                        //     seg->iso_value_);
                         this.addPoly(
                             t.p2, seg1.p1, seg1.p2, seg.p2, seg.p1,
                             t.n2, seg1.n1, seg1.n2, seg.n2, seg.n1,
@@ -467,19 +410,11 @@ class IsoContoursFill {
 
             seg = back(this.segment_list_)
             if (bypass) {
-                // add_triangle(
-                //     seg->point1_, t.p3, seg->point2_, 
-                //     seg->normal1_, t.normal_p3, seg->normal2_, 
-                //     seg->iso_value_);
                 this.addTri(seg.p1, t.p3, seg.p2,
                     seg.n1, t.n3, seg.n2,
                     seg.iso)
             }
             else {
-                // add_quad(
-                //     t.p2, t.p3, seg->point2_, seg->point1_, 
-                //     t.normal_p2, t.normal_p3, seg->normal2_, seg->normal1_,
-                //     seg->iso_value_);
                 this.addQuad(t.p2, t.p3, seg.p2, seg.p1,
                     t.n2, t.n3, seg.n2, seg.n1,
                     seg.iso)
@@ -500,9 +435,7 @@ class IsoContoursFill {
         const c = fromValueToColor( this.normalizeAttr(iso), {
             defaultColor: this.color_, 
             lutTable: this.lutTable_,
-            reverse: this.params.reversedLut, 
-            // min    : this.min_, 
-            // max    : this.max_
+            reverse: this.params.reverseLut, 
         })
         const id = this.position_.length/3
         this.position_.push(...point1, ...point2, ...point3)
@@ -526,9 +459,7 @@ class IsoContoursFill {
         const c = fromValueToColor( this.normalizeAttr(iso), {
             defaultColor  : this.color_, 
             lutTable: this.lutTable_,
-            reverse: this.params.reversedLut, 
-            // min    : this.min_, 
-            // max    : this.max_
+            reverse: this.params.reverseLut, 
         })
         const id = this.position_.length/3
         this.position_.push(...point1, ...point2, ...point3, ...point4)
@@ -557,9 +488,7 @@ class IsoContoursFill {
         const c = fromValueToColor( this.normalizeAttr(iso), {
             defaultColor  : this.color_, 
             lutTable: this.lutTable_,
-            reverse: this.params.reversedLut, 
-            // min    : this.min_, 
-            // max    : this.max_
+            reverse: this.params.reverseLut, 
         })
         const id = this.position_.length/3
         this.position_.push(...point1, ...point2, ...point3, ...point4, ...point5)

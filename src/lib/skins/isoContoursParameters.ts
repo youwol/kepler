@@ -21,7 +21,7 @@ export class IsoContoursParameters extends SkinParameters {
     public readonly lut        : string = 'Rainbow'
     public readonly duplicateLut: number = 1
     public readonly lockLut    : boolean = true
-    public readonly reversedLut: boolean
+    public readonly reverseLut: boolean = false
 
     constructor(
         {
@@ -36,7 +36,7 @@ export class IsoContoursParameters extends SkinParameters {
             duplicateLut,
             lockLut, 
             opacity,
-            reversedLut, ...others
+            reverseLut, ...others
         } : {
             isoList: number[],
             filled?: boolean,
@@ -49,7 +49,7 @@ export class IsoContoursParameters extends SkinParameters {
             duplicateLut?: number, 
             lockLut?: boolean, 
             opacity?: number,
-            reversedLut?: boolean
+            reverseLut?: boolean
         })
     {
         super(others)
@@ -64,8 +64,8 @@ export class IsoContoursParameters extends SkinParameters {
         this.min = (min!==undefined?min:Number.NEGATIVE_INFINITY )
         this.max = (max!==undefined?max:Number.POSITIVE_INFINITY )
 
-        this.set('lockLut', lockLut)
-        this.set('reversedLut', reversedLut)
+        this.set('lockLut', lockLut, this.lockLut)
+        this.reverseLut = (reverseLut!== undefined ? reverseLut : this.reverseLut)
         this.lut = lut || 'Rainbow'
         if (duplicateLut !== undefined) this.duplicateLut = duplicateLut
         if (lut !== undefined) this.lut = lut

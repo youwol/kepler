@@ -15,7 +15,7 @@ export class PaintParameters extends SkinParameters {
     public readonly lut: string
     public readonly duplicateLut: number = 1
     public readonly lockLut: boolean = false
-    public readonly reversedLut: boolean
+    public readonly reverseLut: boolean
     public readonly min: number
     public readonly max: number
     public readonly defaultColor: string
@@ -41,11 +41,11 @@ export class PaintParameters extends SkinParameters {
         this.min = min !==undefined ? min : 0
         this.max = max !==undefined ? max : 1
         this.atVertex = atVertex !==undefined ? atVertex : true
-        this.set('lockLut', lockLut)
-        this.reversedLut = false
+        this.set('lockLut', lockLut, this.lockLut)
+        this.reverseLut = false
 
         if (this.min > this.max) {
-            this.reversedLut = true
+            this.reverseLut = true
             const a = this.min
             this.min = this.max
             this.max = a
@@ -110,7 +110,7 @@ export function paintAttribute(
 
     let colors = fromValuesToColors(attribute.array, {
         defaultColor: new Color(parameters.defaultColor),
-        reverse: parameters.reversedLut, 
+        reverse: parameters.reverseLut, 
         min: parameters.min, 
         max: parameters.max, 
         lut: parameters.lut, 

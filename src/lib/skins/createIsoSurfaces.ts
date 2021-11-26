@@ -82,7 +82,7 @@ export function createIsoSurfaces({grid, attribute, material, parameters}:
             // max: parameters.max, 
             lut: parameters.lut, 
             lockLut: parameters.lockLut,
-            reverse: parameters.reversedLut
+            reverse: parameters.reverseLut
         }) as any
     }
 

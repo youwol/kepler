@@ -82,7 +82,7 @@ export function createIsoContourLines(
     let index       = 0
     // const mcolors   = fromValuesToColors(isoValues, {
     //     color: new Color(parameters.color), 
-    //     reverse: parameters.reversedLut, 
+    //     reverse: parameters.reverseLut, 
     //     min: parameters.min, 
     //     max: parameters.max, 
     //     lut: parameters.lut, 

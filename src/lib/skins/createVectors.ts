@@ -13,14 +13,14 @@ import { createLut } from "../utils"
  * @category Skin Parameters
  */
 export class VectorsParameters extends PaintParameters {
-    public readonly lineWidth: number
-    public readonly color: string
-    public readonly opacity: number
+    public readonly lineWidth: number = 1
+    public readonly color: string = '#000000'
+    public readonly opacity: number = 1
     public readonly transparent: boolean = false
     public readonly scale: number = 1
     public readonly normalize: boolean = false
     public readonly project: boolean = false
-    public readonly vector: string
+    public readonly vector: string = ''
 
     constructor(
         {vector, lineWidth, color, opacity, transparent, scale, normalize, project, ...others}:
@@ -41,9 +41,9 @@ export class VectorsParameters extends PaintParameters {
         this.color     = color || '#000000'
         this.opacity   = opacity || 1
         this.scale     = scale !== undefined ? scale : 1
-        this.set('transparent', transparent)
-        this.set('normalize', normalize)
-        this.set('project', project)
+        this.set('transparent', transparent, this.transparent)
+        this.set('normalize'  , normalize  , this.normalize  )
+        this.set('project'    , project    , this.project    )
     }
 }
 
@@ -94,7 +94,10 @@ export function createVectors(
             u[1] /= l
             u[2] /= l
         }
-        vertices.push(p[0]-s*u[0], p[1]-s*u[1], p[2]-s*u[2], p[0]+s*u[0], p[1]+s*u[1], p[2]+s*u[2])
+        // centered vector
+        vertices.push(
+            p[0]-s*u[0], p[1]-s*u[1], p[2]-s*u[2],
+            p[0]+s*u[0], p[1]+s*u[1], p[2]+s*u[2])
     })
 
     // The geometry
@@ -142,7 +145,7 @@ export function createVectors(
         max: parameters.max, 
         lutTable, 
         defaultColor, 
-        reverse: parameters.reversedLut
+        reverse: parameters.reverseLut
     }
 
     if (attribute) {

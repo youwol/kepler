@@ -49,8 +49,7 @@ export class PointsetParameters extends SkinParameters {
         //this.shadingName = shadingName || ''
         this.sizeName = sizeName || ''
         this.set('sizeAttenuation', sizeAttenuation, this.sizeAttenuation)
-        this.set('transparent', transparent, this.transparent
-        )
+        this.set('transparent', transparent, this.transparent)
     }
 }
 
