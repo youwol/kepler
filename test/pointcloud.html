@@ -70,147 +70,25 @@
         const showPlanes    = true
         // ================================
 
-        const surfaceset = [
-                {
-                    url: "/data/arch/spanish-peak/forward-grid.ts",
-                    show: false,
-                    attr: '',
-                    lut: 'Insar',
-                    duplicateLut: 1,
-                    surface: {
-                        show: true,
-                        color: '#aaaaaa',
-                        flat: false,
-                        creaseAngle: 0,
-                        opacity: 0.5
-                    },
-                    iso: {
-                        show: false,
-                        showFill: true,
-                        showLines: true,
-                        flat: true,
-                        nb :   20,
-                        useMinMax: false,
-                        min: -1e10,
-                        max:  1e10,
-                    },
-                    vectors: {
-                        show: true,
-                        attr: 'Joint',
-                        scale: 500,
-                        color: '#000000',
-                        useTube: false,
-                        radius: 20
-                    },
-                    borders: {
-                        show: true,
-                        color: "#000000"
-                    },
-                    wireframe: {
-                        show: false,
-                        color: '#000000'
-                    },
-                    failure: {
-                        show: false,
-                        stress: 'S',
-                        //sizeAttribute: 'S1',
-                        //paintAttribute: 'S1',
-                        size: 25,
-                        color: '#ffff00',
-                        circle: false,
-                        borders: true,
-                        type: kepler.FractureType.DYKE
-                    }
-                },
-                {
-                    //url: "/data/arch/spanish-peak/simulations-cavity.ts",
-                    url: "/data/arch/spanish-peak/simulations-cavity.ts",
-                    show: false,
-                    attr: '',
-                    lut: 'Insar',
-                    duplicateLut: 1,
-                    surface: {
-                        show: true,
-                        color: '#ff0000',
-                        flat: false,
-                        creaseAngle: 0,
-                        opacity: 1
-                    },
-                    iso: {
-                        show: false,
-                        showFill: true,
-                        showLines: false,
-                        flat: true,
-                        nb :   20,
-                        useMinMax: false,
-                        min: -1e10,
-                        max:  1e10,
-                    }
-                }
-            ]
+        const surfaceset = []
 
-            const plines = [
-                {
-                    url: [ 
-                        '/data/arch/spanish-peak/dykes.pl',
-                        //'/data/arch/spanish-peak/steamlines.pl'
-                    ],
-                    show: false,
-                    useTube: false,
-                    tubeRadius: 30,
-                    color: "#ffffff"
-                }
-            ]
+            const plines = []
 
             const pointsets = [
                 {
-                    url: "/data/arch/spanish-peak/result-costs.xyz",
+                    // url: "/data/point-cloud/salon.xyz",
+                    url: "/data/arch/spanish-peak/domain.xyz",
+                    // url: "/data/arch/galapagos-all/model2/dikes_georef/points.xyz/domain-theta-Rh.xyz",
                     show: true,
+                    // attr: 'color',
                     attr: 'cost',
-                    lut: 'Insar',
+                    lut: 'Spectrum',
                     reverseLut: false,
-                    size: 4,
+                    size: 10,
                     min: 0,
-                    max: 1,
-                    opacity: 1,
-                    sizeAttenuation: true
-                },
-                {
-                    url: "/data/arch/spanish-peak/result-forward-dikes.xyz",
-                    show: false,
-                    attr: '',
-                    lut: 'Insar',
-                    reverseLut: false,
-                    min: 0,
-                    max: 1,
-                    opacity: 1,
-                    vectors: {
-                        show: true,
-                        attr: 'n',
-                        scale: 200,
-                        color: '#000000',
-                        useTube: false,
-                        radius: 20
-                    }
-                },
-                {
-                    url: "/data/arch/spanish-peak/result-forward-dikes.xyz",
-                    show: false,
-                    attr: 'cost',
-                    lut: 'Insar',
-                    reverseLut: false,
-                    min: 0,
-                    max: 1,
-                    opacity: 1,
-                    vectors: {
-                        show: true,
-                        attr: 'newN',
-                        scale: 200,
-                        color: '#FFFFFF',
-                        useTube: false,
-                        radius: 20,
-                        paint: false
-                    }
+                    max: 0.01,
+                    useMinMax: true,
+                    opacity: 0.5,
                 }
             ]
 
@@ -442,13 +320,19 @@
                                     position = position.map( v => [v[0]+x, v[1]+y, v[2]+z])
                                 }
 
+                                class Color extends math.Decomposer {
+                                    names(df, itemSize, serie, name) {
+                                        if (itemSize !== 3 && name !== "color") return []
+                                        return ['color']
+                                    }
+                                    serie(df, itemSize, name) {
+                                        if (itemSize !== 1 || name !== 'color') return undefined
+                                        return df.apply( c => 0.299*c[0] + 0.587*c[1] + 0.114*c[2] )
+                                    }
+                                }
+
                                 const manager = new dataframe.Manager(df, [
-                                    new math.PositionDecomposer,       // x y z
-                                    new math.ComponentDecomposer,      // Ux Uy Uz Sxx Sxy Sz Syy Syz Szz
-                                    new math.AreaDecomposer,           // aire
-                                    new math.VectorNormDecomposer,     // U
-                                    new math.EigenValuesDecomposer,    // S1 S2 S3
-                                    new math.EigenVectorsDecomposer    // S1 S2 S3
+                                    new Color
                                 ])
 
                                 // console.log('available scalar attributes:', manager.names(1) )
@@ -663,16 +547,13 @@
                                     new math.EigenValuesDecomposer
                                 ])
 
-                                // console.log('available scalar attributes:', manager.names(1) )
-                                // console.log('available vector attributes:', manager.names(3) )
-
                                 let attr = manager.serie(1, psetInfo.attr)
+
                                 const SKIN = kepler.createPointset({
                                     position: position,
                                     parameters: new kepler.PointsetParameters({
                                         size: psetInfo.size,
-                                        color: psetInfo.color!==undefined?psetInfo.color:undefined,
-                                        sizeAttenuation: psetInfo.sizeAttenuation
+                                        color: psetInfo.color!==undefined?psetInfo.color:undefined
                                     })
                                 })
 
@@ -680,24 +561,29 @@
                                     scene.add( SKIN )
                                 }
 
+                                // function filter(serie) {
+                                //     return dataframe.filter(serie, v => v < 0.1 )
+                                // }
+
+
                                 if (psetInfo.attr !== undefined && attr && psetInfo.show === true) {
                                     kepler.paintAttribute( SKIN, attr, new kepler.PaintParameters({
                                         atVertex: true,
                                         lut: psetInfo.lut,
                                         duplicateLut: psetInfo.duplicateLut,
-                                        reverseLut: psetInfo.reverseLut
+                                        reverseLut: psetInfo.reverseLut,
+                                        min: psetInfo.useMinMax ? psetInfo.min : 0,
+                                        max: psetInfo.useMinMax ? psetInfo.max : 1
                                     }) )
                                 }
                                 
                                 if (psetInfo.vectors !== undefined && psetInfo.vectors.show === true) {
                                     const vattr = manager.serie(3, psetInfo.vectors.attr)
-
                                     if (vattr) {
                                         if (psetInfo.vectors.useTube) {
                                             scene.add( kepler.createTubeVectors({
                                                 geometry: SKIN.geometry,
                                                 vectorField: vattr,
-                                                attribute: psetInfo.vectors.paint?attr:undefined,
                                                 parameters: new kepler.TubeVectorsParameters({
                                                     scale: psetInfo.vectors.scale,
                                                     color: psetInfo.vectors.color,
@@ -709,8 +595,7 @@
                                             scene.add( kepler.createVectors({
                                                 geometry: SKIN.geometry,
                                                 vectorField: vattr,
-                                                attribute: psetInfo.vectors.paint?attr:undefined,
-                                                parameters: new kepler.VectorsParameters({
+                                                parameters: new kepler.TubeVectorsParameters({
                                                     scale: psetInfo.vectors.scale,
                                                     color: psetInfo.vectors.color
                                                 })

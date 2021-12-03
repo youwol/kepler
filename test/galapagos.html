@@ -72,15 +72,14 @@
 
         const surfaceset = [
                 {
-                    url: "/data/arch/galapagos-all/model2/forward-grid.ts",
-                    // url: "/data/arch/galapagos-all/model2/simulations-grid.ts",
-                    // url: "/data/arch/galapagos-all/model2/simulations-grid1.ts",
+                    //url: ["/data/arch/galapagos-all/model2/forward-grid-rotated.ts", "/data/arch/galapagos-all/model2/vert_2Dgrid_Fernandina_georef.ts"],
+                    url: ["/data/arch/galapagos-all/model2/forward-grid.ts"],
                     show: true,
                     attr: '',
                     lut: 'Insar',
                     duplicateLut: 1,
                     surface: {
-                        show: true,
+                        show: false,
                         color: '#aaaaaa',
                         flat: false,
                         creaseAngle: 0,
@@ -97,12 +96,12 @@
                         max:  1e10,
                     },
                     vectors: {
-                        show: true,
+                        show: false,
                         attr: 'Joint',
                         scale: 500,
                         color: '#000000',
                         useTube: false,
-                        radius: 20
+                        radius: 30
                     },
                     borders: {
                         show: true,
@@ -117,15 +116,16 @@
                         stress: 'S',
                         //sizeAttribute: 'S1',
                         //paintAttribute: 'S1',
-                        size: 25,
+                        size: 60,
                         color: '#ffff00',
-                        circle: false,
+                        circle: true,
                         borders: true,
                         type: kepler.FractureType.DYKE
                     }
                 },
                 {
-                    url: "/data/arch/galapagos-all/model2/all_magma_chambers_600_georef.ts",
+                    url: "/data/arch/galapagos-all/model2/Sill_magma_chambers_500_georef_NEW.ts",
+                    // url: "/data/arch/galapagos-all/model2/ellipsoid_magma_chambers_500_georef_NEW.ts",
                     show: true,
                     attr: '',
                     lut: 'Insar',
@@ -137,8 +137,12 @@
                         creaseAngle: 0,
                         opacity: 1
                     },
+                    wireframe: {
+                        show: false,
+                        color: '#000000'
+                    },
                     iso: {
-                        show: true,
+                        show: false,
                         showFill: true,
                         showLines: false,
                         flat: true,
@@ -168,8 +172,8 @@
                         '/data/arch/galapagos-all/model2/dikes_georef/line.pl/Ecuador_concentric_dikes_georef_good.pl', 
                         '/data/arch/galapagos-all/model2/dikes_georef/line.pl/Wolf_radial_dikes_georef_good.pl'
                     ],
-                    show: true,
-                    useTube: true,
+                    show: false,
+                    useTube: false,
                     tubeRadius: 30,
                     color: "#ffffff"
                 }
@@ -177,12 +181,12 @@
 
             const pointsets = [
                 {
-                    url: "/data/arch/galapagos-all/model2/result-forward-dikes.xyz",
-                    show: false,
-                    attr: '',
+                    url: "/data/arch/galapagos-all/model2/result-costs.xyz",
+                    show: true,
+                    attr: 'cost',
                     lut: 'Insar',
                     reverseLut: false,
-                    size: 4,
+                    size: 7,
                     min: 0,
                     max: 1,
                     opacity: 1,
@@ -191,7 +195,7 @@
                         attr: 'newN',
                         scale: 500,
                         color: '#000000',
-                        useTube: false,
+                        useTube: true,
                         radius: 20
                     }
                 },
@@ -206,7 +210,7 @@
                     opacity: 1,
                     vectors: {
                         show: false,
-                        attr: 'n',
+                        attr: 'newN',
                         scale: 200,
                         color: '#FFFF00',
                         useTube: false,
@@ -426,6 +430,8 @@
                             if (! buffer) return undefined
 
                             const scolor = randColor()
+
+                            console.log('dping surface from file', url)
 
                             const dfs = io.decodeGocadTS(buffer, {shared: false, merge: true})
                             dfs.forEach( df => {
@@ -685,7 +691,9 @@
                                         atVertex: true,
                                         lut: psetInfo.lut,
                                         duplicateLut: psetInfo.duplicateLut,
-                                        reverseLut: psetInfo.reverseLut
+                                        reverseLut: psetInfo.reverseLut,
+                                        min: psetInfo.min,
+                                        max: psetInfo.max
                                     }) )
                                 }
                                 
