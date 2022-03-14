@@ -1,6 +1,6 @@
 import {
     Mesh, MeshStandardMaterial, Color, MeshBasicMaterial,
-    DoubleSide, Material
+    DoubleSide, Material, MeshPhongMaterial
 } from "three"
 
 import { SkinParameters } from "./skinParameters"
@@ -84,12 +84,15 @@ export function createSurface(
     if (material) {
         mesh.material = material
     } else {
-        mesh.material = new MeshStandardMaterial({
+        mesh.material = new MeshPhongMaterial({ // was MeshStandardMaterial
             color: color,
             side: DoubleSide,
             vertexColors: false,
             wireframe: parameters.wireframe, 
-            flatShading: parameters.flat
+            flatShading: parameters.flat,
+            // emissive: 0x0c0c0, 
+            // specular: 0x050505,
+            // shininess: 500, 
         })
     }
 
@@ -108,5 +111,6 @@ export function createSurface(
 
     mesh.material.needsUpdate = true
     mesh.geometry.computeBoundingBox()
+    //mesh.castShadow = true
     return mesh
 }

@@ -66,12 +66,32 @@ html, body {
     0% {
         transform: rotate(0);
     }
-
     50% {
         transform: rotateY(180deg);
     }
-
     100% {
         transform: rotateY(180deg) rotateX(180deg);
     }
+}
+
+/* FOr testing purpose: see Galapagos one of the div*/
+#chart {
+	position: absolute;
+	top: 150px;
+    right: 0px;
+	width: 100%;
+	/* text-align: center; */
+	z-index: 100;
+	/* display: block; */
+}
+
+#info {
+	position: absolute;
+    z-index: 100;
+	top: 100px;
+	left: -100px;
+    font-size: 20px;
+    font-family: 'Courier New', Courier, monospace;
+	text-align: left;
+	display:block;
 }

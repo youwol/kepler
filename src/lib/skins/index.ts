@@ -15,7 +15,10 @@ export * from './createIsoContours'
 export * from './createVectors'
 export * from './createTubeVectors'
 export * from './colorbar'
+// export * from './colorbar2'
 export * from './createFailurePlanes'
+export * from './createEdges'
+
 //export * from './createSurfaceBorders'
 
 //export * from './createIsoContourLines'

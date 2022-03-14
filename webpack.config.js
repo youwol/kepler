@@ -30,11 +30,18 @@ module.exports = {
     },
     externals: [{
         '@youwol/dataframe': "@youwol/dataframe",
+        "@youwol/geometry": "@youwol/geometry",
         'three': {
             commonjs:'three',
             commonjs2:'three',
             root: 'THREE'
-        }
+        },
+        "three-trackballcontrols": {
+            commonjs:"three-trackballcontrols",
+            commonjs2:"three-trackballcontrols",
+            root:["TrackballControls"]
+        },
+        '@youwol/three-extra': "@youwol/three-extra"
     }],
     module: {
         rules: [

@@ -1,7 +1,7 @@
 import { DataFrame, Manager, Serie } from "@youwol/dataframe"
 import {
     Box3, BufferAttribute, BufferGeometry, CircleBufferGeometry, 
-    Color, DoubleSide, Float32BufferAttribute, Material, Matrix4, Mesh, MeshStandardMaterial, 
+    Color, DoubleSide, Float32BufferAttribute, Material, Matrix4, Mesh, MeshPhongMaterial, MeshStandardMaterial, 
     PlaneBufferGeometry, Quaternion, Vector3
 } from "three"
 import { fromValuesToColors, mergeBufferGeometries } from "../utils"
@@ -80,7 +80,8 @@ export function createFailurePlanes(
     const scalars  = mng.serie(1, parameters.paintAttribute)
 
     if (material === undefined) {
-        material = new MeshStandardMaterial({
+        material = new MeshPhongMaterial({
+        // material = new MeshStandardMaterial({
             color: new Color(parameters.color),
             side: DoubleSide,
             vertexColors: scalars!==undefined?true:false,

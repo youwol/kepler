@@ -5,7 +5,8 @@ import {
 
 import { Serie, array } from "@youwol/dataframe"
 import { IsoContoursParameters } from "./isoContoursParameters"
-import { MarchingCubes } from "./private/MarchingCubes"
+//import { MarchingCubes } from "./private/MarchingCubes"
+import { MarchingCubes } from "@youwol/geometry"
 import { ImplicitGrid3D } from './implicitGrid'
 import { fromValuesToColors } from "../utils"
 import { createSurface } from "./createSurface"
@@ -86,7 +87,7 @@ export function createIsoSurfaces({grid, attribute, material, parameters}:
         }) as any
     }
 
-    const algo = new MarchingCubes(grid, grid.sizes, scalars)
+    const algo = new MarchingCubes(grid, scalars)
     const bounds = [vmin, vmax]
 
     const skin = new Object3D()

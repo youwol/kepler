@@ -1,10 +1,6 @@
-//import { Vector3, BufferAttribute } from "three"
 import { IArray } from "@youwol/dataframe"
 import { ImplicitGrid3D } from "../implicitGrid"
 
-/**
- * 
- */
 export class MarchingCubes {
     _XYZ = true
     _bounds: Array<number> = []

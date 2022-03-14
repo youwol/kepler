@@ -1,19 +1,10 @@
 import { BufferAttribute } from 'three'
 import { Serie, array } from '@youwol/dataframe'
 
-function ok(p0: number, p1: number, p2: number, min: number, max: number) {
-    function _in(p: number, min: number, max: number) {
-        return p >= min && p <= max
-    }
-    return _in(p0,min,max) && _in(p1,min,max) && _in(p2,min,max)
-}
-
 export class MarchingTriangles {
     topo_: any[] = [] ;
     lock_ = false ;
     maxVertexIndex_ = -1 ;
-    loockup0 = [[-1, -1], [1, 2], [0, 1], [2, 0], [2, 0], [0, 1], [1, 2], [-1, -1]] ;
-    loockup1 = [[[0, 1], [2, 3]], [[4, 5], [6, 7]]] ;
     _bounds: Array<number> = []
 
     // topo of type BufferAttribute (with item count corresponding to 1 id)
@@ -90,13 +81,13 @@ export class MarchingTriangles {
             if ((p1 >= isovalue)) { t2 = 1 ; } else { t2 = 0 ; }
             if ((p2 >= isovalue)) { t3 = 1 ; } else { t3 = 0 ; }
 
-            const tri_code = this.loockup1[t1][t2][t3]
+            const tri_code = loockup1[t1][t2][t3]
 
             // means that this triangle is cut by the isoline
             if (tri_code > 0 && tri_code < 7) {
                 tri2code.set(i, tri_code);
-                cut_edges[0] = this.loockup0[tri_code][0] ;
-                cut_edges[1] = this.loockup0[tri_code][1] ;
+                cut_edges[0] = loockup0[tri_code][0] ;
+                cut_edges[1] = loockup0[tri_code][1] ;
                 for (let e = 0;e < 2;++e) {
                     let v0 = cut_edges[e] ;
                     let v1 = (v0 + 1) % 3
@@ -134,8 +125,8 @@ export class MarchingTriangles {
             triangle[0]  = this.topo_[first_tri].i
             triangle[1]  = this.topo_[first_tri].j
             triangle[2]  = this.topo_[first_tri].k
-            cut_edges[0] = this.loockup0[code][0]
-            cut_edges[1] = this.loockup0[code][1]
+            cut_edges[0] = loockup0[code][0]
+            cut_edges[1] = loockup0[code][1]
             const first_edge = []
             const next_edge = []
 
@@ -182,8 +173,8 @@ export class MarchingTriangles {
                     triangle[1] = this.topo_[current_tri].j
                     triangle[2] = this.topo_[current_tri].k
 
-                    cut_edges[0] = this.loockup0[code][0]
-                    cut_edges[1] = this.loockup0[code][1]
+                    cut_edges[0] = loockup0[code][0]
+                    cut_edges[1] = loockup0[code][1]
 
                     for (let e = 0;e < 2;++e) {
                         let v0 = cut_edges[e]
@@ -248,3 +239,13 @@ export class MarchingTriangles {
         return result
     }
 }
+
+function ok(p0: number, p1: number, p2: number, min: number, max: number) {
+    function _in(p: number, min: number, max: number) {
+        return p >= min && p <= max
+    }
+    return _in(p0,min,max) && _in(p1,min,max) && _in(p2,min,max)
+}
+
+const loockup0 = [[-1, -1], [1, 2], [0, 1], [2, 0], [2, 0], [0, 1], [1, 2], [-1, -1]] ;
+const loockup1 = [[[0, 1], [2, 3]], [[4, 5], [6, 7]]] ;

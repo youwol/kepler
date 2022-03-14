@@ -6,3 +6,6 @@ dist/@youwol
 dist/index.d.ts
 dist/src
 dist/tests
+
+cdn.zip
+**/.DS_Store

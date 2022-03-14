@@ -66,6 +66,7 @@ export function createIsoContourFilled(
     if (result.position.length === 0) return undefined
 
     const nmesh = new Mesh()
+    //nmesh.castShadow = true
     nmesh.geometry = createBufferGeometry(result.position, result.index)
     nmesh.geometry.setAttribute('color', new Float32BufferAttribute(result.color, 3))
     nmesh.geometry.setAttribute('normal', new Float32BufferAttribute(result.normal, 3))

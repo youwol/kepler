@@ -48,6 +48,10 @@ export class ColorMap {
         return this
     }
 
+    get length() {
+        return this.map.length
+    }
+
     setMin(min: number) {
         this.minV = min
         return this

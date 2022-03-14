@@ -1,0 +1,200 @@
+import { Sprite, CanvasTexture, SpriteMaterial, Scene, OrthographicCamera, WebGLRenderer, Texture } from 'three' 
+import { generateIsos } from '..'
+import { ColorMap } from '../utils/colorMap'
+
+// See http://franko.github.io/waferplot-js/
+
+export class ColorBar2 {
+    private scene: Scene = undefined
+    private camera: OrthographicCamera = undefined
+
+    constructor(width: number, height: number, listIsos: number[], colorMap: ColorMap, position?: number[]) {
+        this.scene     = new Scene()
+        const legend   = createLegendTexture(listIsos, colorMap)
+        const material = new SpriteMaterial({map: legend.texture})
+        const sprite   = new Sprite(material)
+        sprite.scale.set(material.map.image.width, material.map.image.height, 1)
+        if (position) {
+            sprite.position.set(position[0], position[1], 0)
+        }
+        else {
+            sprite.position.set(
+                width / 2 + material.map.image.width / 2 - legend.width - 20, 
+                material.map.image.height / 2 - legend.height / 2,
+                0
+            )
+        }
+        this.scene.add(sprite)
+
+        this.camera = new OrthographicCamera( - width / 2, width / 2, height / 2, - height / 2, -10, 10 )
+	    this.camera.position.z = 10
+    }
+
+    // Putainde JS de merde !!!
+    // Obligé de mettre cette fonction comme ca :-(
+    render = (renderer: WebGLRenderer) => {
+        renderer.clearDepth()
+        if (this.scene && this.camera) renderer.render(this.scene, this.camera)
+    }
+}
+
+// export function createColorBar(listIsos: number[], width: number, colorMap: ColorMap, position?: number[]) {
+// 	const sceneOrtho = new Scene()
+
+// 	const legend     = createLegendTexture(listIsos, colorMap)
+// 	const material   = new SpriteMaterial({map: legend.texture})
+// 	const sprite     = new Sprite(material)
+// 	sprite.scale.set(material.map.image.width, material.map.image.height, 1)
+//     if (position) {
+//         sprite.position.set(position[0], position[1], 0)
+//     }
+//     else {
+//         sprite.position.set(
+//             width / 2 + material.map.image.width / 2 - legend.width - 20, 
+//             material.map.image.height / 2 - legend.height / 2,
+//             0
+//         )
+//     }
+// 	sceneOrtho.add(sprite)
+// 	return sceneOrtho
+// }
+
+
+// -----------------------------------------------------------
+//                       P R I V A T E
+// -----------------------------------------------------------
+
+function scaleUnits(xmin: number, xmax: number, ndiv: number) {
+    let xdelta = Math.abs(xmax - xmin)
+    if (xdelta < 1.0e-48) xdelta = 1
+    const dx = xdelta / ndiv
+    const plog = floorLog(dx)
+    const p = Math.pow(10, plog);
+    //var dxnorm = (dx * 1.05) / p;
+    let i: number
+    for (i = 0; i < deltas.length - 1; ++i) {
+        const div  = deltas[i] * p
+        const idiv = Math.ceil(xmax / div) - Math.floor(xmin / div)
+        if (idiv <= ndiv) break
+    }
+
+    let min_plog = Math.min(plog - deltas_offset[i], 0);
+    
+    function format(x: number) {
+        const xlog = floorLog(x !== 0 ? x : 1) + 1
+        return x.toPrecision(xlog - min_plog)
+    }
+
+    return {
+        div: deltas[i] * p,
+        format: format
+    }
+}
+
+const deltas = [1, 2, 2.5, 3, 5, 6, 8, 9, 10]
+const deltas_offset = [0, 0, 1, 0, 0, 0, 0, 0, -1]
+
+function log10(x: number) {
+    return Math.log(x) / Math.log(10)
+}
+
+function floorLog(x: number) {
+    return Math.floor(log10(Math.abs(x)))
+}
+
+function createLegendTexture(zlevels: number[], colorMap: ColorMap) {
+    const min = Math.min(...zlevels)
+    const max = Math.max(...zlevels)
+    var zunits = scaleUnits(min, max, zlevels.length-1)
+
+    var width = 512, height = 512;
+    var canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    var context = canvas.getContext('2d');
+    context.font = "14px Arial";
+    context.fillStyle = "#000";
+
+	var text_width = 0;
+	for (var i = 0; i < zlevels.length; i++) {
+		var metrics = context.measureText(zunits.format(zlevels[i]))
+		text_width = (metrics.width > text_width ? metrics.width : text_width);
+	}
+    var text_height = 14;
+	var th_spacing = text_height;
+	var text_yoffs = text_height / 3;
+	var canvas_y = function(i: number) {
+        return height - 4 - i * (text_height + th_spacing) - text_yoffs;
+    }
+
+	//var colormap = get_colormap(zlevels.length - 1) // see below in comment
+
+	var ww = text_height + th_spacing, hh = text_height;
+    for (var i = 0; i < zlevels.length; i++) {
+		const y1 = canvas_y(i), y2 = canvas_y(i + 1)
+		const x0 = 4, x1 = x0 + text_width + 12, x2 = x1 + ww
+
+		context.fillStyle = '#000'
+		context.fillText(zunits.format(zlevels[i]), x0, y1 + text_yoffs)
+
+		context.beginPath()
+		context.moveTo(x1 - 4, y1)
+		context.lineTo(x2, y1)
+		context.stroke()
+
+		if (i + 1 < zlevels.length) {
+			context.fillStyle = String(colorMap.getColor(zlevels[i])) //rgbaString(colormap[i])
+			context.fillRect(x1, y1, ww, y2 - y1)
+			context.fillStyle = '#000'
+			context.moveTo(x2, y1)
+			context.lineTo(x2, y2)
+			context.moveTo(x1, y1)
+			context.lineTo(x1, y2)
+			context.stroke()
+		}
+    }
+
+    const texture = new Texture(canvas)
+    texture.needsUpdate = true
+    return {
+        texture, 
+        width: text_width + 12 + ww, 
+        height: (text_height + th_spacing) * zlevels.length
+    }
+}
+
+// function rgbaString(n) {
+// 	const b = n % 256
+// 	n = (n - b) / 256
+// 	const g = n % 256
+// 	n = (n - g) / 256
+// 	return 'rgba(' + String(n) + ',' + String(g) + ',' + String(b) + ',256)'
+// }
+
+// function render() {
+// 	renderer.clear()
+// 	renderer.render(scene, camera)
+// 	renderer.clearDepth()
+// 	if (sceneColorbar) {
+// 		renderer.render(sceneColorbar, cameraOrtho)
+// 	}
+// };
+
+// function onWindowResize() {
+// 	const viewport = computeAreaSize()
+// 	setup_cameras(viewport.width, viewport.height)
+// 	renderer.setSize(viewport.width, viewport.height)
+// 	sceneColorbar = createLegend(plot, viewport.width, viewport.height)
+// 	render()
+// }
+
+// var color_level = [];
+// color_level[6] = [0x1a9850, 0x91cf60, 0xd9ef8b, 0xfee08b, 0xfc8d59, 0xd73027];
+// color_level[7] = [0x1a9850, 0x91cf60, 0xd9ef8b, 0xffffbf, 0xfee08b, 0xfc8d59, 0xd73027];
+// color_level[8] = [0x1a9850, 0x66bd63, 0xa6d96a, 0xd9ef8b, 0xfee08b, 0xfdae61, 0xf46d43 ,0xd73027];
+// color_level[9] = [0x1a9850, 0x66bd63, 0xa6d96a, 0xd9ef8b, 0xffffbf, 0xfee08b, 0xfdae61, 0xf46d43 ,0xd73027];
+// color_level[10] = [0x006837, 0x1a9850, 0x66bd63, 0xa6d96a, 0xd9ef8b, 0xfee08b, 0xfdae61, 0xf46d43, 0xd73027, 0xa50026];
+// color_level[11] = [0x006837, 0x1a9850, 0x66bd63, 0xa6d96a, 0xd9ef8b, 0xffffbf, 0xfee08b, 0xfdae61, 0xf46d43, 0xd73027, 0xa50026];
+// function get_colormap(n) {
+//     return color_level[n < 6 ? 6 : (n < 11 ? n: 11)]
+// }
