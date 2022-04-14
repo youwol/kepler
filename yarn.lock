@@ -830,14 +830,14 @@
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
 "@youwol/dataframe@0.x":
-  version "0.0.28"
-  resolved "https://registry.yarnpkg.com/@youwol/dataframe/-/dataframe-0.0.28.tgz#11db03aee56a202096c27312c9d99cbbc0af08ea"
-  integrity sha512-mH4Lzi548UAdn2jnkRQwiPjfhA6kAWCsH61ZRrhNcq4BNx+yv2xXNsbxqwZcEBX8qpdW8Z5aYJxjqCDCtBGf3g==
+  version "0.0.34"
+  resolved "https://registry.yarnpkg.com/@youwol/dataframe/-/dataframe-0.0.34.tgz#668ed5a75e8dd9ec85f9a56e3aff20c2078d6fd2"
+  integrity sha512-o5Bhv+C6Aza+2J/leCxNMMBHYK6AU7EWslsUOX/dBZORZ1Uiae2DgFes8rUGeB38Zk3jAbPxfl31kBPpQXFvkg==
 
 "@youwol/geometry@0.x":
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/@youwol/geometry/-/geometry-0.0.10.tgz#f0d41d7e886aa216bcfb5b73e3e2c92dc233553b"
-  integrity sha512-RpPhXYsM8u4fZTZQQuY/NIPucysNQ2duB1Wj1yHBkP5DKYQuXx0+JSEMXfBAOIOBdwpalwNSlEa5zNI9UMxXUg==
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/@youwol/geometry/-/geometry-0.0.14.tgz#5b1def5802a053f133e023bb17b868e0f70fa0b8"
+  integrity sha512-Atgh8NF6W0jDUaO8ojtSqV4woi0FskH64ZUOo9jaNBZa/E6zAWzMfmPAykTsExU5DfdRX1IZURAvblgaE67KuQ==
 
 "@youwol/io@0.x":
   version "0.0.19"

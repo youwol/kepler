@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>@youwol/kepler - v0.0.14</title>
-	<meta name="description" content="Documentation for @youwol/kepler - v0.0.14">
+	<title>@youwol/kepler - v0.0.15</title>
+	<meta name="description" content="Documentation for @youwol/kepler - v0.0.15">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
 	<link rel="stylesheet" href="assets/css/pages.css">
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">@youwol/kepler - v0.0.14</a>
+					<a href="index.html" class="title">@youwol/kepler - v0.0.15</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -57,7 +57,7 @@
 					<a href="modules.html">Globals</a>
 				</li>
 			</ul>
-			<h1>Project @youwol/kepler - v0.0.14</h1>
+			<h1>Project @youwol/kepler - v0.0.15</h1>
 		</div>
 	</div>
 </header>
@@ -124,6 +124,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function"><a href="modules.html#createedges" class="tsd-kind-icon">create<wbr>Edges</a></li>
 								<li class="tsd-kind-function"><a href="modules.html#createfailureplanes" class="tsd-kind-icon">create<wbr>Failure<wbr>Planes</a></li>
+								<li class="tsd-kind-function"><a href="modules.html#createnormals" class="tsd-kind-icon">create<wbr>Normals</a></li>
 								<li class="tsd-kind-function"><a href="modules.html#generatecolormap" class="tsd-kind-icon">generate<wbr>Color<wbr>Map</a></li>
 								<li class="tsd-kind-function"><a href="modules.html#normalattribute" class="tsd-kind-icon">normal<wbr>Attribute</a></li>
 								<li class="tsd-kind-function"><a href="modules.html#streamlines2d" class="tsd-kind-icon">streamlines2D</a></li>
@@ -135,6 +136,7 @@
 								<li class="tsd-kind-function"><a href="modules.html#createlineset" class="tsd-kind-icon">create<wbr>Lineset</a></li>
 								<li class="tsd-kind-function"><a href="modules.html#createpointset" class="tsd-kind-icon">create<wbr>Pointset</a></li>
 								<li class="tsd-kind-function"><a href="modules.html#createsurface" class="tsd-kind-icon">create<wbr>Surface</a></li>
+								<li class="tsd-kind-function"><a href="modules.html#createsurfaceborders" class="tsd-kind-icon">create<wbr>Surface<wbr>Borders</a></li>
 								<li class="tsd-kind-function"><a href="modules.html#createtubevectors" class="tsd-kind-icon">create<wbr>Tube<wbr>Vectors</a></li>
 								<li class="tsd-kind-function"><a href="modules.html#createvectors" class="tsd-kind-icon">create<wbr>Vectors</a></li>
 								<li class="tsd-kind-function"><a href="modules.html#deform" class="tsd-kind-icon">deform</a></li>
@@ -456,6 +458,37 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Mesh</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">BufferGeometry</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Material</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="createnormals" class="tsd-anchor"></a>
+					<h3>create<wbr>Normals</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Normals<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>geometry<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BufferGeometry</span><span class="tsd-signature-symbol">; </span>material<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Material</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="classes/vectorsparameters.html" class="tsd-signature-type">VectorsParameters</a><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Object3D</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>geometry<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BufferGeometry</span><span class="tsd-signature-symbol">; </span>material<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Material</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="classes/vectorsparameters.html" class="tsd-signature-type">VectorsParameters</a><span class="tsd-signature-symbol"> }</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter">
+											<h5>geometry<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BufferGeometry</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> material<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Material</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> parameters<span class="tsd-signature-symbol">?: </span><a href="classes/vectorsparameters.html" class="tsd-signature-type">VectorsParameters</a></h5>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Object3D</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -818,6 +851,37 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="createsurfaceborders" class="tsd-anchor"></a>
+					<h3>create<wbr>Surface<wbr>Borders</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Surface<wbr>Borders<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>material<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Material</span><span class="tsd-signature-symbol">; </span>mesh<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Mesh</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="classes/linesetparameters.html" class="tsd-signature-type">LinesetParameters</a><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">LineSegments</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>material<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Material</span><span class="tsd-signature-symbol">; </span>mesh<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Mesh</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="classes/linesetparameters.html" class="tsd-signature-type">LinesetParameters</a><span class="tsd-signature-symbol"> }</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter">
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> material<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Material</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5>mesh<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Mesh</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> parameters<span class="tsd-signature-symbol">?: </span><a href="classes/linesetparameters.html" class="tsd-signature-type">LinesetParameters</a></h5>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">LineSegments</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
 					<a name="createtubevectors" class="tsd-anchor"></a>
 					<h3>create<wbr>Tube<wbr>Vectors</h3>
 					<ul class="tsd-signatures tsd-kind-function">
@@ -858,7 +922,7 @@
 					<a name="createvectors" class="tsd-anchor"></a>
 					<h3>create<wbr>Vectors</h3>
 					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>Vectors<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>attribute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol">; </span>geometry<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BufferGeometry</span><span class="tsd-signature-symbol">; </span>material<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Material</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="classes/vectorsparameters.html" class="tsd-signature-type">VectorsParameters</a><span class="tsd-signature-symbol">; </span>vectorField<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">LineSegments</span></li>
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Vectors<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>attribute<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol">; </span>geometry<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BufferGeometry</span><span class="tsd-signature-symbol">; </span>material<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Material</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="classes/vectorsparameters.html" class="tsd-signature-type">VectorsParameters</a><span class="tsd-signature-symbol">; </span>vectorField<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Object3D</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -867,10 +931,10 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>attribute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol">; </span>geometry<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BufferGeometry</span><span class="tsd-signature-symbol">; </span>material<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Material</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="classes/vectorsparameters.html" class="tsd-signature-type">VectorsParameters</a><span class="tsd-signature-symbol">; </span>vectorField<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol"> }</span></h5>
+									<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>attribute<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol">; </span>geometry<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BufferGeometry</span><span class="tsd-signature-symbol">; </span>material<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Material</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="classes/vectorsparameters.html" class="tsd-signature-type">VectorsParameters</a><span class="tsd-signature-symbol">; </span>vectorField<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol"> }</span></h5>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter">
-											<h5>attribute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Serie</span></h5>
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> attribute<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Serie</span></h5>
 										</li>
 										<li class="tsd-parameter">
 											<h5>geometry<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BufferGeometry</span></h5>
@@ -887,7 +951,7 @@
 									</ul>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">LineSegments</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Object3D</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -1260,10 +1324,16 @@
 						<a href="modules.html#createlut" class="tsd-kind-icon">create<wbr>Lut</a>
 					</li>
 					<li class=" tsd-kind-function">
+						<a href="modules.html#createnormals" class="tsd-kind-icon">create<wbr>Normals</a>
+					</li>
+					<li class=" tsd-kind-function">
 						<a href="modules.html#createpointset" class="tsd-kind-icon">create<wbr>Pointset</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="modules.html#createsurface" class="tsd-kind-icon">create<wbr>Surface</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="modules.html#createsurfaceborders" class="tsd-kind-icon">create<wbr>Surface<wbr>Borders</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="modules.html#createtubevectors" class="tsd-kind-icon">create<wbr>Tube<wbr>Vectors</a>

@@ -63,25 +63,26 @@
                 // url: "/data/arch/figure-superposition/simulations.ts", // U1..8, S1..8
                 // url: "/data/arch/figure-superposition/superposition.ts", // U
 
-                url: "/data/meca/2d.ts", // E
+                // url: "/data/meca/2d.ts", // E
+                url: ["/devs/platform/components/arch-node/examples/ex2/grid-init.gcd", "/devs/platform/components/arch-node/examples/ex2/grid-1.gcd"],
 
                 // url: '/data/arch/spanish-peak/domain-empty.ts',
                 // url: '/data/arch/galapagos-all/model2/domain-0.ts',
                 // url: ['/data/mesh/simple.ts', '/data/mesh/surface-relax.ts'],
                 // url: ['/data/mesh/surface.ts', '/data/mesh/surface-relax.ts'],
                 show: true,
-                attr: 'E',
+                attr: '',
                 lut: 'Igeoss',
                 duplicateLut: 1,
                 surface: {
-                    show: false,
-                    color: '#aaaaaa',
-                    flat: false,
+                    show: true,
+                    color: '#aaffaa',
+                    flat: true,
                     creaseAngle: 0,
-                    opacity: 1
+                    opacity: 0.9
                 },
                 iso: {
-                    show: true,
+                    show: false,
                     showFill: true,
                     showLines: true,
                     flat: true,
@@ -125,14 +126,14 @@
                 }
             },
             {
-                url: ["/data/arch/figure-superposition/s1.ts", "/data/arch/figure-superposition/chamber-modif.ts"], // U
-                show: false,
+                url: ["/devs/platform/components/arch-node/examples/ex2/grid-50.gcd"], // U
+                show: true,
                 attr: '',
                 lut: 'Igeoss',
                 duplicateLut: 1,
                 surface: {
                     show: true,
-                    color: '#aaaaaa',
+                    color: '#aaaaff',
                     flat: true,
                     creaseAngle: 0,
                     opacity: 1

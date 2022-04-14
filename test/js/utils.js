@@ -51,8 +51,8 @@ function load() {
                 extendCoef: 1.0,
                 fading: false,
                 fadingTime: 200,
-                showPlanes: false,
-                color: '#000',
+                showPlanes: true,
+                color: '#aaa',
                 showBBox: false,
                 divisions: 4
             }),

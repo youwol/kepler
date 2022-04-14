@@ -24,7 +24,7 @@ function doPointsets(pointsets) {
 // ------------------------------------------
 
 function doPointset(psetInfo) {
-    if (psetInfo.url === undefined) return []
+    if (psetInfo.url === undefined || psetInfo.show === false) return []
     if (Array.isArray(psetInfo.url)) {
         const promises = []
         psetInfo.url.forEach( url => {
@@ -50,7 +50,6 @@ function doPointset(psetInfo) {
 
                 const dfs = io.decodeXYZ(buffer, {shared: false, merge: true})
                 dfs.forEach( df => {
-                    let skin
 
                     let position = df.series['positions']
                     console.log('min-max position pointset:', math.minMax(position) )
@@ -76,14 +75,16 @@ function doPointset(psetInfo) {
                         group.add( SKIN )
                     }
 
-                    if (psetInfo.attr !== undefined && attr && psetInfo.show === true) {
+                    if (psetInfo.attr !== undefined && attr && psetInfo.show) {
+                        console.log('min-max attr '+psetInfo.attr+' pointset:', math.minMax(attr) )
+
                         kepler.paintAttribute( SKIN, attr, new kepler.PaintParameters({
                             atVertex: true,
-                                        lut: psetInfo.lut,
-                                        duplicateLut: psetInfo.duplicateLut,
-                                        reverseLut: psetInfo.reverseLut,
-                                        min: psetInfo.useMinMax ? psetInfo.min : 0,
-                                        max: psetInfo.useMinMax ? psetInfo.max : 1
+                            lut: psetInfo.lut,
+                            duplicateLut: psetInfo.duplicateLut,
+                            reverseLut: psetInfo.reverseLut,
+                            min: psetInfo.useMinMax ? psetInfo.min : 0,
+                            max: psetInfo.useMinMax ? psetInfo.max : 1
                         }) )
                     }
                     
@@ -94,6 +95,7 @@ function doPointset(psetInfo) {
                                 group.add( kepler.createTubeVectors({
                                     geometry: SKIN.geometry,
                                     vectorField: vattr,
+                                    // attribute: attr,
                                     parameters: new kepler.TubeVectorsParameters({
                                         scale: psetInfo.vectors.scale,
                                         color: psetInfo.vectors.color,

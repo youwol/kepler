@@ -1,6 +1,6 @@
 import {
     LineSegments, LineBasicMaterial, Color, BufferGeometry,
-    Float32BufferAttribute, Material
+    Float32BufferAttribute, Material, Object3D
 } from "three"
 
 import { PaintParameters } from './paintAttribute'
@@ -20,10 +20,11 @@ export class VectorsParameters extends PaintParameters {
     public readonly scale: number = 1
     public readonly normalize: boolean = false
     public readonly project: boolean = false
+    public readonly centered: boolean = true
     public readonly vector: string = ''
 
     constructor(
-        {vector, lineWidth, color, opacity, transparent, scale, normalize, project, ...others}:
+        {vector, lineWidth, color, opacity, transparent, scale, normalize, centered, project, ...others}:
         {
             vector?: string,
             lineWidth?: number, 
@@ -32,7 +33,8 @@ export class VectorsParameters extends PaintParameters {
             transparent?: boolean, 
             scale?: number,
             normalize?: boolean,
-            project?: boolean
+            project?: boolean,
+            centered?: boolean
         } = {})
     {
         super(others)
@@ -44,6 +46,7 @@ export class VectorsParameters extends PaintParameters {
         this.set('transparent', transparent, this.transparent)
         this.set('normalize'  , normalize  , this.normalize  )
         this.set('project'    , project    , this.project    )
+        this.set('centered'    , centered    , this.centered    )
     }
 }
 
@@ -54,7 +57,7 @@ export class VectorsParameters extends PaintParameters {
  */
 export function createVectors(
     {geometry,  material, vectorField, attribute, parameters}:
-    {geometry: BufferGeometry, material?: Material, vectorField?: Serie, attribute: Serie, parameters?: VectorsParameters}): LineSegments
+    {geometry: BufferGeometry, material?: Material, vectorField?: Serie, attribute?: Serie, parameters?: VectorsParameters}): Object3D
 {
     if (geometry === undefined) throw new Error('geometry is undefined')
     const position = geometry.getAttribute('position')
@@ -95,33 +98,17 @@ export function createVectors(
             u[2] /= l
         }
         // centered vector
-        vertices.push(
-            p[0]-s*u[0], p[1]-s*u[1], p[2]-s*u[2],
-            p[0]+s*u[0], p[1]+s*u[1], p[2]+s*u[2])
+        if (parameters.centered) {
+            vertices.push(
+                p[0]-s*u[0]/2, p[1]-s*u[1]/2, p[2]-s*u[2]/2,
+                p[0]+s*u[0]/2, p[1]+s*u[1]/2, p[2]+s*u[2]/2)
+        }
+        else {
+            vertices.push(
+                p[0], p[1], p[2],
+                p[0]+s*u[0], p[1]+s*u[1], p[2]+s*u[2])
+        }
     })
-
-    // The geometry
-    // const vertices: number[] = []
-    // const position = geometry.getAttribute('position')
-    // const s = parameters.scale
-    // for (let i=0; i<position.count; ++i) {
-    //     const x = position.getX(i)
-    //     const y = position.getY(i)
-    //     const z = position.getZ(i)
-    //     let ux = vectorField.array[3*i]
-    //     let uy = vectorField.array[3*i+1]
-    //     let uz = vectorField.array[3*i+2]
-    //     if (parameters.project) {
-    //         uz = 0
-    //     }
-    //     if (parameters.normalize) {
-    //         const l = Math.sqrt(ux**2 + uy**2 + uz**2)
-    //         ux /= l
-    //         uy /= l
-    //         uz /= l
-    //     }
-    //     vertices.push(x-s*ux, y-s*uy, z-s*uz, x+s*ux, y+s*uy, z+s*uz)
-    // }
 
     lines.geometry = new BufferGeometry
     lines.geometry.setAttribute( 'position', new Float32BufferAttribute(vertices, 3) )
@@ -160,5 +147,14 @@ export function createVectors(
     }
 
     lines.material = material
+
+    // -------------------------------------------------
+    // Arrows ? (6,16, 12, 1, true, 0, 2*Math.PI)
+    // Cone kength should be 1/5 of arrow legnth
+    // -------------------------------------------------
+    {
+        // TODO
+    }
+
     return lines
 }

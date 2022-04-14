@@ -23,28 +23,28 @@ function doSurfaces(surfaceset) {
 
 // ------------------------------------------
 
-function createSurfaceBorders(df, color) {
-    const surface = geom.Surface.create(df.series.positions, df.series.indices)
-    const borders = surface.bordersAsSerie
+// function createSurfaceBorders(df, color) {
+//     const surface = geom.Surface.create(df.series.positions, df.series.indices)
+//     const borders = surface.bordersAsSerie
 
-    // Fake indices
-    const indices = []
-    let id = 0
-    for (let i=0; i<borders.count/2; ++i) {
-        indices.push(id++, id++)
-    }
+//     // Fake indices
+//     const indices = []
+//     let id = 0
+//     for (let i=0; i<borders.count/2; ++i) {
+//         indices.push(id++, id++)
+//     }
 
-    const geometry = new THREE.BufferGeometry()
-    geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(borders.array), 3))
-    geometry.setIndex(indices)
+//     const geometry = new THREE.BufferGeometry()
+//     geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(borders.array), 3))
+//     geometry.setIndex(indices)
 
-    const material = new THREE.LineBasicMaterial({
-        linewidth: 1,
-        color: new THREE.Color(color?color:"#000000")
-    })
+//     const material = new THREE.LineBasicMaterial({
+//         linewidth: 1,
+//         color: new THREE.Color(color?color:"#000000")
+//     })
 
-    return new THREE.LineSegments(geometry, material)
-}
+//     return new THREE.LineSegments(geometry, material)
+// }
 
 function doSurface(surfaceInfo) {
     if (Array.isArray(surfaceInfo.url)) {
@@ -77,7 +77,7 @@ function doSurface(surfaceInfo) {
                     let skin
 
                     let position = df.series.positions
-                    // console.log('min-max position surface:', math.minMax(position) )
+                    console.log('min-max position surface:', math.minMax(position) )
 
                     if (surfaceInfo.translation) {
                         const x = surfaceInfo.translation[0]
@@ -92,7 +92,8 @@ function doSurface(surfaceInfo) {
                         new math.AreaDecomposer,           // aire
                         new math.VectorNormDecomposer,     // U
                         new math.EigenValuesDecomposer,    // S1 S2 S3
-                        new math.EigenVectorsDecomposer    // S1 S2 S3
+                        new math.EigenVectorsDecomposer,    // S1 S2 S3
+                        new geom.NormalsToNodeDecomposer
                     ])
 
                     let attr = undefined 
@@ -163,8 +164,13 @@ function doSurface(surfaceInfo) {
                     // }
                     
                     if (surfaceInfo.borders && surfaceInfo.borders.show) {
-                        //const borders = createSurfaceBorders(surface, surfaceInfo.borders.color)
-                        const borders = createSurfaceBorders(df, surfaceInfo.borders.color)
+                        // const borders = createSurfaceBorders(df, surfaceInfo.borders.color)
+                        const borders = kepler.createSurfaceBorders({
+                            mesh: surface,
+                            parameters: new kepler.LinesetParameters({
+                                color: surfaceInfo.borders.color
+                            })
+                        })
                         group.add( borders )
                     }
 
@@ -189,7 +195,8 @@ function doSurface(surfaceInfo) {
                                     parameters: new kepler.TubeVectorsParameters({
                                         scale: surfaceInfo.vectors.scale,
                                         color: surfaceInfo.vectors.color,
-                                        radius: surfaceInfo.vectors.radius
+                                        radius: surfaceInfo.vectors.radius,
+                                        centered: surfaceInfo.vectors.centered
                                     })
                                 }) )
                             }
@@ -199,10 +206,14 @@ function doSurface(surfaceInfo) {
                                     vectorField: vattr,
                                     parameters: new kepler.TubeVectorsParameters({
                                         scale: surfaceInfo.vectors.scale,
-                                        color: surfaceInfo.vectors.color
+                                        color: surfaceInfo.vectors.color,
+                                        centered: surfaceInfo.vectors.centered
                                     })
                                 }) )
                             }
+                        }
+                        else {
+                            console.warn('cannot find vector attribute'+surfaceInfo.vectors.attr)
                         }
                     }
 
@@ -285,13 +296,12 @@ function doSurface(surfaceInfo) {
                             // renderFct.add( bar.render )
                             // group.add(bar.scene)
 
-
-                            const cb = new kepler.Colorbar({
-                                lutName: surfaceInfo.lut,
-                                min: minmax[0],
-                                max: minmax[1]
-                            })
-                            renderFct.add(cb.render)
+                            // const cb = new kepler.Colorbar({
+                            //     lutName: surfaceInfo.lut,
+                            //     min: minmax[0],
+                            //     max: minmax[1]
+                            // })
+                            // renderFct.add(cb.render)
                         }
                     }
                 })

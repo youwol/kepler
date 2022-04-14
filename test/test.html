@@ -40,11 +40,7 @@
         <div id="chart"></div>
     </div>
 
-    <div class='right-container'>
-        <div id='orientCubeWrapper'></div>
-    </div>
-
-    <div class="top-1 start-1" style='position: absolute; opacity: 75%; left: 10px; top: 10px'>
+    <!-- <div class="top-1 start-1" style='position: absolute; opacity: 75%; left: 10px; top: 10px'>
         <div class="card" style="width: 300px; height: 150px; background-color: rgb(193, 193, 193);">
             <div class="card-body">
                 <div class="card-title" style='font-size: 20px; font-weight: bold;'>Object info</div>
@@ -63,7 +59,7 @@
                 <div class="card-text">attributes:</div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <script type="text/javascript" src='./js/doSurfaces.js'></script>
     <script type="text/javascript" src='./js/doLines.js'></script>
@@ -241,13 +237,13 @@
             grid: false,
             bbox: true,
             backgroundColor: '#fff',
-            colorScale: true
+            colorScale: false
         }
 
         const surfaceset = [
             {
-                url: ["/data/arch/figure-superposition/s1.ts"],
-                show: true,
+                url: ["/data/streamlines/triangle.ts"],
+                show: false,
                 attr: '',
                 lut: 'Insar',
                 duplicateLut: 1,
@@ -256,10 +252,10 @@
                     color: '#aaa',
                     flat: true,
                     creaseAngle: 0,
-                    opacity: 1
+                    opacity: 0.5
                 },
                 iso: {
-                    show: true,
+                    show: false,
                     showFill: true,
                     showLines: true,
                     flat: false,
@@ -269,18 +265,18 @@
                     max: 1e10,
                 },
                 wireframe: {
-                    show: true,
+                    show: false,
                     color: '#000000'
                 },
                 borders: {
-                    show: false,
+                    show: true,
                     color: "#000000"
                 }
             }
             ,
             {
                 url: ["/data/arch/figure-superposition/superposition.ts"],
-                show: true,
+                show: false,
                 attr: 'Uy',
                 lut: 'Insar',
                 duplicateLut: 1,
@@ -313,7 +309,18 @@
             }
         ]
 
-        const plines = []
+        const plines = [
+            {
+                url: [ 
+                    // '/data/streamlines/out.pl',
+                    //'/data/arch/fernandina/out/steamlines.pl'
+                ],
+                show: true,
+                useTube: false,
+                tubeRadius: 0.01,
+                color: "#000"
+            }
+        ]
         const pointsets = []
 
         init()

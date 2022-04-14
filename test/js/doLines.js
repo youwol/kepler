@@ -54,11 +54,15 @@ function doPLine(plineInfo) {
 
                     if (plineInfo.show) {
 
-                        let position = df.series['positions']
+                        let position = df.series.positions
+                        if (plineInfo.translate) {
+                            const t = plineInfo.translate
+                            df.series.positions = dataframe.apply(df.series.positions, p => [p[0]+t[0], p[1]+t[1], p[2]+t[2]])
+                        }
                         console.log('min-max position pointset:', math.minMax(position) )
 
                         let skin = kepler.createLineset({
-                            position: df.series['positions'],
+                            position: df.series.positions,
                             parameters: {
                                 color: plineInfo.color,
                                 useTube: plineInfo.useTube,

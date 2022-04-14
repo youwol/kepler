@@ -1,3 +1,5 @@
+import { IArray, Serie } from "@youwol/dataframe"
+import { extractSurfaceBorders } from "@youwol/geometry"
 import {
     LineBasicMaterial, Color,
     Material, BufferGeometry, Mesh, LineSegments, BufferAttribute
@@ -40,52 +42,35 @@ export function createSurfaceBorders(
         parameters = new LinesetParameters()
     }
 
+    // --------------------------------------------------
+    const bufferPosition = mesh.geometry.getAttribute('position') as BufferAttribute
+    const bufferIndices  = mesh.geometry.index as BufferAttribute
+    const vertices  = Serie.create({array: bufferPosition.array as IArray, itemSize: 3})
+    const triangles = Serie.create({array: bufferIndices.array as IArray, itemSize: 3}) // mesh.geometry.index
+
     // Build the HE-surface (aka, HalfEdge-surface)
-    let geometry = new BufferGeometry()
-    const vertices  = mesh.geometry.getAttribute('position')
-    const triangles  = mesh.geometry.index
+    const borders = extractSurfaceBorders(vertices, triangles)
 
-    /*
-    const builder = new SurfaceBuilder()
-    const surface = new Surface
-    builder.beginSurface(surface) ; {
-        for (let i=0; i<vertices.count; ++i) {
-            builder.addNode(vertices.getX(i), vertices.getY(i), vertices.getZ(i))
-        }
-        for (let i=0; i<triangles.count; i += 3) {
-            builder.beginFacet() ; {
-                builder.addNodeToFacet(triangles.getX(i  ))
-                builder.addNodeToFacet(triangles.getX(i+1))
-                builder.addNodeToFacet(triangles.getX(i+2))
-            }
-            builder.endFacet() ;
-        }
-    }
-    builder.endSurface() // Finish to build the surface
+    // const surface = Surface.create(vertices, triangles)
+    // const borders = surface.bordersAsSerie
 
-    const borders = surface.borders()
-    geometry.setAttribute('position', new BufferAttribute(new Float32Array(borders.array), 3))
-
+    // Fake indices
     const indices = []
     let id = 0
-    for (let i=0; i<borders.count; ++i) {
+    for (let i=0; i<borders.count/2; ++i) {
         indices.push(id++, id++)
     }
 
+    const geometry = new BufferGeometry()
+    geometry.setAttribute('position', new BufferAttribute(new Float32Array(borders.array), 3))
     geometry.setIndex(new BufferAttribute(new Uint16Array(indices), 1))
-    // let id = 0
-    // borders.forEach( segment => {
-    //     const p1 = [segment[0], segment[1], segment[2]]
-    //     const p2 = [segment[3], segment[4], segment[5]]
-    // })
-    */
 
     if (material === undefined) {
         material = new LineBasicMaterial({
             linewidth: parameters.lineWidth, 
             opacity: parameters.opacity, 
             transparent: parameters.transparent,
-            color: new Color(parameters.color)
+            color: new Color(parameters.color ? parameters.color : "#000")
         })
     }
 

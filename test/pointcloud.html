@@ -49,22 +49,23 @@
         const kepler    = globalThis['@youwol/kepler']
 
         const model = {
-            grid: true
+            grid: false
         }
 
         const surfaceset = []
         const plines = []
         const pointsets = [
             {
-                url: "/data/point-cloud/salon.xyz",
+                // url: "/data/point-cloud/salon.xyz",
                 // url: "/data/arch/spanish-peak/domain.xyz",
                 // url: "/data/arch/galapagos-all/model2/dikes_georef/points.xyz/domain-theta-Rh.xyz",
+                url: "/data/streamlines/interpolated.xyz",
                 show: true,
-                attr: 'color',
-                //attr: '',
-                lut: 'Grayscale',
+                attr: 'U2',
+                lut: 'Insar',
                 reverseLut: false,
-                size: 4,
+                color: '#aaa',
+                size: 7,
                 // min: 0,
                 // max: 1,
                 // useMinMax: false,

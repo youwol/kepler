@@ -76,11 +76,21 @@ export function createTubeVectors(
             u[1] /= l
             u[2] /= l
         }
-        // centered vector
-        const path = new CatmullRomCurve3( [
-            new Vector3(p[0]-s*u[0], p[1]-s*u[1], p[2]-s*u[2]),
-            new Vector3(p[0]+s*u[0], p[1]+s*u[1], p[2]+s*u[2])
-        ] )
+
+        let path: CatmullRomCurve3 = undefined
+        if (parameters.centered) {
+            // centered vector
+            path = new CatmullRomCurve3( [
+                new Vector3(p[0]-s*u[0]/2, p[1]-s*u[1]/2, p[2]-s*u[2]/2),
+                new Vector3(p[0]+s*u[0]/2, p[1]+s*u[1]/2, p[2]+s*u[2]/2)
+            ] )
+        }
+        else {
+            path = new CatmullRomCurve3( [
+                new Vector3(p[0], p[1], p[2]),
+                new Vector3(p[0]+s*u[0], p[1]+s*u[1], p[2]+s*u[2])
+            ] )
+        }
         const geometry = new TubeGeometry( path, 2, parameters.radius, 10, false )
         g.add( new Mesh( geometry, material ) )
     })
