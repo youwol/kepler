@@ -22,9 +22,10 @@ export class VectorsParameters extends PaintParameters {
     public readonly project: boolean = false
     public readonly centered: boolean = true
     public readonly vector: string = ''
+    public readonly translate: number[] = [0,0,0]
 
     constructor(
-        {vector, lineWidth, color, opacity, transparent, scale, normalize, centered, project, ...others}:
+        {vector, lineWidth, color, opacity, transparent, scale, normalize, centered, project, translate, ...others}:
         {
             vector?: string,
             lineWidth?: number, 
@@ -34,7 +35,8 @@ export class VectorsParameters extends PaintParameters {
             scale?: number,
             normalize?: boolean,
             project?: boolean,
-            centered?: boolean
+            centered?: boolean,
+            translate?: number[]
         } = {})
     {
         super(others)
@@ -43,6 +45,7 @@ export class VectorsParameters extends PaintParameters {
         this.color     = color || '#000000'
         this.opacity   = opacity || 1
         this.scale     = scale !== undefined ? scale : 1
+        this.translate = translate !== undefined ? translate : [0,0,0]
         this.set('transparent', transparent, this.transparent)
         this.set('normalize'  , normalize  , this.normalize  )
         this.set('project'    , project    , this.project    )
@@ -87,7 +90,9 @@ export function createVectors(
     const s = parameters.scale
     const vertices: number[] = []
     pos.forEach( (p,i) => {
+        p = p.map( (v,i) => p[i] + parameters.translate[i] )
         const u = vectorField.itemAt(i)
+        
         if (parameters.project) {
             u[2] = 0
         }
