@@ -55,10 +55,10 @@
         const surfaceset = [
                 {
                     // url: "/data/arch/spanish-peak/works/forward-grid.ts",
-                    url: "/data/arch/spanish-peak/simulations-grid.ts",
+                    url: "/data/arch/spanish-peak/forward-grid.ts",
                     show: true,
-                    attr: 'S1xy',
-                    lut: 'Insar',
+                    attr: 'area',
+                    lut: 'Igeoss',
                     duplicateLut: 1,
                     surface: {
                         show: false,
@@ -70,20 +70,25 @@
                     iso: {
                         show: true,
                         showFill: true,
-                        showLines: true,
+                        showLines: false,
                         flat: true,
-                        nb :   20,
+                        nb :   10,
                         useMinMax: false,
                         min: -1e10,
                         max:  1e10,
                     },
                     vectors: {
-                        show: true,
+                        show: false,
                         attr: 'Joint',
                         scale: 500,
                         color: '#000000',
                         useTube: false,
                         radius: 20
+                    },
+                    streamlines: {
+                        show: true,
+                        attr: 'Joint',
+                        color: '#000000'
                     },
                     borders: {
                         show: true,

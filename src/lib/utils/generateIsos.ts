@@ -8,11 +8,14 @@
  * Also, the generated iso values are snapped to zero in both cases.
  * @category Utils
  */
- export function generateIsos(min: number, max: number, nbrOrSpacing: number = 10, useSpacing=false): Array<number> {
-    if (useSpacing) {
-        return generateIsosBySpacing(min, max, nbrOrSpacing)
+ export function generateIsos(min: number, max: number, nbrOrSpacingOrList: number | number[] = 10, useSpacing=false): Array<number> {
+    if (Array.isArray(nbrOrSpacingOrList)) {
+        return nbrOrSpacingOrList.filter( v => v>=min && v<=max)
     }
-    return generateIsosByNumber(min, max, nbrOrSpacing)
+    if (useSpacing) {
+        return generateIsosBySpacing(min, max, nbrOrSpacingOrList as number)
+    }
+    return generateIsosByNumber(min, max, nbrOrSpacingOrList as number)
 }
 
 /**
@@ -27,7 +30,6 @@ export function generateIsosByNumber(min: number, max: number, nbr: number = 10)
         return []
     }
     const epsilon = ( max - min) / (nbr)
-    //return Array.apply(null, Array(nbr)).map( (_:any,i:number) => min + (i+1) * epsilon )
     return generateIsosBySpacing(min, max, epsilon)
 }
 

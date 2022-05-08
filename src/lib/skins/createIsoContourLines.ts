@@ -80,23 +80,10 @@ export function createIsoContourLines(
     const vertices  = mesh.geometry.getAttribute('position')
     const positions = []
     let index       = 0
-    // const mcolors   = fromValuesToColors(isoValues, {
-    //     color: new Color(parameters.color), 
-    //     reverse: parameters.reverseLut, 
-    //     min: parameters.min, 
-    //     max: parameters.max, 
-    //     lut: parameters.lut, 
-    //     lockLut: parameters.lockLut
-    // })
-    // const colors    = []
-
+    
     for (let i = 0; i < isoValues.length; ++i) {
         if (isoValues[i]<parameters.min || isoValues[i]>parameters.max) continue
         let result = algo.isolines(attribute, isoValues[i])
-        //let color: any
-        // if (parameters.useTable) {
-        //     color = [mcolors[3 * i], mcolors[3 * i + 1], mcolors[3 * i + 2]]
-        // }
         for (let k = 0; k < result[0].length; ++k) {
             for (let l = 0; l < result[0][k].length - 2; l += 2) {
                 let i1 = result[0][k][l]
@@ -109,9 +96,6 @@ export function createIsoContourLines(
                 let v2y = vertices.getY(i2)
                 let v2z = vertices.getZ(i2)
                 positions.push(v1x + c * (v2x - v1x), v1y + c * (v2y - v1y), v1z + c * (v2z - v1z))
-                // if (parameters.useTable) {
-                //     colors.push(color[0], color[1], color[2])
-                // }
                 index += 3
             }
         }

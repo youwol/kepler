@@ -50,7 +50,8 @@
 
         const model = {
             grid: false,
-            bbox: true
+            bbox: true,
+            backgroundColor: '#aaa'
         }
 
         const surfaceset = [
@@ -64,29 +65,30 @@
                 // url: "/data/arch/figure-superposition/superposition.ts", // U
 
                 // url: "/data/meca/2d.ts", // E
-                url: ["/devs/platform/components/arch-node/examples/ex2/grid-init.gcd", "/devs/platform/components/arch-node/examples/ex2/grid-1.gcd"],
+                // url: ["/devs/platform/components/arch-node/examples/ex2/grid-init.gcd", "/devs/platform/components/arch-node/examples/ex2/grid-1.gcd"],
 
                 // url: '/data/arch/spanish-peak/domain-empty.ts',
                 // url: '/data/arch/galapagos-all/model2/domain-0.ts',
                 // url: ['/data/mesh/simple.ts', '/data/mesh/surface-relax.ts'],
-                // url: ['/data/mesh/surface.ts', '/data/mesh/surface-relax.ts'],
+                url: ['/data/mesh/bunny.ts'],
                 show: true,
-                attr: '',
+                attr: 'H',
                 lut: 'Igeoss',
                 duplicateLut: 1,
+                reverseLut: true,
                 surface: {
-                    show: true,
-                    color: '#aaffaa',
-                    flat: true,
+                    show: false,
+                    color: '#aaaaaa',
+                    flat: false,
                     creaseAngle: 0,
-                    opacity: 0.9
+                    opacity: 1
                 },
                 iso: {
-                    show: false,
+                    show: true,
                     showFill: true,
-                    showLines: true,
+                    showLines: false,
                     flat: true,
-                    nb :   15,
+                    nb :   10,
                     // spacing: 1,
                     // useMinMax: true,
                     // min: -0.4,
@@ -123,24 +125,6 @@
                     circle: false,
                     borders: true,
                     type: kepler.FractureType.DYKE
-                }
-            },
-            {
-                url: ["/devs/platform/components/arch-node/examples/ex2/grid-50.gcd"], // U
-                show: true,
-                attr: '',
-                lut: 'Igeoss',
-                duplicateLut: 1,
-                surface: {
-                    show: true,
-                    color: '#aaaaff',
-                    flat: true,
-                    creaseAngle: 0,
-                    opacity: 1
-                },
-                wireframe: {
-                    show: true,
-                    color: '#000000'
                 }
             }
         ]

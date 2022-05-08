@@ -56,24 +56,24 @@
 
         const surfaceset = [
             {
-                url: ["/data/arch/co2/horizons_300_extra.ts" /*"/data/arch/co2/obsgrid.ts"*/],
+                url: ["/data/arch/co2/result-frantz.ts"],
                 show: true,
-                attr: '',
-                lut: 'Igeoss',
+                attr: 'U',
+                lut: 'Insar',
                 duplicateLut: 1,
                 surface: {
-                    show: true,
+                    show: false,
                     color: '#00ff00',
                     flat: true,
                     creaseAngle: 0,
-                    opacity: 0.8
+                    opacity: 1
                 },
                 iso: {
-                    show: false,
+                    show: true,
                     showFill: true,
                     showLines: true,
                     flat: true,
-                    nb :   15,
+                    nb :   20,
                     // spacing: 1,
                     // useMinMax: true,
                     // min: -0.4,
@@ -93,8 +93,10 @@
                     color: '#000000'
                 },
                 borders: {
-                    show: false,
-                    color: "#000000"
+                    show: true,
+                    color: "#000000",
+                    useTube: false,
+                    tubeRadius: 5
                 },
                 wireframe: {
                     show: false,
@@ -113,8 +115,8 @@
                 }
             },
             {
-                url: [ "/data/arch/co2/horizons_300.ts", /*"/data/arch/co2/obsgrid.ts"*/],
-                show: true,
+                url: [],
+                show: false,
                 attr: '',
                 lut: 'Igeoss',
                 duplicateLut: 1,
@@ -169,36 +171,9 @@
                     type: kepler.FractureType.DYKE
                 }
             },
-            {
-                url: ["/data/arch/co2/faults_300.ts"], // U
-                show: true,
-                attr: '',
-                lut: 'Igeoss',
-                duplicateLut: 1,
-                surface: {
-                    show: true,
-                    color: '#aaaaff',
-                    flat: true,
-                    creaseAngle: 0,
-                    opacity: 1
-                },
-                wireframe: {
-                    show: true,
-                    color: '#000000'
-                }
-            }
         ]
-        const plines = [
-            {
-                url: [
-                ],
-                show: false,
-                useTube: true,
-                tubeRadius: 0.1,
-                color: "#000000"
-            }
-        ]
-        const pointsets  = []
+        const plines    = []
+        const pointsets = []
 
         init()
         load()

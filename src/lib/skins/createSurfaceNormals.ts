@@ -1,10 +1,8 @@
 import { DataFrame, IArray, Manager, Serie } from "@youwol/dataframe"
 import { NormalsDecomposer } from "@youwol/math"
 import { createVectors, VectorsParameters } from "./createVectors"
-import { BufferGeometry, LineSegments, Material, Object3D } from "three"
-
-import { fromTriangleToNode } from "../../../../geometry/dist/@youwol/geometry"
-console.warn('CHANGE THE IMPORT !!!!!! It was for testing purpose...')
+import { BufferGeometry, Material, Object3D } from "three"
+import { fromTriangleToNode } from "@youwol/geometry"
 
 export function createNormals(
     {geometry,  material, parameters}:
@@ -22,7 +20,7 @@ export function createNormals(
         [ new NormalsDecomposer ]
     )
 
-    const normals = fromTriangleToNode( {positions, indices, attribute: manager.serie(3, 'normals')} )
+    const normals = fromTriangleToNode( {positions, indices, serie: manager.serie(3, 'normals')} )
 
     return createVectors({geometry,  material, parameters, vectorField: normals})
 }

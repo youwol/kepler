@@ -235,20 +235,21 @@
 
         const model = {
             grid: false,
-            bbox: true,
+            bbox: false,
             backgroundColor: '#fff',
             colorScale: false
         }
 
         const surfaceset = [
             {
-                url: ["/data/streamlines/test.ts"],
+                // url: ["/devs/platform/components/arch-node/examples/tests/friction/result-grid-1.1.ts"],
+                url: '/data/mesh/triangle.ts',
                 show: true,
-                attr: '',
+                attr: 'a',
                 lut: 'Insar',
                 duplicateLut: 1,
                 surface: {
-                    show: true,
+                    show: false,
                     color: '#aaa',
                     flat: true,
                     creaseAngle: 0,
@@ -259,10 +260,17 @@
                     showFill: true,
                     showLines: true,
                     flat: false,
-                    nb: 10,
+                    nb: 20,
                     useMinMax: false,
                     min: -1e10,
                     max: 1e10,
+                },
+                band: {
+                    show: true,
+                    attr: 'a',
+                    from: 2.2,
+                    to  : 4,
+                    color: '#aaa'
                 },
                 wireframe: {
                     show: false,
@@ -275,9 +283,9 @@
             }
             ,
             {
-                url: ["/data/arch/figure-superposition/superposition.ts"],
+                url: ["/devs/platform/components/arch-node/examples/tests/friction/result-S1-1.1.ts"],
                 show: false,
-                attr: 'Uy',
+                attr: 'U',
                 lut: 'Insar',
                 duplicateLut: 1,
                 surface: {
@@ -292,11 +300,11 @@
                     showFill: true,
                     showLines: true,
                     flat: false,
-                    nb: 10,
+                    nb: 20,
                     useMinMax: false,
                     min: -1e10,
                     max: 1e10,
-                    opacity: 0.5
+                    opacity: 1
                 },
                 wireframe: {
                     show: false,
@@ -314,7 +322,7 @@
                 url: [ 
                     '/data/streamlines/test.pl'
                 ],
-                show: true,
+                show: false,
                 useTube: false,
                 tubeRadius: 0.01,
                 color: "#000"

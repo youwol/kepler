@@ -18,6 +18,9 @@ export * from './createFailurePlanes'
 export * from './createEdges'
 export * from './createSurfaceNormals'
 export * from './createSurfaceBorders'
+export * from './createBand'
+
+export * from './private/IsoBand'
 
 // export * from './colorbar2'
 // export * from './createIsoSurfaces'

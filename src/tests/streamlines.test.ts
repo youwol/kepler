@@ -1,6 +1,6 @@
 import { Serie } from '@youwol/dataframe'
 //import { createStreamLines, StreamLinesParameters } from '../lib'
-import { streamlines2D } from '../lib'
+// import { streamlines2D } from '../lib'
 
 const positions = Serie.create({
     array: [0,0,0, 1,0,0, 1,1,0, 0,1,0],

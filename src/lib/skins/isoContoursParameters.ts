@@ -34,7 +34,7 @@ export class IsoContoursParameters extends SkinParameters {
             lineColor,
             lut,
             duplicateLut,
-            lockLut, 
+            lockLut,
             opacity,
             reverseLut, ...others
         } : {
@@ -55,14 +55,14 @@ export class IsoContoursParameters extends SkinParameters {
         super(others)
 
         if (filled !== undefined) this.filled = filled
-        if (lined !== undefined) this.lined = lined
+        if (lined  !== undefined) this.lined  = lined
 
         this.isoList = isoList
 
-        this.color = (color!==undefined?color:'#000000')
+        this.color     = (color!==undefined?color:'#000000')
         this.lineColor = (lineColor!==undefined?lineColor:'#000000')
-        this.min = (min!==undefined?min:Number.NEGATIVE_INFINITY )
-        this.max = (max!==undefined?max:Number.POSITIVE_INFINITY )
+        this.min = (min!==undefined ? min : Number.NEGATIVE_INFINITY )
+        this.max = (max!==undefined ? max : Number.POSITIVE_INFINITY )
 
         this.set('lockLut', lockLut, this.lockLut)
         this.reverseLut = (reverseLut!== undefined ? reverseLut : this.reverseLut)

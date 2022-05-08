@@ -105,14 +105,14 @@
             {
                 //url: ["/data/arch/galapagos-all/model2/forward-grid-rotated.ts", "/data/arch/galapagos-all/model2/vert_2Dgrid_Fernandina_georef.ts"],
 
-                url: ["/data/arch/galapagos-all/model2/forward-grid.ts"],
+                // url: ["/data/arch/galapagos-all/model2/2D_grid_topo_6700.ts"],
                 // url: ["/data/arch/galapagos-all/model2/2D_grid_500_georef.ts"],
-                // url: ["/data/arch/galapagos-all/model2/simulations-grid.ts"],
+                url: ["/data/arch/galapagos-all/model2/forward-grid-13000.ts"],
                 
                 // url: ["/data/arch/galapagos-all/model2/grid.ts"],
                 show: true,
-                attr: 'Sxy',
-                lut: 'Insar',
+                attr: 'Ux',
+                lut: 'Igeoss',
                 duplicateLut: 1,
                 reverseLut: true,
                 surface: {
@@ -127,10 +127,11 @@
                     showFill: true,
                     showLines: false,
                     flat: false,
-                    nb: 20,
-                    useMinMax: false,
-                    min: -1e10,
-                    max: 1e10,
+                    // list: new Array(20).fill(0).map( (_,i) => i*0.05/20), //[0, 0.01, 0.02, 0.03, 0.04, 0.05]
+                    nb: 10,
+                    // useMinMax: false,
+                    // min: 0,
+                    // max: 0.1,
                 },
                 vectors: {
                     show: false,
@@ -142,7 +143,7 @@
                 },
                 borders: {
                     show: true,
-                    color: "#000000"
+                    color: "#ff0000"
                 },
                 wireframe: {
                     show: false,
@@ -160,6 +161,14 @@
                     borders: true,
                     borderColor: "#000000",
                     type: kepler.FractureType.DYKE
+                },
+                band: {
+                    show: true,
+                    attr: 'R',
+                    from: 0,
+                    to  : 0.3,
+                    color: '#000000',
+                    translate: [0,0,1]
                 }
             },
             {
@@ -198,7 +207,7 @@
                 url: [
                     '/data/arch/galapagos-all/model2/dikes_georef/line.pl/observed_dykes.pl'
                 ],
-                show: true,
+                show: false,
                 useTube: true,
                 scale: 1,
                 tubeRadius: 100,
@@ -208,9 +217,9 @@
                 url: [
                     "/data/arch/galapagos-all/model2/out/streamlines.pl"
                 ],
-                show: true,
-                useTube: false,
-                tubeRadius: 30,
+                show: false,
+                useTube: true,
+                tubeRadius: 100,
                 color: "#000",
                 translate: [0,0,0]
             }

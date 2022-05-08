@@ -119,9 +119,9 @@ export class ColorMap {
         ColorMapKeywords[ colormapName ] = arrayOfColors
     }
 
-    createCanvas() {
-        const canvas = document.createElement('canvas')
-        canvas.width = 1
+    createCanvas(parent=document, width=1) {
+        const canvas = parent.createElement('canvas')
+        canvas.width = width
         canvas.height = this.n
         this.updateCanvas(canvas)
         return canvas
@@ -130,7 +130,9 @@ export class ColorMap {
     updateCanvas(canvas: any) {
         this.canvas_ = canvas
         let ctx = canvas.getContext('2d', { alpha: false })
-        let imageData = ctx.getImageData(0, 0, 1, this.n)
+
+        /*
+        let imageData = ctx.getImageData(0, 0, canvas.width, this.n)
         let data = imageData.data
         let k = 0
         let step = 1.0 / this.n
@@ -142,7 +144,7 @@ export class ColorMap {
                     let minColor = new Color(this.map[ j - 1 ][ 1 ])
                     let maxColor = new Color(this.map[ j ][ 1 ])
                     let color = minColor.lerp(maxColor, (i - min) / (max - min))
-                    data[ k * 4 ] = Math.round(color.r * 255)
+                    data[ k * 4     ] = Math.round(color.r * 255)
                     data[ k * 4 + 1 ] = Math.round(color.g * 255)
                     data[ k * 4 + 2 ] = Math.round(color.b * 255)
                     data[ k * 4 + 3 ] = 255
@@ -151,6 +153,25 @@ export class ColorMap {
             }
         }
         ctx.putImageData(imageData, 0, 0)
+        */
+
+        let k = 0
+        let step = 1.0 / this.n
+        for (let i = 1; i >= 0; i -= step) {
+            for (let j = this.map.length - 1; j >= 0; j--) {
+                if (i < this.map[ j ][ 0 ] && i >= this.map[ j - 1 ][ 0 ]) {
+                    let min = this.map[ j - 1 ][ 0 ]
+                    let max = this.map[ j ][ 0 ]
+                    let minColor = new Color(this.map[ j - 1 ][ 1 ])
+                    let maxColor = new Color(this.map[ j ][ 1 ])
+                    let color = minColor.lerp(maxColor, (i - min) / (max - min))
+                    ctx.fillStyle = `rgb(${Math.round(color.r * 255)}, ${Math.round(color.g * 255)}, ${Math.round(color.b * 255)})`
+                    ctx.fillRect(0, k, 15, 1)
+                    k += 1
+                }
+            }
+        }
+
         return canvas
     }
 }
