@@ -22,7 +22,7 @@ import {
 	// PlaneGeometry,
 	WebGLRenderer,
 	Camera
-} from 'Three'
+} from 'three'
 import { ColorMap } from './colorMap'
 
 /*
