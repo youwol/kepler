@@ -13,6 +13,8 @@
     <script src='../node_modules/three/build/three.min.js'></script>
     <!-- <script src='../node_modules/three-trackballcontrols/index.js'></script> -->
     <script src='https://rawgit.com/mrdoob/three.js/master/examples/js/controls/TrackballControls.js'></script>
+    <script src='/devs/workspace/packages/three-extra/node_modules/three/examples/js/renderers/SVGRenderer.js'></script>
+    <script src='/devs/workspace/packages/three-extra/node_modules/three/examples/js/renderers/Projector.js'></script>
     <script src='/devs/workspace/packages/three-extra/dist/@youwol/three-extra.js'></script>
     <script src='/devs/workspace/packages/kepler/dist/@youwol/kepler.js'></script>
 
@@ -68,6 +70,9 @@
         </div>
     </div> -->
 
+    <input id="btnSVGExport" type="button" value="Export SVG" onclick="btnSVGExport()" style="position: absolute; opacity: 40%; margin-bottom:3px; top: 5px; left: 5px;">
+    <input id="btnScreenshot" type="button" value="Screenshot" onclick="takeScreenshot()" style="position: absolute; opacity: 40%; margin-bottom:3px; top: 40px; left: 5px;">
+
     <div class="bottom-1 start-1" style='position: absolute; opacity: 40%; left: 20px; bottom: 20px'>
         <img src="youwol-logo.png" alt="youwol">
     </div>
@@ -103,24 +108,24 @@
 
         const surfaceset = [
             {
-                //url: ["/data/arch/galapagos-all/model2/forward-grid-rotated.ts", "/data/arch/galapagos-all/model2/vert_2Dgrid_Fernandina_georef.ts"],
-
-                // url: ["/data/arch/galapagos-all/model2/2D_grid_topo_6700.ts"],
-                // url: ["/data/arch/galapagos-all/model2/2D_grid_500_georef.ts"],
-                url: ["/data/arch/galapagos-all/model2/forward-grid-13000.ts"],
-                
-                // url: ["/data/arch/galapagos-all/model2/grid.ts"],
+                url: ["/data/arch/galapagos-all/NEW/forward-grid-superposition.ts"],
+                // url: ["/data/arch/galapagos-all/NEW/forward-dykes-superposition.ts"],
                 show: true,
-                attr: 'Ux',
-                lut: 'Igeoss',
+                attr: '',
+                lut: 'Insar',
                 duplicateLut: 1,
-                reverseLut: true,
+                reverseLut: false,
+                name: {
+                    show: false,
+                    fontSize: 40,
+                    rect: false
+                },
                 surface: {
                     show: false,
                     color: '#aaa',
                     flat: false,
                     creaseAngle: 0,
-                    opacity: 1
+                    opacity: 0.8
                 },
                 iso: {
                     show: true,
@@ -133,9 +138,19 @@
                     // min: 0,
                     // max: 0.1,
                 },
+                streamlines: {
+                    show: true,
+                    attr: 'S2',
+                    color: '#000000',
+                    maximumPointsPerLine: 50,
+                    dSep: 0.1,
+                    timeStep: 0.05,
+                    dTest: 0.08,
+                    maxTimePerIteration: 1000
+                },
                 vectors: {
                     show: false,
-                    attr: 'Joint',
+                    attr: 'S2',
                     scale: 1000,
                     color: '#000000',
                     useTube: true,
@@ -163,21 +178,35 @@
                     type: kepler.FractureType.DYKE
                 },
                 band: {
-                    show: true,
+                    show: false,
                     attr: 'R',
-                    from: 0,
-                    to  : 0.3,
+                    from: 0.5,
+                    to  : 0.88,
                     color: '#000000',
-                    translate: [0,0,1]
+                    // translate: [0,0,10],
+                    scale: 1
                 }
             },
             {
-                url: "/data/arch/galapagos-all/model2/Sill_magma_chambers_500_georef_NEW.ts",
-                // url: "/data/arch/galapagos-all/model2/ellipsoid_magma_chambers_500_georef_NEW.ts",
-                show: false,
+                url: [
+                    "/data/arch/galapagos-all/NEW/alcedo.ts",
+                    "/data/arch/galapagos-all/NEW/cerro_azul_mod4.ts",
+                    "/data/arch/galapagos-all/NEW/darwin.ts",
+                    "/data/arch/galapagos-all/NEW/ecuador.ts",
+                    "/data/arch/galapagos-all/NEW/fernandina.ts",
+                    "/data/arch/galapagos-all/NEW/sierra_negra.ts",
+                    "/data/arch/galapagos-all/NEW/wolf.ts"
+                ],
+                show: true,
                 attr: '',
                 lut: 'Insar',
                 duplicateLut: 1,
+                name: {
+                    show: true,
+                    fontSize: 40,
+                    rect: false,
+                    translate: true
+                },
                 surface: {
                     show: true,
                     color: '#ff0000',
@@ -186,7 +215,7 @@
                     opacity: 1
                 },
                 wireframe: {
-                    show: false,
+                    show: true,
                     color: '#000000'
                 },
                 iso: {
@@ -205,37 +234,28 @@
         const plines = [
             {
                 url: [
-                    '/data/arch/galapagos-all/model2/dikes_georef/line.pl/observed_dykes.pl'
+                    '/data/arch/galapagos-all/NEW/data.pl'
                 ],
                 show: false,
                 useTube: true,
                 scale: 1,
                 tubeRadius: 100,
                 color: "#000"
-            },
-            {
-                url: [
-                    "/data/arch/galapagos-all/model2/out/streamlines.pl"
-                ],
-                show: false,
-                useTube: true,
-                tubeRadius: 100,
-                color: "#000",
-                translate: [0,0,0]
             }
         ]
 
         const pointsets = [
             {
-                url: "/data/arch/galapagos-all/model2/result-costs.xyz",
+                url: "/data/arch/galapagos-all/NEW/forward-dykes-superposition.xyz",
                 show: false,
                 attr: 'cost',
                 lut: 'Insar',
                 reverseLut: false,
-                size: 70,
+                size: 5,
                 min: 0,
                 max: 1,
                 opacity: 1,
+
                 vectors: {
                     show: false,
                     attr: 'newN',
@@ -246,7 +266,7 @@
                 }
             },
             {
-                url: "/data/arch/galapagos-all/model2/result-forward-dikes.xyz",
+                url: "/data/arch/galapagos-all/NEW/result-forward-dikes.xyz",
                 show: false,
                 attr: '',
                 lut: 'Insar',

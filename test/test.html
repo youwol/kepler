@@ -10,6 +10,8 @@
     <script src='/devs/workspace/packages/io/dist/@youwol/io.js'></script>
     <script src='/devs/workspace/packages/three-extra/node_modules/three/build/three.min.js'></script>
     <script src='/devs/workspace/packages/three-extra/node_modules/three/examples/js/controls/TrackballControls.js'></script>
+    <script src='/devs/workspace/packages/three-extra/node_modules/three/examples/js/renderers/SVGRenderer.js'></script>
+    <script src='/devs/workspace/packages/three-extra/node_modules/three/examples/js/renderers/Projector.js'></script>
     <script src='/devs/workspace/packages/three-extra/dist/@youwol/three-extra.js'></script>
     <script src='/devs/workspace/packages/kepler/dist/@youwol/kepler.js'></script>
     <script src="https://kit.fontawesome.com/daa834e337.js" crossorigin="anonymous"></script>
@@ -24,21 +26,21 @@
     <div class="loading" id="js-loader">
         <div class="loader"></div>
     </div>
-
     <div class='home-container'>
         <span>
-            <div class='buttonIcon'>
+            <div class='buttonIcon' style="position: absolute; right: 80px;">
                 <div id='goHome'><i class='fa fa-home'></i></div>
             </div>
-            <div class='buttonIcon'>
+            <div class='buttonIcon' style="position: absolute; right: 45px;">
                 <div id='saveHome'><i class='fa fa-clinic-medical'></i></div>
             </div>
             <div class='right-container'>
                 <div id='orientCubeWrapper'></div>
             </div>
         </span>
-        <div id="chart"></div>
     </div>
+
+    <input id="btnSVGExport" type="button" value="Export SVG" onclick="btnSVGExport()" style="position: absolute; opacity: 40%; margin-bottom:3px">
 
     <!-- <div class="top-1 start-1" style='position: absolute; opacity: 75%; left: 10px; top: 10px'>
         <div class="card" style="width: 300px; height: 150px; background-color: rgb(193, 193, 193);">
@@ -236,41 +238,64 @@
         const model = {
             grid: false,
             bbox: false,
-            backgroundColor: '#fff',
+            backgroundColor: '#aaa',
             colorScale: false
         }
+
+        const spacing = 0.1
 
         const surfaceset = [
             {
                 // url: ["/devs/platform/components/arch-node/examples/tests/friction/result-grid-1.1.ts"],
-                url: '/data/mesh/triangle.ts',
+                // url: '/data/mesh/bunny.ts',
+                // url: '/data/mesh/bunny.off',
+                // url: "/data/arch/spanish-peak/forward-grid.ts",
+                // url: '/devs/platform/components/arch-node/examples/tests/HS/result-obs.gcd',
+                url: [
+                    '/devs/platform/components/arch-node/examples/tests/imposed-displ/HS/vert_grid_arch_all.ts'
+                ],
                 show: true,
-                attr: 'a',
+                attr: 'Sxx',
                 lut: 'Insar',
                 duplicateLut: 1,
                 surface: {
-                    show: false,
+                    show: true,
                     color: '#aaa',
-                    flat: true,
+                    flat: false,
                     creaseAngle: 0,
-                    opacity: 0.5
+                    opacity: 1
                 },
                 iso: {
                     show: false,
                     showFill: true,
                     showLines: true,
                     flat: false,
+                    // spacing,
                     nb: 20,
-                    useMinMax: false,
-                    min: -1e10,
-                    max: 1e10,
+                    // useMinMax: true,
+                    // min: -10,
+                    // max: 2,
+                },
+                streamlines: {
+                    show: true,
+                    attr: 'U',
+                    color: '#000000'
+                },
+                vectors: {
+                    show: false,
+                    attr: 'S1',
+                    scale: 0.05,
+                    color: '#000000',
+                    useTube: false,
+                    radius: 20
                 },
                 band: {
-                    show: true,
-                    attr: 'a',
-                    from: 2.2,
-                    to  : 4,
-                    color: '#aaa'
+                    show: false,
+                    attr: 'z',
+                    from: 100,
+                    to  : 110,
+                    color: '#000000',
+                    scale: 0.1
                 },
                 wireframe: {
                     show: false,
@@ -280,14 +305,15 @@
                     show: true,
                     color: "#000000"
                 }
-            }
-            ,
+            },
             {
-                url: ["/devs/platform/components/arch-node/examples/tests/friction/result-S1-1.1.ts"],
+                // url: '/devs/platform/components/arch-node/examples/tests/HS/planar_fault.ts',
+                url: '/devs/platform/components/arch-node/examples/tests/imposed-displ/HS/vert_grid_Poly3D_bbb.ts',
                 show: false,
-                attr: 'U',
+                attr: '',
                 lut: 'Insar',
                 duplicateLut: 1,
+                translation: [0, 0, 0],
                 surface: {
                     show: false,
                     color: '#aaa',
@@ -300,18 +326,18 @@
                     showFill: true,
                     showLines: true,
                     flat: false,
-                    nb: 20,
-                    useMinMax: false,
-                    min: -1e10,
-                    max: 1e10,
-                    opacity: 1
+                    spacing,
+                    // nb: 20,
+                    // useMinMax: true,
+                    // min: -3,
+                    // max: 2,
                 },
                 wireframe: {
                     show: false,
                     color: '#000000'
                 },
                 borders: {
-                    show: false,
+                    show: true,
                     color: "#000000"
                 }
             }

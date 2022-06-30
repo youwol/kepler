@@ -84,6 +84,7 @@ function doSurface(surfaceInfo) {
                         let stress = df.series[this.stressName]
                         if (!stress) return undefined
                         return math.eigenValue(stress).map(s => (s[1] - s[2]) / (s[0] - s[2]))
+                        // return math.eigenValue(stress).map(s => (s[1] - s[0]) / (s[2] - s[0]))
                     }
                 }
 
@@ -91,9 +92,17 @@ function doSurface(surfaceInfo) {
 
                 const scolor = randColor()
 
-                const dfs = io.decodeGocadTS(buffer, { shared: false, merge: true })
+                const filter = io.IOFactory.getFilter(url)
+                if (filter === undefined) {
+                    return
+                }
+
+                const dfs = filter.decode(buffer, { shared: false, merge: true })
+                // const dfs = io.decodeGocadTS(buffer, { shared: false, merge: true })
                 dfs.forEach(df => {
                     let skin
+
+                    console.log('loaded object named', df.userData.name)
 
                     let position = df.series.positions
                     let indices = df.series.indices
@@ -132,14 +141,6 @@ function doSurface(surfaceInfo) {
                         console.log('attr:', surfaceInfo.attr)
                         console.log('min :', mM[0].toFixed(3))
                         console.log('max :', mM[1].toFixed(3))
-                        // const bar = new kepler.ScaleBar(surfaceInfo.lut)
-                        // group.add(bar.mesh)
-
-                        // OR
-
-                        //renderFct.add(bar.render)
-
-                        // group.add(bar.mesh)
                     }
 
                     if (surfaceInfo.wireframe && surfaceInfo.wireframe.show) {
@@ -178,6 +179,29 @@ function doSurface(surfaceInfo) {
                                 reverseLut: surfaceInfo.reverseLut
                             }))
                         }
+                    }
+
+                    if (surfaceInfo.name && surfaceInfo.name.show) {
+                        var center = new THREE.Vector3()
+                        surface.geometry.computeBoundingBox()
+                        surface.geometry.computeBoundingSphere()
+                        surface.geometry.boundingBox.getCenter(center)
+                        // console.log(surface.geometry.boundingSphere)
+                        const radius = surface.geometry.boundingSphere.radius
+                        // addObjectLabel(group, 'object', center.x, center.y, center.z)
+                        const sprite = extra.createTextSprite({
+                            text: df.userData.name, 
+                            position: center, 
+                            rect     : surfaceInfo.name.rect !== undefined ? surfaceInfo.name.rect : false, 
+                            rectColor: '#fffd82', 
+                            fontColor: '#000', 
+                            fontSize : surfaceInfo.name.fontSize !== undefined ? surfaceInfo.name.fontSize : 40, 
+                        })
+                        if (surfaceInfo.name.translate) {
+                            sprite.position.setX(sprite.position.x + radius)
+                            sprite.position.setZ(sprite.position.z - radius)
+                        }
+                        group.add( sprite )
                     }
 
                     // if ( (surfaceInfo.iso && (surfaceInfo.iso.show===false || attr===undefined)) ) {
@@ -250,8 +274,9 @@ function doSurface(surfaceInfo) {
 
                     if (surfaceInfo.streamlines !== undefined && surfaceInfo.streamlines.show === true) {
                         const vattr = manager.serie(3, surfaceInfo.streamlines.attr)
+                        console.log( math.minMax(vattr) )
                         if (vattr) {
-                            const positions = dataframe.Serie.create({
+                            let positions = dataframe.Serie.create({
                                 array: surface.geometry.attributes.position.array,
                                 itemSize: 3
                             })
@@ -262,7 +287,14 @@ function doSurface(surfaceInfo) {
                             const lines = geom.generateStreamLinesFromUnstructured({
                                 positions,
                                 indices,
-                                vectorField: vattr
+                                vectorField: vattr,
+                                // nx: 100, 
+                                // ny: 100, 
+                                maximumPointsPerLine: surfaceInfo.streamlines.maximumPointsPerLine!==undefined?surfaceInfo.streamlines.maximumPointsPerLine:50,
+                                dSep: surfaceInfo.streamlines.dSep!==undefined?surfaceInfo.streamlines.dSep:0.2,
+                                timeStep: surfaceInfo.streamlines.timeStep!==undefined?surfaceInfo.streamlines.timeStep:0.01,
+                                dTest: surfaceInfo.streamlines.dTest!==undefined?surfaceInfo.streamlines.dTest:0.08,
+                                maxTimePerIteration: surfaceInfo.streamlines.maxTimePerIteration!==undefined?surfaceInfo.streamlines.maxTimePerIteration:1000
                             })
                             if (lines) {
                                 const g = new THREE.Group
@@ -316,12 +348,14 @@ function doSurface(surfaceInfo) {
 
                     if (surfaceInfo.band !== undefined && surfaceInfo.band.show === true) {
                         if (manager.contains(1, surfaceInfo.band.attr)) {
-                            group.add( kepler.createBand(surface, manager.serie(1, surfaceInfo.band.attr), {
+                            const attr = manager.serie(1, surfaceInfo.band.attr)
+                            console.log(surfaceInfo.band.attr, math.minMax(attr))
+                            group.add( kepler.createBand(surface, attr, {
                                 parameters: new kepler.BandParameters({
                                     color: surfaceInfo.band.color,
                                     from : surfaceInfo.band.from,
                                     to   : surfaceInfo.band.to,
-                                    translate: surfaceInfo.band.translate
+                                    scale: surfaceInfo.band.scale
                                 })
                             }) )
                         }

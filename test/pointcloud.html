@@ -52,19 +52,47 @@
             grid: false
         }
 
-        const surfaceset = []
+        const surfaceset = [
+            {
+                url: ['/data/meca/kogan.ts'],
+                show: false,
+                attr: '',
+                lut: 'Insar',
+                duplicateLut: 1,
+                reverseLut: false,
+                surface: {
+                    show: true,
+                    color: '#aaaaaa',
+                    flat: false,
+                    creaseAngle: 0,
+                    opacity: 1
+                },
+                iso: {
+                    show: false,
+                    showFill: true,
+                    showLines: false,
+                    flat: true,
+                    nb :   20,
+                    // spacing: 1,
+                    // useMinMax: true,
+                    // min: -0.4,
+                    // max:  7,
+                }
+            }
+        ]
         const plines = []
         const pointsets = [
             {
-                url: "/data/point-cloud/salon.xyz",
+                // url: "/data/point-cloud/salon.xyz",
                 // url: "/data/arch/spanish-peak/domain.xyz",
                 // url: "/data/arch/galapagos-all/model2/dikes_georef/points.xyz/domain-theta-Rh.xyz",
-                // url: "/data/streamlines/interpolated.xyz",
+                url: "/data/meca/kogan.xyz",
                 show: true,
-                attr: 'color',
-                lut: 'Grayscale',
+                attr: '',
+                lut: 'Insar',
                 reverseLut: false,
-                color: '#aaa',
+                color: '#000',
+                sizeAttenuation: false,
                 size: 3,
                 // min: 0,
                 // max: 1,

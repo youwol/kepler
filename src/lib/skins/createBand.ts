@@ -2,6 +2,7 @@ import {
     BufferGeometry,
     Color,
     DoubleSide,
+    Float32BufferAttribute,
     Material, Mesh, MeshPhongMaterial
 } from "three"
 
@@ -9,26 +10,27 @@ import { Serie }   from "@youwol/dataframe"
 import { SkinParameters } from "./skinParameters"
 import { IsoBand } from "./private/IsoBand"
 import { createSurface, SurfaceParameters } from "./createSurface"
+import { createBufferGeometry } from "../utils"
 
 export class BandParameters extends SkinParameters {
     public readonly color  : string = '#ffffff'
     public readonly opacity: number = 1
     public readonly from   : number = 0
     public readonly to     : number = 1
-    public readonly translate: number[] = [0,0,0]
+    public readonly scale  : number = 1
     
     constructor(
         {
             color,
             opacity,
             from, to,
-            translate, ...others
+            scale, ...others
         } : {
             color?  : string,
             opacity?: number,
             from?: number,
             to?: number,
-            translate?: number[]
+            scale?: number
         })
     {
         super(others)
@@ -37,7 +39,7 @@ export class BandParameters extends SkinParameters {
         if (opacity !== undefined) this.opacity = opacity
         if (from !== undefined) this.from = from
         if (to !== undefined) this.to = to
-        if (translate !== undefined) this.translate = translate
+        if (scale !== undefined) this.scale = scale
     }
 }
 
@@ -86,9 +88,9 @@ export function createBand(
         material = new MeshPhongMaterial({
             color: new Color(parameters.color),
             side: DoubleSide,
-            vertexColors: true,
+            vertexColors: false,
             wireframe: false, 
-            flatShading: false
+            flatShading: true // <--------------------------------- FLAT for the moment
         })
     }
     material.polygonOffset = true
@@ -104,7 +106,7 @@ export function createBand(
 
 
     const band = new IsoBand(mesh.geometry)
-    // band.debug = false
+    band.debug = false
 
     const r = band.run(
         attribute,
@@ -112,14 +114,17 @@ export function createBand(
         parameters.to
     )
 
-    const t = parameters.translate
+    const sc = parameters.scale
 
-    return createSurface({
-        positions: r.positions.map( p => [p[0]+t[0], p[1]+t[1], p[2]+t[2]]), 
-        indices  : r.indices,
-        material,
-        parameters: new SurfaceParameters({
-            color: parameters.color
-        })
+    // Translate positions according to the normal using scale')
+    const pos = r.positions.map( (p, i) => {
+        const n = r.normals.itemAt(i)
+        return p.map( (x,i) => x+n[i]*sc)
     })
+
+    const nmesh = new Mesh()
+    nmesh.geometry = createBufferGeometry(pos, r.indices)
+    nmesh.geometry.setAttribute('normal', new Float32BufferAttribute(r.normals.array, 3))
+    nmesh.material = material
+    return nmesh
 }

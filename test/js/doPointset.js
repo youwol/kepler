@@ -46,9 +46,15 @@ function doPointset(psetInfo) {
             .then( buffer => {
                 if (! buffer) return undefined
 
-                const scolor = randColor()
+                // const scolor = randColor()
 
-                const dfs = io.decodeXYZ(buffer, {shared: false, merge: true})
+                const filter = io.IOFactory.getFilter(url)
+                if (filter === undefined) {
+                    return undefined
+                }
+
+                const dfs = filter.decode(buffer, { shared: false, merge: true })
+                
                 dfs.forEach( df => {
 
                     let position = df.series['positions']
@@ -67,7 +73,8 @@ function doPointset(psetInfo) {
                         position: position,
                         parameters: new kepler.PointsetParameters({
                             size: psetInfo.size,
-                            color: psetInfo.color!==undefined?psetInfo.color:undefined
+                            color: psetInfo.color!==undefined?psetInfo.color:undefined,
+                            sizeAttenuation: psetInfo.sizeAttenuation!==undefined?psetInfo.sizeAttenuation:true
                         })
                     })
 

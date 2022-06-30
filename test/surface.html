@@ -8,6 +8,8 @@
     <script src='/devs/workspace/packages/geometry/dist/@youwol/geometry.js'></script>
     <script src='/devs/workspace/packages/io/dist/@youwol/io.js'></script>
     <script src='/devs/workspace/packages/three-extra/node_modules/three/build/three.min.js'></script>
+    <script src='/devs/workspace/packages/three-extra/node_modules/three/examples/js/renderers/SVGRenderer.js'></script>
+    <script src='/devs/workspace/packages/three-extra/node_modules/three/examples/js/renderers/Projector.js'></script>
     <script src='/devs/workspace/packages/three-extra/node_modules/three/examples/js/controls/TrackballControls.js'></script>
     <script src='/devs/workspace/packages/kepler/dist/@youwol/kepler.js'></script>
     <script src='/devs/workspace/packages/three-extra/dist/@youwol/three-extra.js'></script>
@@ -20,10 +22,10 @@
     </div>
     <div class='home-container'>
         <span>
-            <div class='buttonIcon'>
+            <div class='buttonIcon' style="position: absolute; right: 80px;">
                 <div id='goHome'><i class='fa fa-home'></i></div>
             </div>
-            <div class='buttonIcon'>
+            <div class='buttonIcon' style="position: absolute; right: 45px;">
                 <div id='saveHome'><i class='fa fa-clinic-medical'></i></div>
             </div>
             <div class='right-container'>
@@ -31,6 +33,8 @@
             </div>
         </span>
     </div>
+    <input id="btnSVGExport" type="button" value="Export SVG" onclick="btnSVGExport()" style="position: absolute; opacity: 40%; margin-bottom:3px">
+    <input id="btnScreenshot" type="button" value="Screenshot" onclick="takeScreenshot()" style="position: absolute; opacity: 40%; margin-bottom:3px; top: 25px">
 
     <script type="text/javascript" src='./js/doSurfaces.js'></script>
     <script type="text/javascript" src='./js/doLines.js'></script>
@@ -70,37 +74,60 @@
                 // url: '/data/arch/spanish-peak/domain-empty.ts',
                 // url: '/data/arch/galapagos-all/model2/domain-0.ts',
                 // url: ['/data/mesh/simple.ts', '/data/mesh/surface-relax.ts'],
-                url: ['/data/mesh/bunny.ts'],
+                url: ['/data/mesh/pts.ts'],
+                // url: ['/data/mesh/grid_for_streamlines-R.ts'],
+                // url: ['/data/arch/sphere/half-space/result_arch_grid.gcd'],
+                // url: ['/data/arch/fernandina/result_arch_grid.gcd'],
                 show: true,
-                attr: 'H',
-                lut: 'Igeoss',
+                attr: 'z',
+                lut: 'Insar',
                 duplicateLut: 1,
-                reverseLut: true,
+                reverseLut: false,
+                opacity: 0.5,
                 surface: {
                     show: false,
                     color: '#aaaaaa',
                     flat: false,
                     creaseAngle: 0,
-                    opacity: 1
+                    opacity: 0.5
                 },
                 iso: {
                     show: true,
                     showFill: true,
                     showLines: false,
                     flat: true,
-                    nb :   10,
+                    nb :   20,
+                    opacity: 0.7,
                     // spacing: 1,
                     // useMinMax: true,
                     // min: -0.4,
                     // max:  7,
                 },
+                streamlines: {
+                    show: false,
+                    attr: 'record',
+                    color: '#000000',
+                    maximumPointsPerLine: 200,
+                    dSep: 0.2,
+                    timeStep: 0.05,
+                    dTest: 0.01,
+                    maxTimePerIteration: 1000
+                },
                 vectors: {
                     show: false,
-                    attr: 'n',
-                    scale: 300,
+                    attr: 'record',
+                    scale: .3,
                     color: '#000000',
-                    useTube: true,
-                    radius: 20
+                    useTube: false,
+                    radius: 5
+                },
+                band: {
+                    show: false,
+                    attr: 'R',
+                    from: 0,
+                    to  : 0.01,
+                    color: '#000000',
+                    scale: 0.01
                 },
                 points: {
                     show: false,
@@ -112,7 +139,7 @@
                     color: "#000000"
                 },
                 wireframe: {
-                    show: false,
+                    show: true,
                     color: '#000000'
                 },
                 failure: {

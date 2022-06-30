@@ -1,5 +1,5 @@
-import { IArray, Vector } from '@youwol/dataframe';
-import { BufferAttribute, Float32BufferAttribute, Vector3 } from 'three'
+// import { IArray, Vector } from '@youwol/dataframe';
+import { Float32BufferAttribute, Vector3 } from 'three'
 
 // See also https://stackoverflow.com/questions/27055644/three-js-maintaining-creases-when-smooth-shading-custom-geometry
 // See https://github.com/mrdoob/three.js/blob/master/examples/jsm/loaders/VRMLLoader.js

@@ -4,14 +4,16 @@ html, body {
 }
 .home-container {
     position: absolute;
-    right: 40px;
-    top: 5px;
+    right: 0px;
+    top: 10px;
     display: flex;
+    /* opacity: 0.5; */
 }
+
 .right-container {
     position: absolute;
     right: 10px;
-    top: 10px;
+    top: 20px;
     display: flex;
 }
 
