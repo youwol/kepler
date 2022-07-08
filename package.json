@@ -12,7 +12,8 @@
     "build:prod": "webpack --mode production",
     "test": "jest -c ./jest.config.js --rootDir .",
     "test-coverage": "jest -c ./jest.config.js --rootDir . --collect-coverage --collectCoverageFrom=./src/lib/**/*.ts ",
-    "doc": "rm -fr  dist/docs && typedoc src/ --exclude src/lib --exclude src/tests --disableSources --out dist/docs --includeVersion --hideGenerator --theme pages-plugin --media ./media",
+    "__doc": "rm -fr  dist/docs && typedoc src/ --exclude src/lib --exclude src/tests --disableSources --out dist/docs --includeVersion --hideGenerator",
+    "doc": "rm -fr dist/docs && typedoc src/ --exclude src/lib --exclude src/tests --excludePrivate --disableSources --out dist/docs --includeVersion --hideGenerator",
     "serve": "http-server ../../../../ -p 84 -o devs/workspace/packages/kepler/test/index.html",
     "upgrade-youwol": "yarn upgrade @youwol/math @youwol/attribute @youwol/dataframe @youwol/io",
     "publish-npm-public": "yarn build:prod && yarn test-coverage && yarn publish --access public"
@@ -42,7 +43,6 @@
     "ts-loader": "8.1.0",
     "tslib": "^2.2.0",
     "typedoc": "0.20.34",
-    "typedoc-plugin-pages": "^1.1.0",
     "typescript": "4.2.3",
     "webpack": "5.28.0",
     "webpack-bundle-analyzer": "^4.4.1",
