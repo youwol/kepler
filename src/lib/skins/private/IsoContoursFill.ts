@@ -4,6 +4,8 @@ import { BufferAttribute, BufferGeometry, Color } from "three"
 import { ColorMap, createLut, fromValueToColor } from "../../utils"
 import { IsoContoursParameters } from "../isoContoursParameters"
 
+const Nc = 128
+
 export class IsoContoursFill {
     attr: Serie = undefined
     nodes_: BufferAttribute = undefined
@@ -11,7 +13,7 @@ export class IsoContoursFill {
     vmin_  = 0
     vmax_  = 1
     color_ = new Color('#000000')
-    lutTable_: ColorMap = createLut('Insar', 64)
+    lutTable_: ColorMap = createLut('Insar', Nc)
     params: IsoContoursParameters = undefined
 
     position_: Array<number>  = []
@@ -28,7 +30,7 @@ export class IsoContoursFill {
     constructor(parameters: IsoContoursParameters) {
         this.params = parameters
         this.color_     = new Color(parameters.color)
-        this.lutTable_  = createLut(parameters.lut, 64, parameters.duplicateLut)
+        this.lutTable_  = createLut(parameters.lut, Nc, parameters.duplicateLut)
         this.lutTable_.setMin(0)
         this.lutTable_.setMax(1)
         this.isoValues_ = parameters.isoList

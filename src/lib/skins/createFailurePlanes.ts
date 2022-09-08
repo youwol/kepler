@@ -128,6 +128,9 @@ export function createFailurePlanes(
         matrix.compose( pos, rot, sc)
         const instanceGeometry = primitive.clone()
         instanceGeometry.applyMatrix4(matrix)
+
+        // console.log(instanceGeometry)
+
         geometries.push(instanceGeometry)
         
     })

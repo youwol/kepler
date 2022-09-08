@@ -34,6 +34,18 @@ export function generateColorMap(name: string, numberofcolors: number, duplicate
     return new ColorMap(newMap, numberofcolors)
 }
 
+export function colorMapNames() {
+    const names = []
+    for (const [key, value] of Object.entries(ColorMapKeywords)) {
+        names.push(key)
+    }
+    return names
+}
+
+export function addColorMap(colormapName: string, arrayOfColors: Array<[number,number]>) {
+    ColorMapKeywords[ colormapName ] = arrayOfColors
+}
+
 /**
  * @category Color Lookup Table
  */
@@ -44,6 +56,10 @@ export class ColorMap {
     private minV = 0
     private maxV = 1
     private canvas_: HTMLCanvasElement
+
+    static addColorMap(colormapName: string, arrayOfColors: Array<[number,number]>) {
+        ColorMapKeywords[ colormapName ] = arrayOfColors
+    }
 
     constructor(colormap: string | Array<Array<number>>, numberofcolors: number) {
         this.setColorMap(colormap, numberofcolors)
@@ -131,10 +147,6 @@ export class ColorMap {
         return this.lut[ colorPosition ]
     }
 
-    addColorMap(colormapName: string, arrayOfColors: number) {
-        ColorMapKeywords[ colormapName ] = arrayOfColors
-    }
-
     createCanvas(parent=document, width=1) {
         const canvas = parent.createElement('canvas')
         canvas.width = width
@@ -193,39 +205,39 @@ export class ColorMap {
 }
  
 let ColorMapKeywords = {
-     'Cooltowarm': [
-         [ 0.0, 0x3C4EC2 ], 
-         [ 0.2, 0x9BBCFF ], 
-         [ 0.5, 0xDCDCDC ], 
-         [ 0.8, 0xF6A385 ], 
-         [ 1.0, 0xB40426 ]
-     ],
- 
-     'Blackbody': [
-         [ 0.0, 0x000000 ], 
-         [ 0.2, 0x780000 ], 
-         [ 0.5, 0xE63200 ], 
-         [ 0.8, 0xFFFF00 ], 
-         [ 1.0, 0xFFFFFF ]
-     ],
- 
-     'Grayscale': [
-         [ 0.0, 0x000000 ], 
-         [ 0.2, 0x404040 ], 
-         [ 0.5, 0x7F7F80 ], 
-         [ 0.8, 0xBFBFBF ], 
-         [ 1.0, 0xFFFFFF ]
-     ],
- 
-     'Insar': [
-         [0.0, 0x0500d5],
-         [0.3, 0x00baff],
-         [0.5, 0x00ffc6],
-         [0.7, 0xfcff00],
-         [1.0, 0xd00000]
-     ],
+    'Cooltowarm': [
+        [ 0.0, 0x3C4EC2 ], 
+        [ 0.2, 0x9BBCFF ], 
+        [ 0.5, 0xDCDCDC ], 
+        [ 0.8, 0xF6A385 ], 
+        [ 1.0, 0xB40426 ]
+    ],
 
-     'InsarBanded': [
+    'Blackbody': [
+        [ 0.0, 0x000000 ], 
+        [ 0.2, 0x780000 ], 
+        [ 0.5, 0xE63200 ], 
+        [ 0.8, 0xFFFF00 ], 
+        [ 1.0, 0xFFFFFF ]
+    ],
+
+    'Grayscale': [
+        [ 0.0, 0x000000 ], 
+        [ 0.2, 0x404040 ], 
+        [ 0.5, 0x7F7F80 ], 
+        [ 0.8, 0xBFBFBF ], 
+        [ 1.0, 0xFFFFFF ]
+    ],
+
+    'Insar': [
+        [0.0, 0x0500d5],
+        [0.3, 0x00baff],
+        [0.5, 0x00ffc6],
+        [0.7, 0xfcff00],
+        [1.0, 0xd00000]
+    ],
+
+    'InsarBanded': [
         [0, 0x0500d5],
         [0.02040816326530612, 0x00baff],
         [0.04081632653061224, 0x00ffc6],
@@ -276,85 +288,85 @@ let ColorMapKeywords = {
         [0.9591836734693877, 0x00ffc6],
         [0.9795918367346939, 0xfcff00],
         [0.9999999999999999, 0xd00000]
-     ],
+    ],
  
-     'Rainbow': [
-         [0.0, 0xff0000],
-         [0.2, 0xfffc00],
-         [0.4, 0x00ff06],
-         [0.6, 0x00fffc],
-         [0.8, 0x0600ff],
-         [1.0, 0xf600ff]
-     ],
- 
-     'Igeoss': [
-         [0.00, 0x004211],
-         [0.25, 0xfffc00],
-         [0.50, 0xffb400],
-         [0.75, 0xff5a00],
-         [1.00, 0x870000]
-     ],
- 
-     'Blue_White_Red': [
-         [0.0, 0x0012ff],
-         [0.5, 0xffffff],
-         [1.0, 0xff0000]
-     ],
- 
-     'Blue_Green_Red': [
-         [0.0 , 0x0012ff],
-         [0.25, 0xffffff],
-         [0.5 , 0x00ff00],
-         [0.275, 0xffffff],
-         [1.0 , 0xff0000]
-     ],
- 
-     'Spectrum': [
-         [0.0000, 0xffffff],
-         [0.1428, 0xff0000],
-         [0.2856, 0xff00fc],
-         [0.4284, 0x0600ff],
-         [0.5712, 0x00f6ff],
-         [0.7140, 0x00ff06],
-         [0.8568, 0xfffc00],
-         [1.0000, 0xff0000]
-     ],
- 
-     'Default': [
-         [0.00, 0x0c00ff],
-         [0.25, 0x00fcff],
-         [0.50, 0x00ff0c],
-         [0.75, 0xf6ff00],
-         [1.00, 0xff0000]
-     ],
- 
-     'Banded': [
-         [0.0000, 0xfff5cd],
-         [0.1666, 0xff9600],
-         [0.1667, 0xceffd1],
-         [0.3333, 0x107100],
-         [0.3334, 0xd4e4fb],
-         [0.5000, 0x015faf],
-         [0.5001, 0xebdefb],
-         [0.6666, 0xc5029e],
-         [0.6667, 0xfff0cb],
-         [0.8333, 0x845d00],
-         [0.8334, 0xf9d8d8],
-         [1.0000, 0xda0000]
-     ],
+    'Rainbow': [
+        [0.0, 0xff0000],
+        [0.2, 0xfffc00],
+        [0.4, 0x00ff06],
+        [0.6, 0x00fffc],
+        [0.8, 0x0600ff],
+        [1.0, 0xf600ff]
+    ],
 
+    'Igeoss': [
+        [0.00, 0x003627],
+        [0.10, 0x008A3B],
+        [0.20, 0x68BE0D],
+        [0.30, 0xD6DF00],
+        [0.40, 0xFAD000],
+        [0.50, 0xFFC010],
+        [0.60, 0xFFAE0E],
+        [0.70, 0xFF9B06],
+        [0.80, 0xFA5800],
+        [0.90, 0xE80008],
+        [1.00, 0x880003]
+    ],
+
+    'Stress': [
+        [0.0, 0x0000FF],
+        [0.33, 0xFFFFFF],
+        [0.331, 0x00C800],
+        [0.66, 0xFFFFFF],
+        [0.661, 0xFF0000],
+        [1.0, 0xFFFFFF]
+    ],
+
+    'Blue_White_Red': [
+        [0.0, 0x0012ff],
+        [0.5, 0xffffff],
+        [1.0, 0xff0000]
+    ],
+
+    'Blue_Green_Red': [
+        [0.0 , 0x0012ff],
+        [0.25, 0xffffff],
+        [0.5 , 0x00ff00],
+        [0.275, 0xffffff],
+        [1.0 , 0xff0000]
+    ],
+
+    'Spectrum': [
+        [0.0000, 0xffffff],
+        [0.1428, 0xff0000],
+        [0.2856, 0xff00fc],
+        [0.4284, 0x0600ff],
+        [0.5712, 0x00f6ff],
+        [0.7140, 0x00ff06],
+        [0.8568, 0xfffc00],
+        [1.0000, 0xff0000]
+    ],
+
+    'Default': [
+        [0.00, 0x0c00ff],
+        [0.25, 0x00fcff],
+        [0.50, 0x00ff0c],
+        [0.75, 0xf6ff00],
+        [1.00, 0xff0000]
+    ],
+
+    'Banded': [
+        [0.0000, 0xfff5cd],
+        [0.1666, 0xff9600],
+        [0.1667, 0xceffd1],
+        [0.3333, 0x107100],
+        [0.3334, 0xd4e4fb],
+        [0.5000, 0x015faf],
+        [0.5001, 0xebdefb],
+        [0.6666, 0xc5029e],
+        [0.6667, 0xfff0cb],
+        [0.8333, 0x845d00],
+        [0.8334, 0xf9d8d8],
+        [1.0000, 0xda0000]
+    ]
 }
- 
-// const lutTables = [
-//     'Cooltowarm',
-//     'Blackbody',
-//     'Grayscale',
-//     'Blue_Green_Red',
-//     'Insar',
-//     'Rainbow',
-//     'Igeoss',
-//     'Blue_White_Red',
-//     'Spectrum',
-//     'Default',
-//     'Banded'
-// ]

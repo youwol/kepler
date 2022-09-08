@@ -16,6 +16,12 @@ export function normalAttribute( coord: ArrayLike<number>, index: ArrayLike<numb
     const faces = []
     const vertexNormals = {}
 
+    const ab = new Vector3()
+    const cb = new Vector3()
+    const vA = new Vector3()
+    const vB = new Vector3()
+    const vC = new Vector3()
+
     // prepare face and raw vertex normals
     for (let i = 0, l = index.length; i < l; i += 3) {
         const a = index[ i ]
@@ -57,14 +63,6 @@ export function normalAttribute( coord: ArrayLike<number>, index: ArrayLike<numb
     return new Float32BufferAttribute( normals, 3 )
 }
 
-
-
-
-
-
-
-
-
 // ------------------- private ------------------
 
 function weightedNormal( normals: Vector3[], vector: Vector3, creaseAngle: number ) {
@@ -86,6 +84,7 @@ class Face {
     b: number
     c: Number
     normal: Vector3
+    
 	constructor( a: number, b: number, c: number ) {
 		this.a = a;
 		this.b = b;
@@ -94,8 +93,3 @@ class Face {
 	}
 }
 
-const ab = new Vector3()
-const cb = new Vector3()
-const vA = new Vector3()
-const vB = new Vector3()
-const vC = new Vector3()

@@ -14,7 +14,7 @@
     "test-coverage": "jest -c ./jest.config.js --rootDir . --collect-coverage --collectCoverageFrom=./src/lib/**/*.ts ",
     "__doc": "rm -fr  dist/docs && typedoc src/ --exclude src/lib --exclude src/tests --disableSources --out dist/docs --includeVersion --hideGenerator",
     "doc": "rm -fr dist/docs && typedoc src/ --exclude src/lib --exclude src/tests --excludePrivate --disableSources --out dist/docs --includeVersion --hideGenerator",
-    "serve": "http-server ../../../../ -p 84 -o devs/workspace/packages/kepler/test/index.html",
+    "serve-colormaps": "http-server ../../../../ -p 85 -o devs/workspace/packages/kepler/testing/colormaps.html",
     "upgrade-youwol": "yarn upgrade @youwol/math @youwol/attribute @youwol/dataframe @youwol/io",
     "publish-npm-public": "yarn build:prod && yarn test-coverage && yarn publish --access public"
   },
