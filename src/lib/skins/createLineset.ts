@@ -35,6 +35,7 @@ export class LinesetParameters extends SkinParameters {
 // -------------------------------------------------------
 
 /**
+ * @see [[LinesetParameters]]
  * @category Skins
  */
 export function createLineset(

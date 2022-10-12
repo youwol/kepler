@@ -128,6 +128,9 @@ export function paintAttribute(
     if (mesh.type === 'Points') {
         geometry.setAttribute('color', new Float32BufferAttribute(colors, 3))
     }
+    else if (mesh.type === 'Line2') {
+        geometry.setColors(colors)
+    }
     else {
         if (parameters.atVertex) {
             geometry.setAttribute('color', new Float32BufferAttribute(colors, 3))
@@ -155,6 +158,8 @@ export function paintAttribute(
         }
     }
 
-    geometry.attributes.color.needsUpdate = true ;
+    if (geometry.attributes.color) {
+        geometry.attributes.color.needsUpdate = true
+    }
     (material as Material).needsUpdate = true
 }
