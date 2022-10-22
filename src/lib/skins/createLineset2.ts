@@ -73,8 +73,6 @@ export function createLineset2(
         alphaToCoverage: false
     })
 
-    // console.log(parameters)
-
     material.color     = new Color(parameters.color)
     material.opacity   = parameters.opacity
     material.dashed    = parameters.dashed
