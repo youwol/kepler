@@ -953,10 +953,10 @@
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
-"@youwol/dataframe@0.x":
-  version "0.0.34"
-  resolved "https://registry.yarnpkg.com/@youwol/dataframe/-/dataframe-0.0.34.tgz#668ed5a75e8dd9ec85f9a56e3aff20c2078d6fd2"
-  integrity sha512-o5Bhv+C6Aza+2J/leCxNMMBHYK6AU7EWslsUOX/dBZORZ1Uiae2DgFes8rUGeB38Zk3jAbPxfl31kBPpQXFvkg==
+"@youwol/dataframe@0.0.37":
+  version "0.0.37"
+  resolved "https://registry.yarnpkg.com/@youwol/dataframe/-/dataframe-0.0.37.tgz#4bf388c231d335beb2d2628684be10283110d5f7"
+  integrity sha512-FrjK6zeAyN+JsXsCv3dfpDciJw4GHaOtYoFyoQUOZd8oV2GASZ5x3N2oi2l7O0lharXX+dcaMina97yOaEDXjA==
 
 "@youwol/geometry@^0.0.19":
   version "0.0.19"
@@ -975,10 +975,10 @@
   dependencies:
     "@youwol/io" "0.0.20"
 
-"@youwol/math@0.x":
-  version "0.0.20"
-  resolved "https://registry.yarnpkg.com/@youwol/math/-/math-0.0.20.tgz#8ef086836722d66e7d2d42f2e43d5d199b4e0c17"
-  integrity sha512-wbFC5Wuj7x5GLC42HnNilnVs9661zhFHZzGbVANVCCrAvCJNmdVEvigHZiMlX7NyRx3P8q1LjckXxIcPqKTtTw==
+"@youwol/math@0.0.22":
+  version "0.0.22"
+  resolved "https://registry.yarnpkg.com/@youwol/math/-/math-0.0.22.tgz#4b5bbd49d3f4d5e132b2b0f975713ae42cba5b51"
+  integrity sha512-YNBACiHzCLhICEc6vpRV0YoZlmLiOfSZTeUVr9yQVB5EH99iP8fnmGySzjXIaQAQvB1CuKNf3xnYh2Sk7XZp6Q==
 
 abab@^2.0.3, abab@^2.0.5:
   version "2.0.6"

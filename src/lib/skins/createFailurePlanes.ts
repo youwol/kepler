@@ -71,10 +71,13 @@ export function createFailurePlanes(
         primitive = createPlanePrimitive(fricAngle, parameters.type)
     }
 
-    const mng = new Manager(dataframe, [
-        new ComponentDecomposer,
-        new EigenValuesDecomposer
-    ])
+    const mng = new Manager(dataframe, {
+        decomposers: [
+            new ComponentDecomposer,
+            new EigenValuesDecomposer
+        ],
+        dimension: 3
+    })
 
     const sizeAttr = mng.serie(1, parameters.sizeAttribute)
     const scalars  = mng.serie(1, parameters.paintAttribute)

@@ -34,6 +34,7 @@ module.exports = {
         {
             '@youwol/dataframe': '@youwol/dataframe',
             '@youwol/geometry': '@youwol/geometry',
+            '@youwol/io': '@youwol/io',
             '@youwol/math': '@youwol/math',
             three: {
                 commonjs: 'three',
