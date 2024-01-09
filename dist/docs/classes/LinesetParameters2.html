@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>LinesetParameters | @youwol/kepler - v0.0.10-wip</title>
-	<meta name="description" content="Documentation for @youwol/kepler - v0.0.10-wip">
+	<title>LinesetParameters2 | @youwol/kepler - v0.0.14-wip</title>
+	<meta name="description" content="Documentation for @youwol/kepler - v0.0.14-wip">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<script async src="../assets/js/search.js" id="search-script"></script>
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">@youwol/kepler - v0.0.10-wip</a>
+					<a href="../index.html" class="title">@youwol/kepler - v0.0.14-wip</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -52,13 +52,13 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../modules.html">@youwol/kepler - v0.0.10-wip</a>
+					<a href="../modules.html">@youwol/kepler - v0.0.14-wip</a>
 				</li>
 				<li>
-					<a href="linesetparameters.html">LinesetParameters</a>
+					<a href="LinesetParameters2.html">LinesetParameters2</a>
 				</li>
 			</ul>
-			<h1>Class LinesetParameters</h1>
+			<h1>Class LinesetParameters2</h1>
 		</div>
 	</div>
 </header>
@@ -67,9 +67,12 @@
 		<div class="col-8 col-content">
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Line rendering based on <a href="https://threejs.org/examples/?q=line#webgl_lines_fat">this example</a></p>
+					</div>
 					<dl class="tsd-comment-tags">
 						<dt>see</dt>
-						<dd><p><a href="../modules.html#createlineset">createLineset</a></p>
+						<dd><p><a href="../modules.html#createLineset2">createLineset2</a></p>
 						</dd>
 					</dl>
 				</div>
@@ -78,10 +81,10 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="skinparameters.html" class="tsd-signature-type" data-tsd-kind="Class">SkinParameters</a>
+						<a href="SkinParameters.html" class="tsd-signature-type" data-tsd-kind="Class">SkinParameters</a>
 						<ul class="tsd-hierarchy">
 							<li>
-								<span class="target">LinesetParameters</span>
+								<span class="target">LinesetParameters2</span>
 							</li>
 						</ul>
 					</li>
@@ -94,25 +97,27 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="linesetparameters.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="LinesetParameters2.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="linesetparameters.html#color" class="tsd-kind-icon">color</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="linesetparameters.html#linewidth" class="tsd-kind-icon">line<wbr>Width</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="linesetparameters.html#opacity" class="tsd-kind-icon">opacity</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="linesetparameters.html#transparent" class="tsd-kind-icon">transparent</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="linesetparameters.html#tuberadius" class="tsd-kind-icon">tube<wbr>Radius</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="linesetparameters.html#usetube" class="tsd-kind-icon">use<wbr>Tube</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="linesetparameters.html#visible" class="tsd-kind-icon">visible</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="LinesetParameters2.html#color" class="tsd-kind-icon">color</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="LinesetParameters2.html#dashScale" class="tsd-kind-icon">dash<wbr>Scale</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="LinesetParameters2.html#dashed" class="tsd-kind-icon">dashed</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="LinesetParameters2.html#glLine" class="tsd-kind-icon">gl<wbr>Line</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="LinesetParameters2.html#opacity" class="tsd-kind-icon">opacity</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="LinesetParameters2.html#transparent" class="tsd-kind-icon">transparent</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="LinesetParameters2.html#visible" class="tsd-kind-icon">visible</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="LinesetParameters2.html#width" class="tsd-kind-icon">width</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="LinesetParameters2.html#worldUnits" class="tsd-kind-icon">world<wbr>Units</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-inherited">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="linesetparameters.html#set" class="tsd-kind-icon">set</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="LinesetParameters2.html#set" class="tsd-kind-icon">set</a></li>
 							</ul>
 						</section>
 					</div>
@@ -124,23 +129,29 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Lineset<wbr>Parameters<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">{ </span>color<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>lineWidth<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>opacity<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>transparent<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span>tubeRadius<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>useTube<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="linesetparameters.html" class="tsd-signature-type" data-tsd-kind="Class">LinesetParameters</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Lineset<wbr>Parameters2<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">{ </span>color<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>dashScale<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>dashed<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span>glLine<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span>opacity<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>transparent<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span>width<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>worldUnits<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="LinesetParameters2.html" class="tsd-signature-type" data-tsd-kind="Class">LinesetParameters2</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overrides <a href="skinparameters.html">SkinParameters</a>.<a href="skinparameters.html#constructor">constructor</a></p>
+								<p>Overrides <a href="SkinParameters.html">SkinParameters</a>.<a href="SkinParameters.html#constructor">constructor</a></p>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>color<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>lineWidth<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>opacity<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>transparent<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span>tubeRadius<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>useTube<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = ...</span></h5>
+									<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>color<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>dashScale<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>dashed<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span>glLine<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span>opacity<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>transparent<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span>width<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>worldUnits<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = {}</span></h5>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter">
 											<h5><span class="tsd-flag ts-flagOptional">Optional</span> color<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span></h5>
 										</li>
 										<li class="tsd-parameter">
-											<h5><span class="tsd-flag ts-flagOptional">Optional</span> line<wbr>Width<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span></h5>
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> dash<wbr>Scale<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> dashed<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> gl<wbr>Line<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span></h5>
 										</li>
 										<li class="tsd-parameter">
 											<h5><span class="tsd-flag ts-flagOptional">Optional</span> opacity<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span></h5>
@@ -149,15 +160,15 @@
 											<h5><span class="tsd-flag ts-flagOptional">Optional</span> transparent<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span></h5>
 										</li>
 										<li class="tsd-parameter">
-											<h5><span class="tsd-flag ts-flagOptional">Optional</span> tube<wbr>Radius<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span></h5>
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> width<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span></h5>
 										</li>
 										<li class="tsd-parameter">
-											<h5><span class="tsd-flag ts-flagOptional">Optional</span> use<wbr>Tube<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span></h5>
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> world<wbr>Units<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span></h5>
 										</li>
 									</ul>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="linesetparameters.html" class="tsd-signature-type" data-tsd-kind="Class">LinesetParameters</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="LinesetParameters2.html" class="tsd-signature-type" data-tsd-kind="Class">LinesetParameters2</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -172,9 +183,23 @@
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="linewidth" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> line<wbr>Width</h3>
-					<div class="tsd-signature tsd-kind-icon">line<wbr>Width<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="dashScale" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> dash<wbr>Scale</h3>
+					<div class="tsd-signature tsd-kind-icon">dash<wbr>Scale<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 1</span></div>
+					<aside class="tsd-sources">
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="dashed" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> dashed</h3>
+					<div class="tsd-signature tsd-kind-icon">dashed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div>
+					<aside class="tsd-sources">
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="glLine" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> gl<wbr>Line</h3>
+					<div class="tsd-signature tsd-kind-icon">gl<wbr>Line<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div>
 					<aside class="tsd-sources">
 					</aside>
 				</section>
@@ -192,26 +217,26 @@
 					<aside class="tsd-sources">
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="tuberadius" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> tube<wbr>Radius</h3>
-					<div class="tsd-signature tsd-kind-icon">tube<wbr>Radius<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 1</span></div>
-					<aside class="tsd-sources">
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="usetube" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> use<wbr>Tube</h3>
-					<div class="tsd-signature tsd-kind-icon">use<wbr>Tube<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div>
-					<aside class="tsd-sources">
-					</aside>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="visible" class="tsd-anchor"></a>
 					<h3>visible</h3>
 					<div class="tsd-signature tsd-kind-icon">visible<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = true</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="skinparameters.html">SkinParameters</a>.<a href="skinparameters.html#visible">visible</a></p>
+						<p>Inherited from <a href="SkinParameters.html">SkinParameters</a>.<a href="SkinParameters.html#visible">visible</a></p>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="width" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> width</h3>
+					<div class="tsd-signature tsd-kind-icon">width<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0.005</span></div>
+					<aside class="tsd-sources">
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="worldUnits" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> world<wbr>Units</h3>
+					<div class="tsd-signature tsd-kind-icon">world<wbr>Units<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div>
+					<aside class="tsd-sources">
 					</aside>
 				</section>
 			</section>
@@ -226,7 +251,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="skinparameters.html">SkinParameters</a>.<a href="skinparameters.html#set">set</a></p>
+								<p>Inherited from <a href="SkinParameters.html">SkinParameters</a>.<a href="SkinParameters.html#set">set</a></p>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
@@ -273,34 +298,40 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
-						<a href="linesetparameters.html" class="tsd-kind-icon">Lineset<wbr>Parameters</a>
+						<a href="LinesetParameters2.html" class="tsd-kind-icon">Lineset<wbr>Parameters2</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-								<a href="linesetparameters.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="LinesetParameters2.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="linesetparameters.html#color" class="tsd-kind-icon">color</a>
+								<a href="LinesetParameters2.html#color" class="tsd-kind-icon">color</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="linesetparameters.html#linewidth" class="tsd-kind-icon">line<wbr>Width</a>
+								<a href="LinesetParameters2.html#dashScale" class="tsd-kind-icon">dash<wbr>Scale</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="linesetparameters.html#opacity" class="tsd-kind-icon">opacity</a>
+								<a href="LinesetParameters2.html#dashed" class="tsd-kind-icon">dashed</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="linesetparameters.html#transparent" class="tsd-kind-icon">transparent</a>
+								<a href="LinesetParameters2.html#glLine" class="tsd-kind-icon">gl<wbr>Line</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="linesetparameters.html#tuberadius" class="tsd-kind-icon">tube<wbr>Radius</a>
+								<a href="LinesetParameters2.html#opacity" class="tsd-kind-icon">opacity</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="linesetparameters.html#usetube" class="tsd-kind-icon">use<wbr>Tube</a>
+								<a href="LinesetParameters2.html#transparent" class="tsd-kind-icon">transparent</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="linesetparameters.html#visible" class="tsd-kind-icon">visible</a>
+								<a href="LinesetParameters2.html#visible" class="tsd-kind-icon">visible</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="LinesetParameters2.html#width" class="tsd-kind-icon">width</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="LinesetParameters2.html#worldUnits" class="tsd-kind-icon">world<wbr>Units</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="linesetparameters.html#set" class="tsd-kind-icon">set</a>
+								<a href="LinesetParameters2.html#set" class="tsd-kind-icon">set</a>
 							</li>
 						</ul>
 					</li>
@@ -327,6 +358,9 @@
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
 			</ul>
 		</div>
 	</div>

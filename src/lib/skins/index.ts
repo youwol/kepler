@@ -26,6 +26,5 @@ export * from './private/IsoBand'
 // export * from './colorbar2'
 // export * from './createIsoSurfaces'
 
-
 // export * from './createIsoContourLines'
 // export * from './createIsoContourFilled'

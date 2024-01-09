@@ -1,95 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <title>js-colormaps: Overview</title>
-    <style>
-        .left {
-            text-align: left;
-        }
-
-        .right {
-            text-align: right;
-        }
-
-        body {
-            font-family: monospace;
-            font-size: 16px;
-        }
-
-        canvas {
-            width: 256px;
-            height: 32px;
-            border: 1px solid black;
-        }
-
-        table {
-            margin: auto;
-        }
-
-        td {
-            padding: 5px;
-            vertical-align: middle;
-        }
-    </style>
-    <script src='/devs/workspace/packages/dataframe/dist/@youwol/dataframe.js'></script>
-    <script src='/devs/workspace/packages/math/dist/@youwol/math.js'></script>
-    <script src='/devs/workspace/packages/kepler/dist/@youwol/kepler.js'></script>
-    <script src='/devs/workspace/packages/three-extra/node_modules/three/build/three.min.js'></script>
-</head>
-
-<body>
-
-    <!-- Instantiate overview table -->
-    <table id="colormaps"></table>
-
-    <!-- Define function to plot a colormap -->
-    <script>
-        function plot_colormap(canvas_id, name, reverse) {
-            let canvas = document.getElementById(canvas_id);
-            let ctx = canvas.getContext("2d");
-            for (let x = 0; x <= 256; x++) {
-                let color = kepler.evaluate_cmap(x / 256, name, reverse);
-                let r = color[0];
-                let g = color[1];
-                let b = color[2];
-                ctx.fillStyle = 'rgb(' + r + ',' + g + ',' + b + ')';
-                ctx.fillRect(x * canvas.width / 256, 0, canvas.width / 256, canvas.height);
+    <head>
+        <meta charset="UTF-8" />
+        <title>js-colormaps: Overview</title>
+        <style>
+            .left {
+                text-align: left;
             }
-        }
-    </script>
 
-    <!-- Plot colormaps -->
-    <script>
+            .right {
+                text-align: right;
+            }
 
-        const kepler = globalThis['@youwol/kepler']
-        const THREE  = globalThis['THREE']
+            body {
+                font-family: monospace;
+                font-size: 16px;
+            }
 
-        const names = kepler.getColorMapNames()
-        console.log( names )
-        
-        // console.log(kepler.getColorMap('tab20c', 20))
+            canvas {
+                width: 256px;
+                height: 32px;
+                border: 1px solid black;
+            }
 
-        // First, add rows and canvases for all colormaps
-        names.forEach( name => {
-            document.getElementById('colormaps').innerHTML += `<tr>
+            table {
+                margin: auto;
+            }
+
+            td {
+                padding: 5px;
+                vertical-align: middle;
+            }
+        </style>
+        <script src="/devs/workspace/packages/dataframe/dist/@youwol/dataframe.js"></script>
+        <script src="/devs/workspace/packages/math/dist/@youwol/math.js"></script>
+        <script src="/devs/workspace/packages/kepler/dist/@youwol/kepler.js"></script>
+        <script src="/devs/workspace/packages/three-extra/node_modules/three/build/three.min.js"></script>
+    </head>
+
+    <body>
+        <!-- Instantiate overview table -->
+        <table id="colormaps"></table>
+
+        <!-- Define function to plot a colormap -->
+        <script>
+            function plot_colormap(canvas_id, name, reverse) {
+                let canvas = document.getElementById(canvas_id)
+                let ctx = canvas.getContext('2d')
+                for (let x = 0; x <= 256; x++) {
+                    let color = kepler.evaluate_cmap(x / 256, name, reverse)
+                    let r = color[0]
+                    let g = color[1]
+                    let b = color[2]
+                    ctx.fillStyle = 'rgb(' + r + ',' + g + ',' + b + ')'
+                    ctx.fillRect(
+                        (x * canvas.width) / 256,
+                        0,
+                        canvas.width / 256,
+                        canvas.height,
+                    )
+                }
+            }
+        </script>
+
+        <!-- Plot colormaps -->
+        <script>
+            const kepler = globalThis['@youwol/kepler']
+            const THREE = globalThis['THREE']
+
+            const names = kepler.getColorMapNames()
+            console.log(names)
+
+            // console.log(kepler.getColorMap('tab20c', 20))
+
+            // First, add rows and canvases for all colormaps
+            names.forEach((name) => {
+                document.getElementById('colormaps').innerHTML += `<tr>
                 <td class="right">${name}</td>
                 <td><canvas id="${name}" width="1024" height="50"></canvas></td>
                 <td>⟺</td>
                 <td><canvas id="${name}_r" width="1024" height="50"></canvas></td>
                 <td class="left">${name}_r</td
             </tr>`
-        })
+            })
 
-        // Once this has finished (i.e., the canvases exist), plot the colormaps
-        names.forEach( name => {
-            plot_colormap(name, name, false);
-            plot_colormap(name + '_r', name, true);
-        })
-
-    </script>
-
-</body>
-
+            // Once this has finished (i.e., the canvases exist), plot the colormaps
+            names.forEach((name) => {
+                plot_colormap(name, name, false)
+                plot_colormap(name + '_r', name, true)
+            })
+        </script>
+    </body>
 </html>

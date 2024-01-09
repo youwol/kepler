@@ -1,11 +1,11 @@
 node_modules
 coverage
 junit.xml
-dist/lib
-dist/@youwol
-dist/index.d.ts
-dist/src
-dist/tests
+
+/dist/*
+!/dist/docs
+!/dist/docs/*
+!/dist/docs/**/*
 
 cdn.zip
 **/.DS_Store

@@ -1,23 +1,31 @@
-import { IArray, Serie } from "@youwol/dataframe"
-import { extractSurfaceBorders } from "@youwol/geometry"
+import { IArray, Serie } from '@youwol/dataframe'
+import { extractSurfaceBorders } from '@youwol/geometry'
 import {
-    LineBasicMaterial, Color,
-    Material, BufferGeometry, Mesh, LineSegments, BufferAttribute
-} from "three"
-import { LinesetParameters } from "./createLineset"
-
+    LineBasicMaterial,
+    Color,
+    Material,
+    BufferGeometry,
+    Mesh,
+    LineSegments,
+    BufferAttribute,
+} from 'three'
+import { LinesetParameters } from './createLineset'
 
 // -------------------------------------------------------
 // Have to see https://stackoverflow.com/questions/14108553/get-border-edges-of-mesh-in-winding-order
 
-
 /**
  * @category Skins
  */
-export function createSurfaceBorders(
-    {mesh,  material, parameters}:
-    {mesh: Mesh, material?: Material, parameters?: LinesetParameters}): LineSegments
-{
+export function createSurfaceBorders({
+    mesh,
+    material,
+    parameters,
+}: {
+    mesh: Mesh
+    material?: Material
+    parameters?: LinesetParameters
+}): LineSegments {
     if (mesh === undefined) {
         throw new Error('mesh is undefined')
     }
@@ -43,10 +51,18 @@ export function createSurfaceBorders(
     }
 
     // --------------------------------------------------
-    const bufferPosition = mesh.geometry.getAttribute('position') as BufferAttribute
-    const bufferIndices  = mesh.geometry.index as BufferAttribute
-    const vertices  = Serie.create({array: bufferPosition.array as IArray, itemSize: 3})
-    const triangles = Serie.create({array: bufferIndices.array as IArray, itemSize: 3}) // mesh.geometry.index
+    const bufferPosition = mesh.geometry.getAttribute(
+        'position',
+    ) as BufferAttribute
+    const bufferIndices = mesh.geometry.index
+    const vertices = Serie.create({
+        array: bufferPosition.array as IArray,
+        itemSize: 3,
+    })
+    const triangles = Serie.create({
+        array: bufferIndices.array as IArray,
+        itemSize: 3,
+    }) // mesh.geometry.index
 
     // Build the HE-surface (aka, HalfEdge-surface)
     const borders = extractSurfaceBorders(vertices, triangles)
@@ -57,20 +73,23 @@ export function createSurfaceBorders(
     // Fake indices
     const indices = []
     let id = 0
-    for (let i=0; i<borders.count/2; ++i) {
+    for (let i = 0; i < borders.count / 2; ++i) {
         indices.push(id++, id++)
     }
 
     const geometry = new BufferGeometry()
-    geometry.setAttribute('position', new BufferAttribute(new Float32Array(borders.array), 3))
+    geometry.setAttribute(
+        'position',
+        new BufferAttribute(new Float32Array(borders.array), 3),
+    )
     geometry.setIndex(new BufferAttribute(new Uint16Array(indices), 1))
 
     if (material === undefined) {
         material = new LineBasicMaterial({
-            linewidth: parameters.lineWidth, 
-            opacity: parameters.opacity, 
+            linewidth: parameters.lineWidth,
+            opacity: parameters.opacity,
             transparent: parameters.transparent,
-            color: new Color(parameters.color ? parameters.color : "#000")
+            color: new Color(parameters.color ? parameters.color : '#000'),
         })
     }
 

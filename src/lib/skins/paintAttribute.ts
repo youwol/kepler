@@ -1,10 +1,13 @@
 import {
-    Color, BufferGeometry,
-    Float32BufferAttribute, Material, Object3D
-} from "three"
+    Color,
+    BufferGeometry,
+    Float32BufferAttribute,
+    Material,
+    Object3D,
+} from 'three'
 
 import { fromValuesToColors } from '../utils/lut-utils'
-import { SkinParameters } from "./skinParameters"
+import { SkinParameters } from './skinParameters'
 import { Serie } from '@youwol/dataframe'
 
 /**
@@ -21,26 +24,35 @@ export class PaintParameters extends SkinParameters {
     public readonly defaultColor: string
     public readonly atVertex: boolean
 
-    constructor(
-        {name, lut, duplicateLut, min, max, lockLut, defaultColor, atVertex, ...others}:
-        {
-            name?: string, 
-            lut?: string, 
-            duplicateLut?,
-            min?: number, 
-            max?: number, 
-            lockLut?: boolean, 
-            defaultColor?: string, 
-            atVertex?: boolean
-        } = {})
-    {
+    constructor({
+        name,
+        lut,
+        duplicateLut,
+        min,
+        max,
+        lockLut,
+        defaultColor,
+        atVertex,
+        ...others
+    }: {
+        name?: string
+        lut?: string
+        duplicateLut?
+        min?: number
+        max?: number
+        lockLut?: boolean
+        defaultColor?: string
+        atVertex?: boolean
+    } = {}) {
         super(others)
         this.defaultColor = defaultColor || '#aaaaaa'
         this.lut = lut || 'Rainbow'
-        if (duplicateLut !== undefined) this.duplicateLut = duplicateLut
-        this.min = min !==undefined ? min : 0
-        this.max = max !==undefined ? max : 1
-        this.atVertex = atVertex !==undefined ? atVertex : true
+        if (duplicateLut !== undefined) {
+            this.duplicateLut = duplicateLut
+        }
+        this.min = min !== undefined ? min : 0
+        this.max = max !== undefined ? max : 1
+        this.atVertex = atVertex !== undefined ? atVertex : true
         this.set('lockLut', lockLut, this.lockLut)
         this.reverseLut = false
 
@@ -59,19 +71,21 @@ export class PaintParameters extends SkinParameters {
  * @example
  * ```ts
  * const surface = io.loadGocad(filename)[0] // a dataframe I think
- * 
+ *
  * let mesh = createSurface({
  *      positions: surface.get('positions'),
  *      indices  : surface.get('indices')
  * })
- * 
+ *
  * paintAttribute(mesh, surface.get('U').map( u => u[0] ) )
  * ```
  * @category Skins
  */
 export function paintAttribute(
-    mesh: Object3D, attribute: Serie, parameters?: PaintParameters)
-{
+    mesh: Object3D,
+    attribute: Serie,
+    parameters?: PaintParameters,
+) {
     console.warn('deal with Group of Object3D')
 
     if (mesh === undefined) {
@@ -92,7 +106,9 @@ export function paintAttribute(
     }
 
     if (attribute.itemSize !== 1) {
-        throw new Error(`attribute must be a Serie with itemSize = 1. Got ${attribute.itemSize}`)
+        throw new Error(
+            `attribute must be a Serie with itemSize = 1. Got ${attribute.itemSize}`,
+        )
     }
 
     if (parameters === undefined) {
@@ -104,62 +120,68 @@ export function paintAttribute(
         color = material['color']
         material['color'] = new Color('#ffffff')
     }
-    (material as Material).vertexColors  = (parameters.atVertex ? true : false) ;
-    (material as Material).polygonOffset = true ;
-    (material as Material).polygonOffsetFactor = 1 ;
+    const materialAsMaterial = material as Material
+    materialAsMaterial.vertexColors = parameters.atVertex ? true : false
+    materialAsMaterial.polygonOffset = true
+    materialAsMaterial.polygonOffsetFactor = 1
 
-    let colors = fromValuesToColors(attribute.array, {
+    const colors = fromValuesToColors(attribute.array, {
         defaultColor: new Color(parameters.defaultColor),
-        reverse: parameters.reverseLut, 
-        min: parameters.min, 
-        max: parameters.max, 
-        lut: parameters.lut, 
-        duplicateLut: parameters.duplicateLut, 
-        lockLut: parameters.lockLut
+        reverse: parameters.reverseLut,
+        min: parameters.min,
+        max: parameters.max,
+        lut: parameters.lut,
+        duplicateLut: parameters.duplicateLut,
+        lockLut: parameters.lockLut,
     })
 
     // colors = meshInterpolate({
-    //     attribute: colors, 
+    //     attribute: colors,
     //     topology: mesh.geometry.index.array,
     //     size:3,
     //     direction: InterpolateDirection.INCREASING
     // })
-    
+
     if (mesh.type === 'Points') {
         geometry.setAttribute('color', new Float32BufferAttribute(colors, 3))
-    }
-    else if (mesh.type === 'Line2') {
+    } else if (mesh.type === 'Line2') {
         geometry.setColors(colors)
-    }
-    else {
+    } else {
         if (parameters.atVertex) {
-            geometry.setAttribute('color', new Float32BufferAttribute(colors, 3))
-        }
-        else {
-            const faces         = geometry.index // 438
+            geometry.setAttribute(
+                'color',
+                new Float32BufferAttribute(colors, 3),
+            )
+        } else {
+            const faces = geometry.index // 438
             const nbVertPerFace = 3
-            const nbColorComps  = 3
-            let fcolors = new Float32Array(faces.count * nbVertPerFace * nbColorComps)
+            const nbColorComps = 3
+            const fcolors = new Float32Array(
+                faces.count * nbVertPerFace * nbColorComps,
+            )
 
             let j = 0
             const setColor = (i: number) => {
-                for (let k=0; k<3; ++k) {
-                    fcolors[j+k] = colors[i+k]
+                for (let k = 0; k < 3; ++k) {
+                    fcolors[j + k] = colors[i + k]
                 }
                 j += 3
             }
 
-            for (let i=0; i<faces.count; i+=3) {
-                setColor( faces.array[i  ] )
-                setColor( faces.array[i+1] )
-                setColor( faces.array[i+2] )
+            for (let i = 0; i < faces.count; i += 3) {
+                setColor(faces.array[i])
+                setColor(faces.array[i + 1])
+                setColor(faces.array[i + 2])
             }
-            geometry.setAttribute('color', new Float32BufferAttribute(fcolors, 3))
+            geometry.setAttribute(
+                'color',
+                new Float32BufferAttribute(fcolors, 3),
+            )
         }
     }
 
     if (geometry.attributes.color) {
         geometry.attributes.color.needsUpdate = true
     }
-    (material as Material).needsUpdate = true
+    materialAsMaterial.needsUpdate = true
 }

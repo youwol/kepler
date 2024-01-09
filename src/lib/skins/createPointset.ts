@@ -1,6 +1,13 @@
 import {
-    Points, PointsMaterial, Color, BufferGeometry,
-    Material, Box3, Vector3, TextureLoader, BufferAttribute
+    Points,
+    PointsMaterial,
+    Color,
+    BufferGeometry,
+    Material,
+    Box3,
+    Vector3,
+    TextureLoader,
+    BufferAttribute,
 } from 'three'
 
 import { SkinParameters } from './skinParameters'
@@ -17,30 +24,28 @@ export class PointsetParameters extends SkinParameters {
     public readonly sizeAttenuation: boolean = false
     public readonly opacity: number
     public readonly transparent: boolean = false
-    public readonly sprite     : string
-    public readonly sizeName   : string // ??
+    public readonly sprite: string
+    public readonly sizeName: string // ??
 
-    constructor(
-        {
-            size, 
-            color, 
-            sizeAttenuation, 
-            opacity, 
-            transparent, 
-            sprite, 
-            sizeName, 
-            ...others}:
-        {
-            size?: number, 
-            color?: string, 
-            sizeAttenuation?: boolean, 
-            opacity?: number, 
-            transparent?: boolean, 
-            sprite?: string,
-            //shadingName?: string, 
-            sizeName?: string
-        } = {})
-    {
+    constructor({
+        size,
+        color,
+        sizeAttenuation,
+        opacity,
+        transparent,
+        sprite,
+        sizeName,
+        ...others
+    }: {
+        size?: number
+        color?: string
+        sizeAttenuation?: boolean
+        opacity?: number
+        transparent?: boolean
+        sprite?: string
+        //shadingName?: string,
+        sizeName?: string
+    } = {}) {
         super(others)
         this.size = size || 1
         this.color = color || '#ffff00'
@@ -58,30 +63,42 @@ export class PointsetParameters extends SkinParameters {
 /**
  * @category Skins
  */
-export function createPointset(
-    {position, material, parameters}:
-    {position: Serie | BufferGeometry, material?: Material, parameters?: PointsetParameters}): Points
-{
+export function createPointset({
+    position,
+    material,
+    parameters,
+}: {
+    position: Serie | BufferGeometry
+    material?: Material
+    parameters?: PointsetParameters
+}): Points {
     if (position === undefined) {
         throw new Error('position is undefined')
     }
-    if ( !(position instanceof BufferGeometry) && position.itemSize !==3) {
-        throw new Error(`position should have itemSize = 3 (got ${position.itemSize})`)
+    if (!(position instanceof BufferGeometry) && position.itemSize !== 3) {
+        throw new Error(
+            `position should have itemSize = 3 (got ${position.itemSize})`,
+        )
     }
 
     if (parameters === undefined) {
         parameters = new PointsetParameters()
     }
 
-    const geometry = position instanceof BufferGeometry ? position : createBufferGeometry(position)
+    const geometry =
+        position instanceof BufferGeometry
+            ? position
+            : createBufferGeometry(position)
 
     // Check the default point size
     let tsize = parameters.size
     if (parameters.sizeAttenuation) {
         const bbox = new Box3()
-        bbox.setFromBufferAttribute(geometry.getAttribute('position') as BufferAttribute)
+        bbox.setFromBufferAttribute(
+            geometry.getAttribute('position') as BufferAttribute,
+        )
         const size = bbox.getSize(new Vector3())
-        tsize = Math.max(size.x, size.y, size.z)/400 * parameters.size
+        tsize = (Math.max(size.x, size.y, size.z) / 400) * parameters.size
     }
 
     let sprite: any = undefined
@@ -89,18 +106,18 @@ export function createPointset(
         sprite = new TextureLoader().load(parameters.sprite)
     }
 
-    let color = new Color(parameters.color)
+    const color = new Color(parameters.color)
     if (material === undefined) {
         material = new PointsMaterial({
-            size: tsize, 
-            sizeAttenuation: parameters.sizeAttenuation, 
-            opacity: parameters.opacity, 
+            size: tsize,
+            sizeAttenuation: parameters.sizeAttenuation,
+            opacity: parameters.opacity,
             transparent: parameters.transparent,
             color: color,
         })
     }
     if (sprite) {
-        material["map"] = sprite
+        material['map'] = sprite
         material.alphaTest = 0.5
         material.transparent = true
     }

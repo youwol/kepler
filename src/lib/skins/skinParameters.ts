@@ -2,13 +2,13 @@
  * @brief Base class for all skin parameters
  * @category Skin Parameters
  */
- export class SkinParameters {
-    visible: boolean = true
+export class SkinParameters {
+    visible = true
 
-    constructor({visible=true}:{visible?:boolean}) {
-        this.visible = (visible!==undefined)?visible:true
+    constructor({ visible = true }: { visible?: boolean }) {
+        this.visible = visible !== undefined ? visible : true
     }
-    
+
     /**
      * Set the value to an existing property of this
      * @param name The name of the property

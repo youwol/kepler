@@ -1,5 +1,5 @@
-import { BufferAttribute, BufferGeometry } from "three"
-import { Serie } from "@youwol/dataframe"
+import { BufferAttribute, BufferGeometry } from 'three'
+import { Serie } from '@youwol/dataframe'
 import { SkinParameters } from './skinParameters'
 
 /**
@@ -11,10 +11,12 @@ export class DeformParameters extends SkinParameters {
     public readonly scaleY: number
     public readonly scaleZ: number
 
-    constructor(
-        {scaleX=1, scaleY=1, scaleZ=1, ...others}:
-        {scaleX?: number, scaleY?: number, scaleZ?: number}={})
-    {
+    constructor({
+        scaleX = 1,
+        scaleY = 1,
+        scaleZ = 1,
+        ...others
+    }: { scaleX?: number; scaleY?: number; scaleZ?: number } = {}) {
         super(others)
         this.scaleX = scaleX || 1
         this.scaleY = scaleY || 1
@@ -30,20 +32,29 @@ export class DeformParameters extends SkinParameters {
  * ```
  * @category Skins
  */
-export function deform(
-    {geometry, deformVector, parameters}:
-    {geometry: BufferGeometry, deformVector: Serie, parameters?: DeformParameters}): Serie
-{
-    if (geometry === undefined) throw new Error('geometry is undefined')
+export function deform({
+    geometry,
+    deformVector,
+    parameters,
+}: {
+    geometry: BufferGeometry
+    deformVector: Serie
+    parameters?: DeformParameters
+}): Serie {
+    if (geometry === undefined) {
+        throw new Error('geometry is undefined')
+    }
     const position = geometry.getAttribute('position') as BufferAttribute
 
-    if (deformVector.count !== position.count) throw new Error('attribute should have 3 x nb vertices')
+    if (deformVector.count !== position.count) {
+        throw new Error('attribute should have 3 x nb vertices')
+    }
 
     //const geom = position.clone()
-    return deformVector.map( (v,i) => [
-        position.getX(i) + parameters.scaleX*v[0],
-        position.getY(i) + parameters.scaleX*v[1],
-        position.getZ(i) + parameters.scaleX*v[2]
+    return deformVector.map((v, i) => [
+        position.getX(i) + parameters.scaleX * v[0],
+        position.getY(i) + parameters.scaleX * v[1],
+        position.getZ(i) + parameters.scaleX * v[2],
     ])
 
     // for (let i = 0; i < position.count; ++i) {

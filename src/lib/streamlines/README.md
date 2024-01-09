@@ -34,20 +34,20 @@ If you are using precompiled version, it will be available under global name `wi
 ## use it
 
 ```js
-var vectorField = p => ({ x: -p.y, y: p.x });
+var vectorField = (p) => ({ x: -p.y, y: p.x })
 
 streamlines({
-  vectorField,
-  onPointAdded(from, to) {
-    // called when new point is added to a line
-    console.log("point created", from, to);
-  },
-  onStreamlineAdded(points) {
-    // Points is just a sequence of points with `x, y` coordinates through which
-    // the streamline goes.
-    console.log("stream line created. Number of points: ", points.length);
-  }
-}).run();
+    vectorField,
+    onPointAdded(from, to) {
+        // called when new point is added to a line
+        console.log('point created', from, to)
+    },
+    onStreamlineAdded(points) {
+        // Points is just a sequence of points with `x, y` coordinates through which
+        // the streamline goes.
+        console.log('stream line created. Number of points: ', points.length)
+    },
+}).run()
 ```
 
 The library allows you to configure various aspects of computation:
@@ -89,18 +89,18 @@ a [simple canvas renderer](https://github.com/anvaka/streamlines/blob/master/lib
 
 ```js
 // Let's assume you have a <canvas id='scene'></canvas> in your document:
-var canvas = document.getElementById("scene");
+var canvas = document.getElementById('scene')
 
 // Then you can render to it with this bit of code:
 streamlines({
-  // As usual, define your vector field:
-  vectorField(p) {
-    return { x: -p.y, y: p.x };
-  },
+    // As usual, define your vector field:
+    vectorField(p) {
+        return { x: -p.y, y: p.x }
+    },
 
-  // And print the output to this canvas:
-  onPointAdded: streamlines.renderTo(canvas)
-}).run();
+    // And print the output to this canvas:
+    onPointAdded: streamlines.renderTo(canvas),
+}).run()
 ```
 
 [Here is a JSBin](http://jsbin.com/miwuyav/edit?html,js,output) for you to try.
@@ -117,24 +117,24 @@ If you want to cancel rendering, call `dispose` method:
 
 ```js
 var renderer = streamlines({
-  vectorField(p) {
-    return p;
-  }
-});
+    vectorField(p) {
+        return p
+    },
+})
 
 // Launch the construction
-renderer.run();
+renderer.run()
 
 // something has happened and you want to stop?
-renderer.dispose();
+renderer.dispose()
 ```
 
 If you want to understand the algorithm, please [read this paper](http://web.cs.ucdavis.edu/~ma/SIGGRAPH02/course23/notes/papers/Jobard.pdf) - the library follows it closely.
 
 ## More examples
 
-* https://github.com/anvaka/noisylines - renders streamlines from perlin noise
-* https://jsbin.com/kuluvam/1/edit?html,js,output - shows how to set width/color of line segments
+-   https://github.com/anvaka/noisylines - renders streamlines from perlin noise
+-   https://jsbin.com/kuluvam/1/edit?html,js,output - shows how to set width/color of line segments
 
 # License
 
