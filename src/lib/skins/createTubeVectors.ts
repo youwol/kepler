@@ -1,51 +1,71 @@
 import {
-    LineSegments, LineBasicMaterial, Color, BufferGeometry,
-    Float32BufferAttribute, Material, MeshBasicMaterial, Object3D, CatmullRomCurve3, Vector3, TubeGeometry, Mesh, Group
-} from "three"
+    LineSegments,
+    LineBasicMaterial,
+    Color,
+    BufferGeometry,
+    Float32BufferAttribute,
+    Material,
+    MeshBasicMaterial,
+    Object3D,
+    CatmullRomCurve3,
+    Vector3,
+    TubeGeometry,
+    Mesh,
+    Group,
+} from 'three'
 
 import { PaintParameters } from './paintAttribute'
 import { fromValueToColor } from '../utils/lut-utils'
-import { Serie, array, createFrom, IArray } from "@youwol/dataframe"
-import { createLut } from "../utils"
-import { VectorsParameters } from "."
-
+import { Serie, array, createFrom, IArray } from '@youwol/dataframe'
+import { createLut } from '../utils'
+import { VectorsParameters } from '.'
 
 export class TubeVectorsParameters extends VectorsParameters {
     public readonly radius: number = 1
-    constructor(
-        {radius, ...others}:
-        {radius?: number} = {})
-    {
+    constructor({ radius, ...others }: { radius?: number } = {}) {
         super(others)
-        this.radius = radius!==undefined?radius:1
+        this.radius = radius !== undefined ? radius : 1
     }
 }
 
 /**
  * @category Skins
  */
-export function createTubeVectors(
-    {geometry,  material, vectorField, attribute, parameters}:
-    {geometry: BufferGeometry, material?: Material, vectorField?: Serie, attribute: Serie, parameters?: TubeVectorsParameters}): Object3D
-{
-    if (geometry === undefined)               throw new Error('geometry is undefined')
+export function createTubeVectors({
+    geometry,
+    material,
+    vectorField,
+    attribute,
+    parameters,
+}: {
+    geometry: BufferGeometry
+    material?: Material
+    vectorField?: Serie
+    attribute: Serie
+    parameters?: TubeVectorsParameters
+}): Object3D {
+    if (geometry === undefined) throw new Error('geometry is undefined')
 
     const position = geometry.getAttribute('position')
 
-    if (vectorField === undefined)            throw new Error('vectorField is undefined')
-    if (vectorField.count !== position.count) throw new Error('vectorField should have 3 x nb vertices')
-    if (parameters === undefined)             throw new Error('parameters is undefined (needs name of the vector field)')
+    if (vectorField === undefined) throw new Error('vectorField is undefined')
+    if (vectorField.count !== position.count)
+        throw new Error('vectorField should have 3 x nb vertices')
+    if (parameters === undefined)
+        throw new Error(
+            'parameters is undefined (needs name of the vector field)',
+        )
 
     if (material === undefined) {
-        material = new MeshBasicMaterial( {
+        material = new MeshBasicMaterial({
             color: new Color(parameters.color),
             vertexColors: false,
-            opacity: parameters.opacity, 
-            transparent: parameters.transparent
-        } )
+            opacity: parameters.opacity,
+            transparent: parameters.transparent,
+        })
         // material = new LineBasicMaterial({
-        //     linewidth: parameters.lineWidth, 
-        //     opacity: parameters.opacity, 
+        //     linewidth: parameters.lineWidth,
+        //     opacity: parameters.opacity,
         //     transparent: parameters.transparent,
         //     color: new Color(parameters.color),
         //     vertexColors: false
@@ -58,20 +78,23 @@ export function createTubeVectors(
         material.vertexColors = true
     }
 
-    const pos = Serie.create({array: geometry.getAttribute('position').array as IArray, itemSize: 3})
+    const pos = Serie.create({
+        array: geometry.getAttribute('position').array as IArray,
+        itemSize: 3,
+    })
     const s = parameters.scale
     const vertices: number[] = []
     const vecs = []
 
-    const g = new Group
-    
-    pos.forEach( (p,i) => {
+    const g = new Group()
+
+    pos.forEach((p, i) => {
         const u = vectorField.itemAt(i)
         if (parameters.project) {
             u[2] = 0
         }
         if (parameters.normalize) {
-            const l = Math.sqrt(u[0]**2 + u[1]**2 + u[2]**2)
+            const l = Math.sqrt(u[0] ** 2 + u[1] ** 2 + u[2] ** 2)
             u[0] /= l
             u[1] /= l
             u[2] /= l
@@ -80,19 +103,26 @@ export function createTubeVectors(
         let path: CatmullRomCurve3 = undefined
         if (parameters.centered) {
             // centered vector
-            path = new CatmullRomCurve3( [
-                new Vector3(p[0]-s*u[0]/2, p[1]-s*u[1]/2, p[2]-s*u[2]/2),
-                new Vector3(p[0]+s*u[0]/2, p[1]+s*u[1]/2, p[2]+s*u[2]/2)
-            ] )
-        }
-        else {
-            path = new CatmullRomCurve3( [
+            path = new CatmullRomCurve3([
+                new Vector3(
+                    p[0] - (s * u[0]) / 2,
+                    p[1] - (s * u[1]) / 2,
+                    p[2] - (s * u[2]) / 2,
+                ),
+                new Vector3(
+                    p[0] + (s * u[0]) / 2,
+                    p[1] + (s * u[1]) / 2,
+                    p[2] + (s * u[2]) / 2,
+                ),
+            ])
+        } else {
+            path = new CatmullRomCurve3([
                 new Vector3(p[0], p[1], p[2]),
-                new Vector3(p[0]+s*u[0], p[1]+s*u[1], p[2]+s*u[2])
-            ] )
+                new Vector3(p[0] + s * u[0], p[1] + s * u[1], p[2] + s * u[2]),
+            ])
         }
-        const geometry = new TubeGeometry( path, 2, parameters.radius, 10, false )
-        g.add( new Mesh( geometry, material ) )
+        const geometry = new TubeGeometry(path, 2, parameters.radius, 10, false)
+        g.add(new Mesh(geometry, material))
     })
 
     // // Coloring the vectors
@@ -110,10 +140,10 @@ export function createTubeVectors(
     // }
 
     // const params = {
-    //     min: parameters.min, 
-    //     max: parameters.max, 
-    //     lutTable, 
-    //     defaultColor, 
+    //     min: parameters.min,
+    //     max: parameters.max,
+    //     lutTable,
+    //     defaultColor,
     //     reverse: parameters.reverseLut
     // }
 

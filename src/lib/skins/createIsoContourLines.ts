@@ -1,13 +1,17 @@
 import {
-    LineSegments, LineBasicMaterial, 
-    Color, BufferGeometry, Float32BufferAttribute, 
-    Material, Mesh
-} from "three"
+    LineSegments,
+    LineBasicMaterial,
+    Color,
+    BufferGeometry,
+    Float32BufferAttribute,
+    Material,
+    Mesh,
+} from 'three'
 
-import { array, Serie }   from "@youwol/dataframe"
+import { array, Serie } from '@youwol/dataframe'
 import { IsoContoursParameters } from './isoContoursParameters'
-import { MarchingTriangles }     from './private/MarchingTriangles'
-import { lerp }                  from '../utils/lerp'
+import { MarchingTriangles } from './private/MarchingTriangles'
+import { lerp } from '../utils/lerp'
 
 /**
  * @example
@@ -22,15 +26,19 @@ import { lerp }                  from '../utils/lerp'
  *         max: 0.8
  *     })
  * })
- * 
+ *
  * scene.add( skin )
  * ```
  * @category Skins
  */
 export function createIsoContourLines(
-    mesh: Mesh, attribute: Serie,
-    {material, parameters} : {material?: Material, parameters: IsoContoursParameters}): LineSegments
-{
+    mesh: Mesh,
+    attribute: Serie,
+    {
+        material,
+        parameters,
+    }: { material?: Material; parameters: IsoContoursParameters },
+): LineSegments {
     if (mesh === undefined) {
         throw new Error('mesh is undefined')
     }
@@ -62,27 +70,28 @@ export function createIsoContourLines(
     if (material === undefined) {
         material = new LineBasicMaterial({
             linewidth: 1,
-            linecap: 'round',  // ignored by WebGLRenderer
-            linejoin: 'round' // ignored by WebGLRenderer
+            linecap: 'round', // ignored by WebGLRenderer
+            linejoin: 'round', // ignored by WebGLRenderer
         })
     }
-    material["color"] = new Color(parameters.lineColor)
+    material['color'] = new Color(parameters.lineColor)
 
     const minmax = array.minMax(attribute.array)
-    const vmin   = minmax[0]
-    const vmax   = minmax[1]
+    const vmin = minmax[0]
+    const vmax = minmax[1]
 
     const isoValues = parameters.isoList
 
     const algo = new MarchingTriangles()
     algo.setup(mesh.geometry.index, [lerp(0, vmin, vmax), lerp(1, vmin, vmax)])
 
-    const vertices  = mesh.geometry.getAttribute('position')
+    const vertices = mesh.geometry.getAttribute('position')
     const positions = []
-    let index       = 0
-    
+    let index = 0
+
     for (let i = 0; i < isoValues.length; ++i) {
-        if (isoValues[i]<parameters.min || isoValues[i]>parameters.max) continue
+        if (isoValues[i] < parameters.min || isoValues[i] > parameters.max)
+            continue
         let result = algo.isolines(attribute, isoValues[i])
         for (let k = 0; k < result[0].length; ++k) {
             for (let l = 0; l < result[0][k].length - 2; l += 2) {
@@ -95,7 +104,11 @@ export function createIsoContourLines(
                 let v2x = vertices.getX(i2)
                 let v2y = vertices.getY(i2)
                 let v2z = vertices.getZ(i2)
-                positions.push(v1x + c * (v2x - v1x), v1y + c * (v2y - v1y), v1z + c * (v2z - v1z))
+                positions.push(
+                    v1x + c * (v2x - v1x),
+                    v1y + c * (v2y - v1y),
+                    v1z + c * (v2z - v1z),
+                )
                 index += 3
             }
         }
@@ -108,12 +121,12 @@ export function createIsoContourLines(
     // }
 
     const skin = new LineSegments(geom, material)
-    
+
     // if (parameters.useTable) {
     //     skin.material["vertexColors"] = VertexColors
     //     skin.geometry["attributes"].color.needsUpdate = true;
     // }
-    skin["pickable"] = false
+    skin['pickable'] = false
     skin.frustumCulled = false
     return skin
 }

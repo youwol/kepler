@@ -1,14 +1,18 @@
-import { Vector } from "./Vector";
-import { createLookupGrid } from "./createLookupGrid";
-import { rk4 } from "./rk4";
+import { Vector } from './Vector'
+import { createLookupGrid } from './createLookupGrid'
+import { rk4 } from './rk4'
 
 enum State {
     FORWARD,
     BACKWARD,
-    DONE
+    DONE,
 }
 
-export function createStreamlineIntegrator(start: Vector, grid: any, config: any) {
+export function createStreamlineIntegrator(
+    start: Vector,
+    grid: any,
+    config: any,
+) {
     const points = [start]
     let pos = start
     let state = State.FORWARD
@@ -20,7 +24,7 @@ export function createStreamlineIntegrator(start: Vector, grid: any, config: any
         start: start,
         next: next,
         getStreamline: () => points,
-        getNextValidSeed: getNextValidSeed
+        getNextValidSeed: getNextValidSeed,
     }
 
     //function getStreamline() {return points}
@@ -40,7 +44,10 @@ export function createStreamlineIntegrator(start: Vector, grid: any, config: any
             let cx = p.x - v.y * config.dSep
             let cy = p.y + v.x * config.dSep
 
-            if (Array.isArray(config.seedArray) && config.seedArray.length > 0) {
+            if (
+                Array.isArray(config.seedArray) &&
+                config.seedArray.length > 0
+            ) {
                 const seed = config.seedArray.shift()
                 cx = seed.x
                 cy = seed.y
@@ -57,7 +64,8 @@ export function createStreamlineIntegrator(start: Vector, grid: any, config: any
             // Check orthogonal coordinates on the other side (o = p - n).
             const ox = p.x + v.y * config.dSep
             const oy = p.y - v.x * config.dSep
-            if (!grid.isOutside(ox, oy) && !grid.isTaken(ox, oy, checkDSep)) return new Vector(ox, oy)
+            if (!grid.isOutside(ox, oy) && !grid.isTaken(ox, oy, checkDSep))
+                return new Vector(ox, oy)
         }
     }
 
@@ -66,14 +74,14 @@ export function createStreamlineIntegrator(start: Vector, grid: any, config: any
         return distanceToCandidate < config.dTest
     }
 
-    function checkDSep(distanceToCandidate:number) {
+    function checkDSep(distanceToCandidate: number) {
         if (isSame(distanceToCandidate, config.dSep)) return false
         return distanceToCandidate < config.dSep
     }
 
     function next() {
-        while(true) {
-            candidate = null;
+        while (true) {
+            candidate = null
             if (state === State.FORWARD) {
                 const point = growForward()
                 if (point) {
@@ -90,7 +98,7 @@ export function createStreamlineIntegrator(start: Vector, grid: any, config: any
                     }
                 } else {
                     // Reset position to start, and grow backwards:
-                    if (config.forwardOnly)  {
+                    if (config.forwardOnly) {
                         state = State.DONE
                     } else {
                         pos = start
@@ -169,15 +177,16 @@ export function createStreamlineIntegrator(start: Vector, grid: any, config: any
     function notifyPointAdded(point: Vector) {
         let shouldPause = false
         if (config.onPointAdded) {
-            const otherPoint = points[state === State.FORWARD ? points.length - 2 : 1]
+            const otherPoint =
+                points[state === State.FORWARD ? points.length - 2 : 1]
             shouldPause = config.onPointAdded(point, otherPoint, config)
-        } 
+        }
         return shouldPause
     }
 
     function normalizedVectorField(P: Vector) {
         let p = config.vectorField(P)
-        if (!p) return; // Assume singularity
+        if (!p) return // Assume singularity
         if (Number.isNaN(p.x) || Number.isNaN(p.y)) {
             return undefined // Not defined. e.g. Math.log(-1);
         }
@@ -187,7 +196,7 @@ export function createStreamlineIntegrator(start: Vector, grid: any, config: any
         l = Math.sqrt(l)
 
         // We need normalized field.
-        return new Vector(p.x/l, p.y/l)
+        return new Vector(p.x / l, p.y / l)
     }
 }
 

@@ -5,9 +5,9 @@
  * ```ts
  * class Grid implements ImplicitGrid3D {
  *   spacing: number[]
- * 
+ *
  *   constructor(
- *     public readonly sizes: number[], 
+ *     public readonly sizes: number[],
  *     dimension: number[],
  *     public readonly origin: number[])
  *   {
@@ -17,7 +17,7 @@
  *       dimension[2]/sizes[2]
  *     ]
  *   }
- * 
+ *
  *   pos(i: number, j: number, k: number) {
  *     return [
  *       this.origin[0] + i*this.spacing[0],
@@ -25,7 +25,7 @@
  *       this.origin[2] + k*this.spacing[2]]
  *   }
  * }
- * 
+ *
  * const grid = new Grid()
  * const isos = createIsoSurfaces({
  *   positions: grid,
@@ -36,7 +36,7 @@
  * @see [[createIsoSurfaces]]
  * @category Types
  */
- export interface ImplicitGrid3D {
+export interface ImplicitGrid3D {
     /**
      * The method that return the real position of a point given its indices
      * @returns The 3D coordinate of the point with indices (i,j,k)
@@ -47,5 +47,4 @@
      * The sizes of the grid along the 3 axis
      */
     readonly sizes: number[]
-
 }

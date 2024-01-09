@@ -3,27 +3,27 @@
  * MIT License
  */
 
-import { Vector } from "./Vector"
-import { createLookupGrid } from "./createLookupGrid"
-import { createStreamlineIntegrator } from "./integrator"
+import { Vector } from './Vector'
+import { createLookupGrid } from './createLookupGrid'
+import { createStreamlineIntegrator } from './integrator'
 
 enum State {
     STATE_INIT,
     STATE_STREAMLINE,
     STATE_PROCESS_QUEUE,
     STATE_DONE,
-    STATE_SEED_STREAMLINE
+    STATE_SEED_STREAMLINE,
 }
 
 /**
- * 
+ *
  * @param protoOptions of the form:
  * ```js
  * {
  *      boundingBox: {
- *          left  : -5, 
- *          top   : -5, 
- *          width : 10, 
+ *          left  : -5,
+ *          top   : -5,
+ *          width : 10,
  *          height: 10
  *      },
  *      vectorField      : value,
@@ -37,7 +37,7 @@ enum State {
  *      stepsPerIteration: 10,
  *      maxTimePerIteration: 1000
  * }
- * ``` 
+ * ```
  */
 export function streamlines2D(protoOptions: any) {
     const options = Object.create(null)
@@ -45,7 +45,9 @@ export function streamlines2D(protoOptions: any) {
         throw new Error('Configuration is required to compute streamlines')
     }
     if (!protoOptions.boundingBox) {
-        console.warn('No bounding box passed to streamline. Creating default one')
+        console.warn(
+            'No bounding box passed to streamline. Creating default one',
+        )
         options.boundingBox = { left: -5, top: -5, width: 10, height: 10 }
     } else {
         options.boundingBox = {}
@@ -56,14 +58,14 @@ export function streamlines2D(protoOptions: any) {
 
     const boundingBox = options.boundingBox
     options.vectorField = protoOptions.vectorField
-    options.onStreamlineAdded = protoOptions.onStreamlineAdded;
-    options.onPointAdded = protoOptions.onPointAdded;
-    options.forwardOnly = protoOptions.forwardOnly;
+    options.onStreamlineAdded = protoOptions.onStreamlineAdded
+    options.onPointAdded = protoOptions.onPointAdded
+    options.forwardOnly = protoOptions.forwardOnly
 
     if (!protoOptions.seed) {
         options.seed = new Vector(
             Math.random() * boundingBox.width + boundingBox.left,
-            Math.random() * boundingBox.height + boundingBox.top
+            Math.random() * boundingBox.height + boundingBox.top,
         )
     } else if (Array.isArray(protoOptions.seed)) {
         const seed = protoOptions.seed.shift()
@@ -74,28 +76,39 @@ export function streamlines2D(protoOptions: any) {
     }
 
     // Separation between streamlines. Naming according to the paper.
-    options.dSep = protoOptions.dSep > 0 ? protoOptions.dSep
-        : 1 / Math.max(boundingBox.width, boundingBox.height)
+    options.dSep =
+        protoOptions.dSep > 0
+            ? protoOptions.dSep
+            : 1 / Math.max(boundingBox.width, boundingBox.height)
 
     // When should we stop integrating a streamline.
-    options.dTest = protoOptions.dTest > 0 ? protoOptions.dTest : options.dSep * 0.5
+    options.dTest =
+        protoOptions.dTest > 0 ? protoOptions.dTest : options.dSep * 0.5
 
     // Lookup grid helps to quickly tell if there are points nearby
     const grid = createLookupGrid(boundingBox, options.dSep)
 
     // Integration time step.
-    options.timeStep            = protoOptions.timeStep > 0 ? protoOptions.timeStep : 0.01
-    options.stepsPerIteration   = protoOptions.stepsPerIteration > 0 ? protoOptions.stepsPerIteration : 10
-    options.maxTimePerIteration = protoOptions.maxTimePerIteration > 0 ? protoOptions.maxTimePerIteration : 1000
+    options.timeStep = protoOptions.timeStep > 0 ? protoOptions.timeStep : 0.01
+    options.stepsPerIteration =
+        protoOptions.stepsPerIteration > 0 ? protoOptions.stepsPerIteration : 10
+    options.maxTimePerIteration =
+        protoOptions.maxTimePerIteration > 0
+            ? protoOptions.maxTimePerIteration
+            : 1000
 
     const stepsPerIteration = options.stepsPerIteration
     //const resolve
     let state = State.STATE_INIT
     const finishedStreamlineIntegrators: Array<any> = []
-    let streamlineIntegrator = createStreamlineIntegrator(options.seed, grid, options)
+    let streamlineIntegrator = createStreamlineIntegrator(
+        options.seed,
+        grid,
+        options,
+    )
     return {
         //run: run
-        run: nextStep
+        run: nextStep,
     }
 
     /*
@@ -107,9 +120,9 @@ export function streamlines2D(protoOptions: any) {
     function nextStep() {
         while (state !== State.STATE_DONE) {
             for (var i = 0; i < stepsPerIteration; ++i) {
-                if (state === State.STATE_INIT)            initProcessing()
-                if (state === State.STATE_STREAMLINE)      continueStreamline()
-                if (state === State.STATE_PROCESS_QUEUE)   processQueue()
+                if (state === State.STATE_INIT) initProcessing()
+                if (state === State.STATE_STREAMLINE) continueStreamline()
+                if (state === State.STATE_PROCESS_QUEUE) processQueue()
                 if (state === State.STATE_SEED_STREAMLINE) seedStreamline()
             }
         }
@@ -130,7 +143,7 @@ export function streamlines2D(protoOptions: any) {
             streamlineIntegrator = createStreamlineIntegrator(
                 validCandidate,
                 grid,
-                options
+                options,
             )
             state = State.STATE_STREAMLINE
         } else {
@@ -143,7 +156,7 @@ export function streamlines2D(protoOptions: any) {
         if (finishedStreamlineIntegrators.length === 0) {
             state = State.STATE_DONE
         } else {
-            state = State.STATE_SEED_STREAMLINE;
+            state = State.STATE_SEED_STREAMLINE
         }
     }
 
@@ -177,11 +190,12 @@ function normalizeBoundingBox(bbox: any) {
     assertNumber(bbox.left, msg)
     assertNumber(bbox.top, msg)
     if (typeof bbox.size === 'number') {
-        bbox.width = bbox.size;
-        bbox.height = bbox.size;
+        bbox.width = bbox.size
+        bbox.height = bbox.size
     }
     assertNumber(bbox.width, msg)
     assertNumber(bbox.height, msg)
 
-    if (bbox.width <= 0 || bbox.height <= 0) throw new Error('Bounding box cannot be empty')
+    if (bbox.width <= 0 || bbox.height <= 0)
+        throw new Error('Bounding box cannot be empty')
 }

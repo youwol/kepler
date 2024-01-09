@@ -4,15 +4,19 @@
 // Template: https://www.typescriptlang.org/docs/handbook/declaration-files/templates/module-class-d-ts.html
 
 export namespace quadtree {
-
     export class Quadtree {
-        constructor (bounds: Rect, max_objects?: number, max_levels?: number, level?: number);
-        max_objects: number;
-        max_levels: number;
-        level: number;
-        bounds: Rect;
-        objects: Rect[];
-        nodes: Quadtree[];
+        constructor(
+            bounds: Rect,
+            max_objects?: number,
+            max_levels?: number,
+            level?: number,
+        )
+        max_objects: number
+        max_levels: number
+        level: number
+        bounds: Rect
+        objects: Rect[]
+        nodes: Quadtree[]
 
         split(): void
         getIndex(pRect: Rect): number[]

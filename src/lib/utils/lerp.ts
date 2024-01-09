@@ -12,7 +12,8 @@
  * @category Utils
  */
 export const lerp = (t: number, min: number, max: number) => {
-    if (t<0 || t>1) throw new Error(`t must be clamped to the range [0,1]. Got ${t}`)
+    if (t < 0 || t > 1)
+        throw new Error(`t must be clamped to the range [0,1]. Got ${t}`)
 
     // if (Array.isArray(min)) {
     //     return min.map( (v,i) => {

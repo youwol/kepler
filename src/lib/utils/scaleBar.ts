@@ -1,27 +1,27 @@
 // import { stringify } from 'querystring'
 import {
-	// Float32BufferAttribute, 
-	// BufferGeometry, 
-	// Group, 
-	// Mesh, 
-	// Color, 
-	// MeshBasicMaterial, 
-	// Vector3, 
-	CanvasTexture, 
-	// LinearFilter, 
-	SpriteMaterial, 
-	Sprite, 
-	// Texture, 
-	// PlaneBufferGeometry, 
-	// DoubleSide, 
-	// LineBasicMaterial, 
-	// Line,
-	// BufferAttribute,
-	OrthographicCamera,
-	Scene,
-	// PlaneGeometry,
-	WebGLRenderer,
-	Camera
+    // Float32BufferAttribute,
+    // BufferGeometry,
+    // Group,
+    // Mesh,
+    // Color,
+    // MeshBasicMaterial,
+    // Vector3,
+    CanvasTexture,
+    // LinearFilter,
+    SpriteMaterial,
+    Sprite,
+    // Texture,
+    // PlaneBufferGeometry,
+    // DoubleSide,
+    // LineBasicMaterial,
+    // Line,
+    // BufferAttribute,
+    OrthographicCamera,
+    Scene,
+    // PlaneGeometry,
+    WebGLRenderer,
+    Camera,
 } from 'three'
 import { ColorMap } from './colorMap'
 
@@ -31,44 +31,43 @@ See https://github.com/makc/three.js.fork/blob/master/examples/js/math/Lut.js
 */
 
 export class ScaleBar {
+    camera: Camera = undefined
+    scene: Scene = undefined
+    sprite: Sprite = undefined
 
-	camera: Camera = undefined
-	scene: Scene = undefined
-	sprite: Sprite = undefined
+    constructor(lut: ColorMap | string) {
+        this.scene = new Scene()
 
-	constructor(lut: ColorMap | string) {
-		this.scene = new Scene()
+        this.camera = new OrthographicCamera(-1, 1, 1, -1, 1, 2)
+        this.camera.position.set(0.8, 0, 1)
 
-		this.camera = new OrthographicCamera( - 1, 1, 1, - 1, 1, 2 )
-		this.camera.position.set( 0.8, 0, 1 )
+        if (typeof lut === 'string') {
+            lut = new ColorMap(lut, 32)
+        }
 
-		if (typeof lut === 'string') {
-			lut = new ColorMap(lut, 32)
-		}
+        this.sprite = new Sprite(
+            new SpriteMaterial({
+                map: new CanvasTexture(lut.createCanvas()),
+            }),
+        )
+        this.sprite.scale.x = 0.05
+        this.scene.add(this.sprite)
+    }
 
-		this.sprite = new Sprite( new SpriteMaterial( {
-			map: new CanvasTexture( lut.createCanvas() )
-		} ) );
-		this.sprite.scale.x = 0.05
-		this.scene.add( this.sprite )
-	}
+    render = (renderer: WebGLRenderer) => {
+        renderer.render(this.scene, this.camera)
+    }
 
-	render = (renderer: WebGLRenderer) => {
-		renderer.render(this.scene, this.camera)
-	}
+    setColorMap(lut: ColorMap) {
+        // lut.setColorMap( params.colorMap )
+        // lut.setMax( 2000 )
+        // lut.setMin( 0 )
 
-	setColorMap(lut: ColorMap) {
-		// lut.setColorMap( params.colorMap )
-		// lut.setMax( 2000 )
-		// lut.setMin( 0 )
-
-		const map = this.sprite.material.map
-		lut.updateCanvas( map.image )
-		map.needsUpdate = true
-	}
+        const map = this.sprite.material.map
+        lut.updateCanvas(map.image)
+        map.needsUpdate = true
+    }
 }
-
-
 
 /*
 export class ScaleBar {

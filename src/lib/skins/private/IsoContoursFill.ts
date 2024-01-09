@@ -1,8 +1,8 @@
-import { IArray, Serie } from "@youwol/dataframe"
-import { minMax } from "@youwol/math"
-import { BufferAttribute, BufferGeometry, Color } from "three"
-import { ColorMap, createLut, fromValueToColor } from "../../utils"
-import { IsoContoursParameters } from "../isoContoursParameters"
+import { IArray, Serie } from '@youwol/dataframe'
+import { minMax } from '@youwol/math'
+import { BufferAttribute, BufferGeometry, Color } from 'three'
+import { ColorMap, createLut, fromValueToColor } from '../../utils'
+import { IsoContoursParameters } from '../isoContoursParameters'
 
 const Nc = 128
 
@@ -10,59 +10,68 @@ export class IsoContoursFill {
     attr: Serie = undefined
     nodes_: BufferAttribute = undefined
     segment_list_: Array<IsoSegment> = []
-    vmin_  = 0
-    vmax_  = 1
+    vmin_ = 0
+    vmax_ = 1
     color_ = new Color('#000000')
     lutTable_: ColorMap = createLut('Insar', Nc)
     params: IsoContoursParameters = undefined
 
-    position_: Array<number>  = []
-    index_ : Array<number>    = []
-    colors_: Array<number>    = []
+    position_: Array<number> = []
+    index_: Array<number> = []
+    colors_: Array<number> = []
     isoValues_: Array<number> = []
-    normals_: Array<number>   = []
+    normals_: Array<number> = []
     nnormals_: BufferAttribute = undefined
 
-    get position()  {return this.position_}
-    get index()     {return this.index_}
-    get color()     {return this.colors_}
+    get position() {
+        return this.position_
+    }
+    get index() {
+        return this.index_
+    }
+    get color() {
+        return this.colors_
+    }
 
     constructor(parameters: IsoContoursParameters) {
         this.params = parameters
-        this.color_     = new Color(parameters.color)
-        this.lutTable_  = createLut(parameters.lut, Nc, parameters.duplicateLut)
+        this.color_ = new Color(parameters.color)
+        this.lutTable_ = createLut(parameters.lut, Nc, parameters.duplicateLut)
         this.lutTable_.setMin(0)
         this.lutTable_.setMax(1)
         this.isoValues_ = parameters.isoList
     }
 
-    run(attr: Serie, geometry: BufferGeometry, min: number = undefined, max: number = undefined): any {
+    run(
+        attr: Serie,
+        geometry: BufferGeometry,
+        min: number = undefined,
+        max: number = undefined,
+    ): any {
         this.attr = attr
         const minmax = minMax(this.attr)
         if (min !== undefined) {
             this.vmin_ = min
-        }
-        else {
-            this.vmin_   = minmax[0]
+        } else {
+            this.vmin_ = minmax[0]
         }
         if (max !== undefined) {
             this.vmax_ = max
+        } else {
+            this.vmax_ = minmax[1]
         }
-        else {
-            this.vmax_   = minmax[1]
-        }
-        
-        if (this.isoValues_.length===0) {
+
+        if (this.isoValues_.length === 0) {
             return {
                 position: [],
-                index   : [],
-                color   : []
+                index: [],
+                color: [],
             }
         }
 
-        const index    = geometry.index
-        const a        = index.array
-        this.nodes_    = geometry.getAttribute('position') as BufferAttribute
+        const index = geometry.index
+        const a = index.array
+        this.nodes_ = geometry.getAttribute('position') as BufferAttribute
         this.nnormals_ = geometry.getAttribute('normal') as BufferAttribute
 
         if (this.nnormals_ === undefined) {
@@ -72,20 +81,21 @@ export class IsoContoursFill {
 
         // The main algo
         // -------------
-        for (let i=0; i<a.length; i += 3) { // node indices of a triangle
-            this.classify(a[i], a[i+1], a[i+2])
+        for (let i = 0; i < a.length; i += 3) {
+            // node indices of a triangle
+            this.classify(a[i], a[i + 1], a[i + 2])
         }
 
         return {
             position: this.position_,
-            index   : this.index_,
-            color   : this.colors_,
-            normal  : this.normals_
+            index: this.index_,
+            color: this.colors_,
+            normal: this.normals_,
         }
     }
 
     normalizeAttr(v: number) {
-        return (v-this.vmin_) / (this.vmax_-this.vmin_)
+        return (v - this.vmin_) / (this.vmax_ - this.vmin_)
     }
 
     private getNode(i: number) {
@@ -93,7 +103,11 @@ export class IsoContoursFill {
     }
 
     private getNormal(i: number) {
-        return [this.nnormals_.getX(i), this.nnormals_.getY(i), this.nnormals_.getZ(i)]
+        return [
+            this.nnormals_.getX(i),
+            this.nnormals_.getY(i),
+            this.nnormals_.getZ(i),
+        ]
     }
 
     private getAttr(i: number): number {
@@ -101,69 +115,99 @@ export class IsoContoursFill {
     }
 
     private classify(n0: number, n1: number, n2: number): void {
-        const t = new TriInfo
+        const t = new TriInfo()
 
-        t.v1 = this.getAttr  (n0)
-        t.p1 = this.getNode  (n0)
+        t.v1 = this.getAttr(n0)
+        t.p1 = this.getNode(n0)
         t.n1 = this.getNormal(n0)
 
-        t.v2 = this.getAttr  (n1)
-        t.p2 = this.getNode  (n1)
+        t.v2 = this.getAttr(n1)
+        t.p2 = this.getNode(n1)
         t.n2 = this.getNormal(n1)
 
-        t.v3 = this.getAttr  (n2)
-        t.p3 = this.getNode  (n2)
+        t.v3 = this.getAttr(n2)
+        t.p3 = this.getNode(n2)
         t.n3 = this.getNormal(n2)
 
         let nn1: number[], nn2: number[], nn3: number[]
         let vv1: number[], vv2: number[], vv3: number[]
-        let hh1=0, hh2=0, hh3=0
+        let hh1 = 0,
+            hh2 = 0,
+            hh3 = 0
 
         if (t.v1 <= t.v2 && t.v1 <= t.v3) {
             vv1 = t.p1
             hh1 = t.v1
             nn1 = t.n1
             if (t.v2 <= t.v3) {
-                vv2 = t.p2; vv3 = t.p3
-                hh2 = t.v2; hh3 = t.v3
-                nn2 = t.n2; nn3 = t.n3
+                vv2 = t.p2
+                vv3 = t.p3
+                hh2 = t.v2
+                hh3 = t.v3
+                nn2 = t.n2
+                nn3 = t.n3
             } else {
-                vv2 = t.p3; vv3 = t.p2
-                hh2 = t.v3; hh3 = t.v2
-                nn2 = t.n3; nn3 = t.n2
+                vv2 = t.p3
+                vv3 = t.p2
+                hh2 = t.v3
+                hh3 = t.v2
+                nn2 = t.n3
+                nn3 = t.n2
                 t.reversed = true
             }
         } else if (t.v2 <= t.v1 && t.v2 <= t.v3) {
-            vv1 = t.p2; hh1 = t.v2; nn1 = t.n2
+            vv1 = t.p2
+            hh1 = t.v2
+            nn1 = t.n2
             if (t.v1 <= t.v3) {
-                vv2 = t.p1; vv3 = t.p3
-                hh2 = t.v1; hh3 = t.v3
-                nn2 = t.n1; nn3 = t.n3
+                vv2 = t.p1
+                vv3 = t.p3
+                hh2 = t.v1
+                hh3 = t.v3
+                nn2 = t.n1
+                nn3 = t.n3
                 t.reversed = true
             } else {
-                vv2 = t.p3; vv3 = t.p1
-                hh2 = t.v3; hh3 = t.v1
-                nn2 = t.n3; nn3 = t.n1
+                vv2 = t.p3
+                vv3 = t.p1
+                hh2 = t.v3
+                hh3 = t.v1
+                nn2 = t.n3
+                nn3 = t.n1
             }
         } else if (t.v3 <= t.v1 && t.v3 <= t.v2) {
-            vv1 = t.p3; hh1 = t.v3; nn1 = t.n3
+            vv1 = t.p3
+            hh1 = t.v3
+            nn1 = t.n3
             if (t.v1 <= t.v2) {
-                vv2 = t.p1; vv3 = t.p2
-                hh2 = t.v1; hh3 = t.v2
-                nn2 = t.n1; nn3 = t.n2
+                vv2 = t.p1
+                vv3 = t.p2
+                hh2 = t.v1
+                hh3 = t.v2
+                nn2 = t.n1
+                nn3 = t.n2
             } else {
-                vv2 = t.p2; vv3 = t.p1
-                hh2 = t.v2; hh3 = t.v1
-                nn2 = t.n2; nn3 = t.n1
+                vv2 = t.p2
+                vv3 = t.p1
+                hh2 = t.v2
+                hh3 = t.v1
+                nn2 = t.n2
+                nn3 = t.n1
                 t.reversed = true
             }
         } else {
             return
         }
 
-        t.p1 = vv1; t.p2 = vv2; t.p3 = vv3
-        t.v1 = hh1; t.v2 = hh2; t.v3 = hh3
-        t.n1 = nn1; t.n2 = nn2; t.n3 = nn3
+        t.p1 = vv1
+        t.p2 = vv2
+        t.p3 = vv3
+        t.v1 = hh1
+        t.v2 = hh2
+        t.v3 = hh3
+        t.n1 = nn1
+        t.n2 = nn2
+        t.n3 = nn3
 
         this.createSegmentList(t) // for this current traingle
         this.createPolygons(t)
@@ -186,7 +230,7 @@ export class IsoContoursFill {
     }
 
     private addSegment(iso: number, t: TriInfo) {
-        const segment = new IsoSegment
+        const segment = new IsoSegment()
         segment.iso = iso
         const v1 = t.v1
         const v2 = t.v2
@@ -196,16 +240,15 @@ export class IsoContoursFill {
         const p3 = t.p3
 
         if (iso < t.v2) {
-            const w1   = isoValue(v1, v2, iso)
-            const w2   = isoValue(v1, v3, iso)
+            const w1 = isoValue(v1, v2, iso)
+            const w2 = isoValue(v1, v3, iso)
             segment.p1 = createPoint(p1, p2, w1)
             segment.p2 = createPoint(p1, p3, w2)
             segment.n1 = createPoint(t.n1, t.n2, w1)
             segment.n2 = createPoint(t.n1, t.n3, w2)
-        }
-        else {
-            const w1   = isoValue(v2, v3, iso)
-            const w2   = isoValue(v1, v3, iso)
+        } else {
+            const w1 = isoValue(v2, v3, iso)
+            const w2 = isoValue(v1, v3, iso)
             segment.p1 = createPoint(p2, p3, w1)
             segment.p2 = createPoint(p1, p3, w2)
             segment.n1 = createPoint(t.n2, t.n3, w1)
@@ -217,9 +260,9 @@ export class IsoContoursFill {
 
     private createPolygons(t: TriInfo) {
         if (
-            (t.v1<this.params.min || t.v1>this.params.max) &&
-            (t.v2<this.params.min || t.v2>this.params.max) &&
-            (t.v3<this.params.min || t.v3>this.params.max)
+            (t.v1 < this.params.min || t.v1 > this.params.max) &&
+            (t.v2 < this.params.min || t.v2 > this.params.max) &&
+            (t.v3 < this.params.min || t.v3 > this.params.max)
         ) {
             return // <-------------------------------
         }
@@ -230,46 +273,87 @@ export class IsoContoursFill {
         if (t.reversed) {
             if (this.segment_list_.length === 0) {
                 this.addTri(
-                    t.p1, t.p3, t.p2,
-                    t.n1, t.n3, t.n2,
-                    t.notIntersectedPolygonValue)
+                    t.p1,
+                    t.p3,
+                    t.p2,
+                    t.n1,
+                    t.n3,
+                    t.n2,
+                    t.notIntersectedPolygonValue,
+                )
                 return
             }
 
             let seg = front(this.segment_list_)
 
             if (seg.iso < t.v2) {
-                this.addTri(t.p1, seg.p2, seg.p1,
-                    t.n1, seg.n2, seg.n1,
-                    t.notIntersectedPolygonValue)
-            }
-            else {
+                this.addTri(
+                    t.p1,
+                    seg.p2,
+                    seg.p1,
+                    t.n1,
+                    seg.n2,
+                    seg.n1,
+                    t.notIntersectedPolygonValue,
+                )
+            } else {
                 bypass = true
-                this.addQuad(t.p1, seg.p2, seg.p1, t.p2,
-                    t.n1, seg.n2, seg.n1, t.n2,
-                    t.notIntersectedPolygonValue)
+                this.addQuad(
+                    t.p1,
+                    seg.p2,
+                    seg.p1,
+                    t.p2,
+                    t.n1,
+                    seg.n2,
+                    seg.n1,
+                    t.n2,
+                    t.notIntersectedPolygonValue,
+                )
             }
 
-            for (let i=1; i<this.segment_list_.length; ++i) {
+            for (let i = 1; i < this.segment_list_.length; ++i) {
                 const seg1 = this.segment_list_[i]
-            
+
                 if (seg1.iso < t.v2) {
-                    this.addQuad(seg.p1, seg1.p1, seg1.p2, seg.p2,
-                        negate(seg.n1), negate(seg1.n1), negate(seg1.n2), negate(seg.n2),
-                        seg.iso)
-                }
-                else {
+                    this.addQuad(
+                        seg.p1,
+                        seg1.p1,
+                        seg1.p2,
+                        seg.p2,
+                        negate(seg.n1),
+                        negate(seg1.n1),
+                        negate(seg1.n2),
+                        negate(seg.n2),
+                        seg.iso,
+                    )
+                } else {
                     if (bypass) {
-                        this.addQuad(seg.p1, seg.p2, seg1.p2, seg1.p1,
-                            seg.n1, seg.n2, seg1.n2, seg1.n1,
-                            seg.iso)
-                    }
-                    else {
+                        this.addQuad(
+                            seg.p1,
+                            seg.p2,
+                            seg1.p2,
+                            seg1.p1,
+                            seg.n1,
+                            seg.n2,
+                            seg1.n2,
+                            seg1.n1,
+                            seg.iso,
+                        )
+                    } else {
                         bypass = true
                         this.addPoly(
-                            t.p2, seg.p1, seg.p2, seg1.p2, seg1.p1,
-                            t.n2, seg.n1, seg.n2, seg1.n2, seg1.n1,
-                            seg.iso)
+                            t.p2,
+                            seg.p1,
+                            seg.p2,
+                            seg1.p2,
+                            seg1.p1,
+                            t.n2,
+                            seg.n1,
+                            seg.n2,
+                            seg1.n2,
+                            seg1.n1,
+                            seg.iso,
+                        )
                     }
                 }
                 seg = seg1
@@ -277,58 +361,105 @@ export class IsoContoursFill {
 
             seg = back(this.segment_list_)
             if (bypass) {
-                this.addTri(seg.p1, seg.p2, t.p3,
-                    seg.n1, seg.n2, t.n3,
-                    seg.iso)
-            }
-            else {
-                this.addQuad(t.p2, seg.p1, seg.p2, t.p3,
-                    t.n2, seg.n1, seg.n2, t.n3,
-                    seg.iso)
+                this.addTri(seg.p1, seg.p2, t.p3, seg.n1, seg.n2, t.n3, seg.iso)
+            } else {
+                this.addQuad(
+                    t.p2,
+                    seg.p1,
+                    seg.p2,
+                    t.p3,
+                    t.n2,
+                    seg.n1,
+                    seg.n2,
+                    t.n3,
+                    seg.iso,
+                )
             }
         }
         //draw polygons in CW
         else {
             if (this.segment_list_.length === 0) {
-                this.addTri(t.p1, t.p2, t.p3,
-                    t.n1, t.n2, t.n3,
-                    t.notIntersectedPolygonValue)
+                this.addTri(
+                    t.p1,
+                    t.p2,
+                    t.p3,
+                    t.n1,
+                    t.n2,
+                    t.n3,
+                    t.notIntersectedPolygonValue,
+                )
                 return
             }
 
             let seg = front(this.segment_list_)
 
             if (seg.iso < t.v2) {
-                this.addTri(t.p1, seg.p1, seg.p2,
-                    t.n1, seg.n1, seg.n2,
-                    t.notIntersectedPolygonValue)
-            }
-            else {
+                this.addTri(
+                    t.p1,
+                    seg.p1,
+                    seg.p2,
+                    t.n1,
+                    seg.n1,
+                    seg.n2,
+                    t.notIntersectedPolygonValue,
+                )
+            } else {
                 bypass = true
-                this.addQuad(t.p1, t.p2, seg.p1, seg.p2,
-                    t.n1, t.n2, seg.n1, seg.n2,
-                    t.notIntersectedPolygonValue)
+                this.addQuad(
+                    t.p1,
+                    t.p2,
+                    seg.p1,
+                    seg.p2,
+                    t.n1,
+                    t.n2,
+                    seg.n1,
+                    seg.n2,
+                    t.notIntersectedPolygonValue,
+                )
             }
 
-            for (let i=1; i < this.segment_list_.length; ++i) {
+            for (let i = 1; i < this.segment_list_.length; ++i) {
                 const seg1 = this.segment_list_[i]
                 if (seg1.iso < t.v2) {
-                    this.addQuad(seg.p1, seg1.p1, seg1.p2, seg.p2,
-                        seg.n1, seg1.n1, seg1.n2, seg.n2,
-                        seg.iso)
-                }
-                else {
+                    this.addQuad(
+                        seg.p1,
+                        seg1.p1,
+                        seg1.p2,
+                        seg.p2,
+                        seg.n1,
+                        seg1.n1,
+                        seg1.n2,
+                        seg.n2,
+                        seg.iso,
+                    )
+                } else {
                     if (bypass) {
-                        this.addQuad(seg.p1, seg1.p1, seg1.p2, seg.p2,
-                            seg.n1, seg1.n1, seg1.n2, seg.n2,
-                            seg.iso)
-                    }
-                    else {
+                        this.addQuad(
+                            seg.p1,
+                            seg1.p1,
+                            seg1.p2,
+                            seg.p2,
+                            seg.n1,
+                            seg1.n1,
+                            seg1.n2,
+                            seg.n2,
+                            seg.iso,
+                        )
+                    } else {
                         bypass = true
                         this.addPoly(
-                            t.p2, seg1.p1, seg1.p2, seg.p2, seg.p1,
-                            t.n2, seg1.n1, seg1.n2, seg.n2, seg.n1,
-                            seg.iso)
+                            t.p2,
+                            seg1.p1,
+                            seg1.p2,
+                            seg.p2,
+                            seg.p1,
+                            t.n2,
+                            seg1.n1,
+                            seg1.n2,
+                            seg.n2,
+                            seg.n1,
+                            seg.iso,
+                        )
                     }
                 }
                 seg = seg1
@@ -336,117 +467,130 @@ export class IsoContoursFill {
 
             seg = back(this.segment_list_)
             if (bypass) {
-                this.addTri(seg.p1, t.p3, seg.p2,
-                    seg.n1, t.n3, seg.n2,
-                    seg.iso)
-            }
-            else {
-                this.addQuad(t.p2, t.p3, seg.p2, seg.p1,
-                    t.n2, t.n3, seg.n2, seg.n1,
-                    seg.iso)
+                this.addTri(seg.p1, t.p3, seg.p2, seg.n1, t.n3, seg.n2, seg.iso)
+            } else {
+                this.addQuad(
+                    t.p2,
+                    t.p3,
+                    seg.p2,
+                    seg.p1,
+                    t.n2,
+                    t.n3,
+                    seg.n2,
+                    seg.n1,
+                    seg.iso,
+                )
             }
         }
     }
 
     private addTri(
-        point1 : number[],
-        point2 : number[],
-        point3 : number[],
+        point1: number[],
+        point2: number[],
+        point3: number[],
         n1: number[],
         n2: number[],
         n3: number[],
-        iso: number)
-    {
-        if (iso<this.vmin_ || iso>this.vmax_) return ;
-        const c = fromValueToColor( this.normalizeAttr(iso), {
-            defaultColor: this.color_, 
+        iso: number,
+    ) {
+        if (iso < this.vmin_ || iso > this.vmax_) return
+        const c = fromValueToColor(this.normalizeAttr(iso), {
+            defaultColor: this.color_,
             lutTable: this.lutTable_,
-            reverse: this.params.reverseLut, 
+            reverse: this.params.reverseLut,
         })
-        const id = this.position_.length/3
+        const id = this.position_.length / 3
         this.position_.push(...point1, ...point2, ...point3)
-        this.index_.push(id, id+1, id+2)
+        this.index_.push(id, id + 1, id + 2)
         this.colors_.push(...c, ...c, ...c)
         this.normals_.push(...n1, ...n2, ...n3)
     }
 
     private addQuad(
-        point1 : number[],
-        point2 : number[],
-        point3 : number[],
-        point4 : number[],
+        point1: number[],
+        point2: number[],
+        point3: number[],
+        point4: number[],
         n1: number[],
         n2: number[],
         n3: number[],
         n4: number[],
-        iso: number)
-    {
-        if (iso<this.vmin_ || iso>this.vmax_) return ;
-        const c = fromValueToColor( this.normalizeAttr(iso), {
-            defaultColor  : this.color_, 
+        iso: number,
+    ) {
+        if (iso < this.vmin_ || iso > this.vmax_) return
+        const c = fromValueToColor(this.normalizeAttr(iso), {
+            defaultColor: this.color_,
             lutTable: this.lutTable_,
-            reverse: this.params.reverseLut, 
+            reverse: this.params.reverseLut,
         })
-        const id = this.position_.length/3
+        const id = this.position_.length / 3
         this.position_.push(...point1, ...point2, ...point3, ...point4)
-        this.index_.push(
-            id, id+1, id+2, 
-            id, id+2, id+3
-        )
+        this.index_.push(id, id + 1, id + 2, id, id + 2, id + 3)
         this.colors_.push(...c, ...c, ...c, ...c)
         this.normals_.push(...n1, ...n2, ...n3, ...n4)
     }
 
     private addPoly(
-        point1 : number[],
-        point2 : number[],
-        point3 : number[],
-        point4 : number[],
-        point5 : number[],
+        point1: number[],
+        point2: number[],
+        point3: number[],
+        point4: number[],
+        point5: number[],
         n1: number[],
         n2: number[],
         n3: number[],
         n4: number[],
         n5: number[],
-        iso: number)
-    {
-        if (iso<this.vmin_ || iso>this.vmax_) return ;
-        const c = fromValueToColor( this.normalizeAttr(iso), {
-            defaultColor  : this.color_, 
+        iso: number,
+    ) {
+        if (iso < this.vmin_ || iso > this.vmax_) return
+        const c = fromValueToColor(this.normalizeAttr(iso), {
+            defaultColor: this.color_,
             lutTable: this.lutTable_,
-            reverse: this.params.reverseLut, 
+            reverse: this.params.reverseLut,
         })
-        const id = this.position_.length/3
-        this.position_.push(...point1, ...point2, ...point3, ...point4, ...point5)
+        const id = this.position_.length / 3
+        this.position_.push(
+            ...point1,
+            ...point2,
+            ...point3,
+            ...point4,
+            ...point5,
+        )
         this.index_.push(
-            id, id+1, id+2, 
-            id, id+2, id+3, 
-            id, id+3, id+4
+            id,
+            id + 1,
+            id + 2,
+            id,
+            id + 2,
+            id + 3,
+            id,
+            id + 3,
+            id + 4,
         )
         this.colors_.push(...c, ...c, ...c, ...c, ...c)
         this.normals_.push(...n1, ...n2, ...n3, ...n4, ...n5)
     }
-
 }
 
 // -------------------------------------------
 
 class IsoSegment {
-    p1  = [0,0,0]
-    p2  = [0,0,0]
-    n1  = [0,0,1]
-    n2  = [0,0,1]
+    p1 = [0, 0, 0]
+    p2 = [0, 0, 0]
+    n1 = [0, 0, 1]
+    n2 = [0, 0, 1]
     iso = 0
 }
 
 class TriInfo {
     reversed = false
-    p1 = [0,0,0]
-    p2 = [0,0,0]
-    p3 = [0,0,0]
-    n1 = [1,0,0]
-    n2 = [1,0,0]
-    n3 = [1,0,0]
+    p1 = [0, 0, 0]
+    p2 = [0, 0, 0]
+    p3 = [0, 0, 0]
+    n1 = [1, 0, 0]
+    n2 = [1, 0, 0]
+    n3 = [1, 0, 0]
     v1 = 0
     v2 = 0
     v3 = 0
@@ -454,17 +598,13 @@ class TriInfo {
 }
 
 const front = (container: Array<any>) => container[0]
-const back  = (container: Array<any>) => container[container.length-1]
+const back = (container: Array<any>) => container[container.length - 1]
 
 function createPoint(p1: number[], p2: number[], w: number) {
-    const W  =1.-w
-    return [
-        w*p1[0] + W*p2[0],
-        w*p1[1] + W*p2[1],
-        w*p1[2] + W*p2[2]
-    ]
+    const W = 1 - w
+    return [w * p1[0] + W * p2[0], w * p1[1] + W * p2[1], w * p1[2] + W * p2[2]]
 }
 
 function isoValue(v1: number, v2: number, iso: number) {
-    return 1. - (Math.abs(iso - v1) / Math.abs(v2 - v1))
+    return 1 - Math.abs(iso - v1) / Math.abs(v2 - v1)
 }

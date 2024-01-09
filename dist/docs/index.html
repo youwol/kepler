@@ -1,260 +1,588 @@
-<!doctype html>
+<!DOCTYPE html>
 <html class="default no-js">
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>@youwol/kepler - v0.0.10-wip</title>
-	<meta name="description" content="Documentation for @youwol/kepler - v0.0.10-wip">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="assets/css/main.css">
-	<script async src="assets/js/search.js" id="search-script"></script>
-</head>
-<body>
-<header>
-	<div class="tsd-page-toolbar">
-		<div class="container">
-			<div class="table-wrap">
-				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
-					<div class="field">
-						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
-						<input id="tsd-search-field" type="text" />
-					</div>
-					<ul class="results">
-						<li class="state loading">Preparing search index...</li>
-						<li class="state failure">The search index is not available</li>
-					</ul>
-					<a href="index.html" class="title">@youwol/kepler - v0.0.10-wip</a>
-				</div>
-				<div class="table-cell" id="tsd-widgets">
-					<div id="tsd-filter">
-						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
-						<div class="tsd-filter-group">
-							<div class="tsd-select" id="tsd-filter-visibility">
-								<span class="tsd-select-label">All</span>
-								<ul class="tsd-select-list">
-									<li data-value="public">Public</li>
-									<li data-value="protected">Public/Protected</li>
-									<li data-value="private" class="selected">All</li>
-								</ul>
-							</div>
-							<input type="checkbox" id="tsd-filter-inherited" checked />
-							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-							<input type="checkbox" id="tsd-filter-externals" checked />
-							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
-						</div>
-					</div>
-					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="tsd-page-title">
-		<div class="container">
-			<h1>@youwol/kepler - v0.0.10-wip</h1>
-		</div>
-	</div>
-</header>
-<div class="container container-main">
-	<div class="row">
-		<div class="col-8 col-content">
-			<div class="tsd-panel tsd-typography">
-				<a href="#youwolkepler" id="youwolkepler" style="color: inherit; text-decoration: none;">
-					<h1>@youwol/kepler</h1>
-				</a>
-				<a href="#description" id="description" style="color: inherit; text-decoration: none;">
-					<h2>Description</h2>
-				</a>
-				<a href="#use" id="use" style="color: inherit; text-decoration: none;">
-					<h2>Use</h2>
-				</a>
-				<p>To install the required dependencies:</p>
-				<pre><code class="language-shell"><span style="color: #000000">yarn </span>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>@youwol/kepler - v0.0.13</title>
+        <meta
+            name="description"
+            content="Documentation for @youwol/kepler - v0.0.13"
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="assets/css/main.css" />
+        <script async src="assets/js/search.js" id="search-script"></script>
+    </head>
+    <body>
+        <header>
+            <div class="tsd-page-toolbar">
+                <div class="container">
+                    <div class="table-wrap">
+                        <div
+                            class="table-cell"
+                            id="tsd-search"
+                            data-index="assets/js/search.json"
+                            data-base="."
+                        >
+                            <div class="field">
+                                <label
+                                    for="tsd-search-field"
+                                    class="tsd-widget search no-caption"
+                                    >Search</label
+                                >
+                                <input id="tsd-search-field" type="text" />
+                            </div>
+                            <ul class="results">
+                                <li class="state loading">
+                                    Preparing search index...
+                                </li>
+                                <li class="state failure">
+                                    The search index is not available
+                                </li>
+                            </ul>
+                            <a href="index.html" class="title"
+                                >@youwol/kepler - v0.0.13</a
+                            >
+                        </div>
+                        <div class="table-cell" id="tsd-widgets">
+                            <div id="tsd-filter">
+                                <a
+                                    href="#"
+                                    class="tsd-widget options no-caption"
+                                    data-toggle="options"
+                                    >Options</a
+                                >
+                                <div class="tsd-filter-group">
+                                    <div
+                                        class="tsd-select"
+                                        id="tsd-filter-visibility"
+                                    >
+                                        <span class="tsd-select-label"
+                                            >All</span
+                                        >
+                                        <ul class="tsd-select-list">
+                                            <li data-value="public">Public</li>
+                                            <li data-value="protected">
+                                                Public/Protected
+                                            </li>
+                                            <li
+                                                data-value="private"
+                                                class="selected"
+                                            >
+                                                All
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <input
+                                        type="checkbox"
+                                        id="tsd-filter-inherited"
+                                        checked
+                                    />
+                                    <label
+                                        class="tsd-widget"
+                                        for="tsd-filter-inherited"
+                                        >Inherited</label
+                                    >
+                                    <input
+                                        type="checkbox"
+                                        id="tsd-filter-externals"
+                                        checked
+                                    />
+                                    <label
+                                        class="tsd-widget"
+                                        for="tsd-filter-externals"
+                                        >Externals</label
+                                    >
+                                </div>
+                            </div>
+                            <a
+                                href="#"
+                                class="tsd-widget menu no-caption"
+                                data-toggle="menu"
+                                >Menu</a
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tsd-page-title">
+                <div class="container">
+                    <h1>@youwol/kepler - v0.0.13</h1>
+                </div>
+            </div>
+        </header>
+        <div class="container container-main">
+            <div class="row">
+                <div class="col-8 col-content">
+                    <div class="tsd-panel tsd-typography">
+                        <a
+                            href="#youwolkepler"
+                            id="youwolkepler"
+                            style="color: inherit; text-decoration: none"
+                        >
+                            <h1>@youwol/kepler</h1>
+                        </a>
+                        <a
+                            href="#description"
+                            id="description"
+                            style="color: inherit; text-decoration: none"
+                        >
+                            <h2>Description</h2>
+                        </a>
+                        <a
+                            href="#use"
+                            id="use"
+                            style="color: inherit; text-decoration: none"
+                        >
+                            <h2>Use</h2>
+                        </a>
+                        <p>To install the required dependencies:</p>
+                        <pre><code class="language-shell"><span style="color: #000000">yarn </span>
 </code></pre>
-				<p>To build for development:</p>
-				<pre><code class="language-shell"><span style="color: #000000">yarn build:dev</span>
+                        <p>To build for development:</p>
+                        <pre><code class="language-shell"><span style="color: #000000">yarn build:dev</span>
 </code></pre>
-				<p>To build for production:</p>
-				<pre><code class="language-shell"><span style="color: #000000">yarn build:prod</span>
+                        <p>To build for production:</p>
+                        <pre><code class="language-shell"><span style="color: #000000">yarn build:prod</span>
 </code></pre>
-				<p>To test:</p>
-				<pre><code class="language-shell"><span style="color: #000000">yarn </span><span style="color: #795E26">test</span>
+                        <p>To test:</p>
+                        <pre><code class="language-shell"><span style="color: #000000">yarn </span><span style="color: #795E26">test</span>
 </code></pre>
-			</div>
-		</div>
-		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
-			<nav class="tsd-navigation primary">
-				<ul>
-					<li class=" ">
-						<a href="modules.html">Exports</a>
-					</li>
-				</ul>
-			</nav>
-			<nav class="tsd-navigation secondary menu-sticky">
-				<ul class="before-current">
-					<li class=" tsd-kind-enum">
-						<a href="enums/fracturetype.html" class="tsd-kind-icon">Fracture<wbr>Type</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/bboxparameters.html" class="tsd-kind-icon">BBox<wbr>Parameters</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/bandparameters.html" class="tsd-kind-icon">Band<wbr>Parameters</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/colormap.html" class="tsd-kind-icon">Color<wbr>Map</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/colorbar.html" class="tsd-kind-icon">Colorbar</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/deformparameters.html" class="tsd-kind-icon">Deform<wbr>Parameters</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/edgesparameters.html" class="tsd-kind-icon">Edges<wbr>Parameters</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/failureplanesparameters.html" class="tsd-kind-icon">Failure<wbr>Planes<wbr>Parameters</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/isoband.html" class="tsd-kind-icon">Iso<wbr>Band</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/isocontoursparameters.html" class="tsd-kind-icon">Iso<wbr>Contours<wbr>Parameters</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/linesetparameters.html" class="tsd-kind-icon">Lineset<wbr>Parameters</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/paintparameters.html" class="tsd-kind-icon">Paint<wbr>Parameters</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/pointsetparameters.html" class="tsd-kind-icon">Pointset<wbr>Parameters</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/scalebar.html" class="tsd-kind-icon">Scale<wbr>Bar</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/skinparameters.html" class="tsd-kind-icon">Skin<wbr>Parameters</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/surfaceparameters.html" class="tsd-kind-icon">Surface<wbr>Parameters</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/tubevectorsparameters.html" class="tsd-kind-icon">Tube<wbr>Vectors<wbr>Parameters</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/vectorsparameters.html" class="tsd-kind-icon">Vectors<wbr>Parameters</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/implicitgrid3d.html" class="tsd-kind-icon">Implicit<wbr>Grid3D</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="modules.html#addcolortobuffergeometry" class="tsd-kind-icon">add<wbr>Color<wbr>ToBuffer<wbr>Geometry</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="modules.html#createbbox" class="tsd-kind-icon">createBBox</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="modules.html#createband" class="tsd-kind-icon">create<wbr>Band</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="modules.html#createbuffergeometry" class="tsd-kind-icon">create<wbr>Buffer<wbr>Geometry</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="modules.html#createedges" class="tsd-kind-icon">create<wbr>Edges</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="modules.html#createfailureplanes" class="tsd-kind-icon">create<wbr>Failure<wbr>Planes</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="modules.html#createisocontours" class="tsd-kind-icon">create<wbr>Iso<wbr>Contours</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="modules.html#createlineset" class="tsd-kind-icon">create<wbr>Lineset</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="modules.html#createlut" class="tsd-kind-icon">create<wbr>Lut</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="modules.html#createnormals" class="tsd-kind-icon">create<wbr>Normals</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="modules.html#createpointset" class="tsd-kind-icon">create<wbr>Pointset</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="modules.html#createsurface" class="tsd-kind-icon">create<wbr>Surface</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="modules.html#createsurfaceborders" class="tsd-kind-icon">create<wbr>Surface<wbr>Borders</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="modules.html#createtubevectors" class="tsd-kind-icon">create<wbr>Tube<wbr>Vectors</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="modules.html#createvectors" class="tsd-kind-icon">create<wbr>Vectors</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="modules.html#deform" class="tsd-kind-icon">deform</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="modules.html#fromvaluetocolor" class="tsd-kind-icon">from<wbr>Value<wbr>ToColor</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="modules.html#fromvaluestocolors" class="tsd-kind-icon">from<wbr>Values<wbr>ToColors</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="modules.html#generatecolormap" class="tsd-kind-icon">generate<wbr>Color<wbr>Map</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="modules.html#generateisos" class="tsd-kind-icon">generate<wbr>Isos</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="modules.html#generateisosbynumber" class="tsd-kind-icon">generate<wbr>Isos<wbr>ByNumber</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="modules.html#generateisosbyspacing" class="tsd-kind-icon">generate<wbr>Isos<wbr>BySpacing</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="modules.html#lerp" class="tsd-kind-icon">lerp</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="modules.html#mergebufferattributes" class="tsd-kind-icon">merge<wbr>Buffer<wbr>Attributes</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="modules.html#mergebuffergeometries" class="tsd-kind-icon">merge<wbr>Buffer<wbr>Geometries</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="modules.html#normalattribute" class="tsd-kind-icon">normal<wbr>Attribute</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="modules.html#paintattribute" class="tsd-kind-icon">paint<wbr>Attribute</a>
-					</li>
-				</ul>
-			</nav>
-		</div>
-	</div>
-</div>
-<footer>
-	<div class="container">
-		<h2>Legend</h2>
-		<div class="tsd-legend-group">
-			<ul class="tsd-legend">
-				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
-				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
-			</ul>
-		</div>
-	</div>
-</footer>
-<div class="overlay"></div>
-<script src="assets/js/main.js"></script>
-</body>
+                    </div>
+                </div>
+                <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+                    <nav class="tsd-navigation primary">
+                        <ul>
+                            <li class=" ">
+                                <a href="modules.html">Exports</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <nav class="tsd-navigation secondary menu-sticky">
+                        <ul class="before-current">
+                            <li class="tsd-kind-enum">
+                                <a
+                                    href="enums/FractureType.html"
+                                    class="tsd-kind-icon"
+                                    >Fracture<wbr />Type</a
+                                >
+                            </li>
+                            <li class="tsd-kind-class">
+                                <a
+                                    href="classes/BBoxParameters.html"
+                                    class="tsd-kind-icon"
+                                    >BBox<wbr />Parameters</a
+                                >
+                            </li>
+                            <li class="tsd-kind-class">
+                                <a
+                                    href="classes/BandParameters.html"
+                                    class="tsd-kind-icon"
+                                    >Band<wbr />Parameters</a
+                                >
+                            </li>
+                            <li class="tsd-kind-class">
+                                <a
+                                    href="classes/ColorMap.html"
+                                    class="tsd-kind-icon"
+                                    >Color<wbr />Map</a
+                                >
+                            </li>
+                            <li class="tsd-kind-class">
+                                <a
+                                    href="classes/Colorbar.html"
+                                    class="tsd-kind-icon"
+                                    >Colorbar</a
+                                >
+                            </li>
+                            <li class="tsd-kind-class">
+                                <a
+                                    href="classes/DeformParameters.html"
+                                    class="tsd-kind-icon"
+                                    >Deform<wbr />Parameters</a
+                                >
+                            </li>
+                            <li class="tsd-kind-class">
+                                <a
+                                    href="classes/EdgesParameters.html"
+                                    class="tsd-kind-icon"
+                                    >Edges<wbr />Parameters</a
+                                >
+                            </li>
+                            <li class="tsd-kind-class">
+                                <a
+                                    href="classes/FailurePlanesParameters.html"
+                                    class="tsd-kind-icon"
+                                    >Failure<wbr />Planes<wbr />Parameters</a
+                                >
+                            </li>
+                            <li class="tsd-kind-class">
+                                <a
+                                    href="classes/IsoBand.html"
+                                    class="tsd-kind-icon"
+                                    >Iso<wbr />Band</a
+                                >
+                            </li>
+                            <li class="tsd-kind-class">
+                                <a
+                                    href="classes/IsoContoursParameters.html"
+                                    class="tsd-kind-icon"
+                                    >Iso<wbr />Contours<wbr />Parameters</a
+                                >
+                            </li>
+                            <li class="tsd-kind-class">
+                                <a
+                                    href="classes/LinesetParameters.html"
+                                    class="tsd-kind-icon"
+                                    >Lineset<wbr />Parameters</a
+                                >
+                            </li>
+                            <li class="tsd-kind-class">
+                                <a
+                                    href="classes/LinesetParameters2.html"
+                                    class="tsd-kind-icon"
+                                    >Lineset<wbr />Parameters2</a
+                                >
+                            </li>
+                            <li class="tsd-kind-class">
+                                <a
+                                    href="classes/PaintParameters.html"
+                                    class="tsd-kind-icon"
+                                    >Paint<wbr />Parameters</a
+                                >
+                            </li>
+                            <li class="tsd-kind-class">
+                                <a
+                                    href="classes/PointsetParameters.html"
+                                    class="tsd-kind-icon"
+                                    >Pointset<wbr />Parameters</a
+                                >
+                            </li>
+                            <li class="tsd-kind-class">
+                                <a
+                                    href="classes/ScaleBar.html"
+                                    class="tsd-kind-icon"
+                                    >Scale<wbr />Bar</a
+                                >
+                            </li>
+                            <li class="tsd-kind-class">
+                                <a
+                                    href="classes/SkinParameters.html"
+                                    class="tsd-kind-icon"
+                                    >Skin<wbr />Parameters</a
+                                >
+                            </li>
+                            <li class="tsd-kind-class">
+                                <a
+                                    href="classes/SurfaceParameters.html"
+                                    class="tsd-kind-icon"
+                                    >Surface<wbr />Parameters</a
+                                >
+                            </li>
+                            <li class="tsd-kind-class">
+                                <a
+                                    href="classes/TubeVectorsParameters.html"
+                                    class="tsd-kind-icon"
+                                    >Tube<wbr />Vectors<wbr />Parameters</a
+                                >
+                            </li>
+                            <li class="tsd-kind-class">
+                                <a
+                                    href="classes/VectorsParameters.html"
+                                    class="tsd-kind-icon"
+                                    >Vectors<wbr />Parameters</a
+                                >
+                            </li>
+                            <li class="tsd-kind-interface">
+                                <a
+                                    href="interfaces/ImplicitGrid3D.html"
+                                    class="tsd-kind-icon"
+                                    >Implicit<wbr />Grid3D</a
+                                >
+                            </li>
+                            <li class="tsd-kind-function">
+                                <a
+                                    href="modules.html#addColorMap"
+                                    class="tsd-kind-icon"
+                                    >add<wbr />Color<wbr />Map</a
+                                >
+                            </li>
+                            <li class="tsd-kind-function">
+                                <a
+                                    href="modules.html#addColorToBufferGeometry"
+                                    class="tsd-kind-icon"
+                                    >add<wbr />Color<wbr />ToBuffer<wbr />Geometry</a
+                                >
+                            </li>
+                            <li class="tsd-kind-function">
+                                <a
+                                    href="modules.html#colorMapNames"
+                                    class="tsd-kind-icon"
+                                    >color<wbr />Map<wbr />Names</a
+                                >
+                            </li>
+                            <li class="tsd-kind-function">
+                                <a
+                                    href="modules.html#createBBox"
+                                    class="tsd-kind-icon"
+                                    >createBBox</a
+                                >
+                            </li>
+                            <li class="tsd-kind-function">
+                                <a
+                                    href="modules.html#createBand"
+                                    class="tsd-kind-icon"
+                                    >create<wbr />Band</a
+                                >
+                            </li>
+                            <li class="tsd-kind-function">
+                                <a
+                                    href="modules.html#createBufferGeometry"
+                                    class="tsd-kind-icon"
+                                    >create<wbr />Buffer<wbr />Geometry</a
+                                >
+                            </li>
+                            <li class="tsd-kind-function">
+                                <a
+                                    href="modules.html#createEdges"
+                                    class="tsd-kind-icon"
+                                    >create<wbr />Edges</a
+                                >
+                            </li>
+                            <li class="tsd-kind-function">
+                                <a
+                                    href="modules.html#createFailurePlanes"
+                                    class="tsd-kind-icon"
+                                    >create<wbr />Failure<wbr />Planes</a
+                                >
+                            </li>
+                            <li class="tsd-kind-function">
+                                <a
+                                    href="modules.html#createIsoContours"
+                                    class="tsd-kind-icon"
+                                    >create<wbr />Iso<wbr />Contours</a
+                                >
+                            </li>
+                            <li class="tsd-kind-function">
+                                <a
+                                    href="modules.html#createLineset"
+                                    class="tsd-kind-icon"
+                                    >create<wbr />Lineset</a
+                                >
+                            </li>
+                            <li class="tsd-kind-function">
+                                <a
+                                    href="modules.html#createLineset2"
+                                    class="tsd-kind-icon"
+                                    >create<wbr />Lineset2</a
+                                >
+                            </li>
+                            <li class="tsd-kind-function">
+                                <a
+                                    href="modules.html#createLut"
+                                    class="tsd-kind-icon"
+                                    >create<wbr />Lut</a
+                                >
+                            </li>
+                            <li class="tsd-kind-function">
+                                <a
+                                    href="modules.html#createNormals"
+                                    class="tsd-kind-icon"
+                                    >create<wbr />Normals</a
+                                >
+                            </li>
+                            <li class="tsd-kind-function">
+                                <a
+                                    href="modules.html#createPointset"
+                                    class="tsd-kind-icon"
+                                    >create<wbr />Pointset</a
+                                >
+                            </li>
+                            <li class="tsd-kind-function">
+                                <a
+                                    href="modules.html#createSurface"
+                                    class="tsd-kind-icon"
+                                    >create<wbr />Surface</a
+                                >
+                            </li>
+                            <li class="tsd-kind-function">
+                                <a
+                                    href="modules.html#createSurfaceBorders"
+                                    class="tsd-kind-icon"
+                                    >create<wbr />Surface<wbr />Borders</a
+                                >
+                            </li>
+                            <li class="tsd-kind-function">
+                                <a
+                                    href="modules.html#createTubeVectors"
+                                    class="tsd-kind-icon"
+                                    >create<wbr />Tube<wbr />Vectors</a
+                                >
+                            </li>
+                            <li class="tsd-kind-function">
+                                <a
+                                    href="modules.html#createVectors"
+                                    class="tsd-kind-icon"
+                                    >create<wbr />Vectors</a
+                                >
+                            </li>
+                            <li class="tsd-kind-function">
+                                <a
+                                    href="modules.html#deform"
+                                    class="tsd-kind-icon"
+                                    >deform</a
+                                >
+                            </li>
+                            <li class="tsd-kind-function">
+                                <a
+                                    href="modules.html#evaluate_cmap"
+                                    class="tsd-kind-icon"
+                                    >evaluate_<wbr />cmap</a
+                                >
+                            </li>
+                            <li class="tsd-kind-function">
+                                <a
+                                    href="modules.html#fromValueToColor"
+                                    class="tsd-kind-icon"
+                                    >from<wbr />Value<wbr />ToColor</a
+                                >
+                            </li>
+                            <li class="tsd-kind-function">
+                                <a
+                                    href="modules.html#fromValuesToColors"
+                                    class="tsd-kind-icon"
+                                    >from<wbr />Values<wbr />ToColors</a
+                                >
+                            </li>
+                            <li class="tsd-kind-function">
+                                <a
+                                    href="modules.html#generateColorMap"
+                                    class="tsd-kind-icon"
+                                    >generate<wbr />Color<wbr />Map</a
+                                >
+                            </li>
+                            <li class="tsd-kind-function">
+                                <a
+                                    href="modules.html#generateIsos"
+                                    class="tsd-kind-icon"
+                                    >generate<wbr />Isos</a
+                                >
+                            </li>
+                            <li class="tsd-kind-function">
+                                <a
+                                    href="modules.html#generateIsosByNumber"
+                                    class="tsd-kind-icon"
+                                    >generate<wbr />Isos<wbr />ByNumber</a
+                                >
+                            </li>
+                            <li class="tsd-kind-function">
+                                <a
+                                    href="modules.html#generateIsosBySpacing"
+                                    class="tsd-kind-icon"
+                                    >generate<wbr />Isos<wbr />BySpacing</a
+                                >
+                            </li>
+                            <li class="tsd-kind-function">
+                                <a
+                                    href="modules.html#getColorMap"
+                                    class="tsd-kind-icon"
+                                    >get<wbr />Color<wbr />Map</a
+                                >
+                            </li>
+                            <li class="tsd-kind-function">
+                                <a
+                                    href="modules.html#getColorMapNames"
+                                    class="tsd-kind-icon"
+                                    >get<wbr />Color<wbr />Map<wbr />Names</a
+                                >
+                            </li>
+                            <li class="tsd-kind-function">
+                                <a
+                                    href="modules.html#lerp"
+                                    class="tsd-kind-icon"
+                                    >lerp</a
+                                >
+                            </li>
+                            <li class="tsd-kind-function">
+                                <a
+                                    href="modules.html#mergeBufferAttributes"
+                                    class="tsd-kind-icon"
+                                    >merge<wbr />Buffer<wbr />Attributes</a
+                                >
+                            </li>
+                            <li class="tsd-kind-function">
+                                <a
+                                    href="modules.html#mergeBufferGeometries"
+                                    class="tsd-kind-icon"
+                                    >merge<wbr />Buffer<wbr />Geometries</a
+                                >
+                            </li>
+                            <li class="tsd-kind-function">
+                                <a
+                                    href="modules.html#normalAttribute"
+                                    class="tsd-kind-icon"
+                                    >normal<wbr />Attribute</a
+                                >
+                            </li>
+                            <li class="tsd-kind-function">
+                                <a
+                                    href="modules.html#paintAttribute"
+                                    class="tsd-kind-icon"
+                                    >paint<wbr />Attribute</a
+                                >
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <footer>
+            <div class="container">
+                <h2>Legend</h2>
+                <div class="tsd-legend-group">
+                    <ul class="tsd-legend">
+                        <li class="tsd-kind-constructor tsd-parent-kind-class">
+                            <span class="tsd-kind-icon">Constructor</span>
+                        </li>
+                        <li class="tsd-kind-property tsd-parent-kind-class">
+                            <span class="tsd-kind-icon">Property</span>
+                        </li>
+                        <li class="tsd-kind-method tsd-parent-kind-class">
+                            <span class="tsd-kind-icon">Method</span>
+                        </li>
+                    </ul>
+                    <ul class="tsd-legend">
+                        <li class="tsd-kind-property tsd-parent-kind-interface">
+                            <span class="tsd-kind-icon">Property</span>
+                        </li>
+                        <li class="tsd-kind-method tsd-parent-kind-interface">
+                            <span class="tsd-kind-icon">Method</span>
+                        </li>
+                    </ul>
+                    <ul class="tsd-legend">
+                        <li
+                            class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"
+                        >
+                            <span class="tsd-kind-icon"
+                                >Inherited property</span
+                            >
+                        </li>
+                        <li
+                            class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"
+                        >
+                            <span class="tsd-kind-icon">Inherited method</span>
+                        </li>
+                    </ul>
+                    <ul class="tsd-legend">
+                        <li
+                            class="tsd-kind-method tsd-parent-kind-class tsd-is-static"
+                        >
+                            <span class="tsd-kind-icon">Static method</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
+        <div class="overlay"></div>
+        <script src="assets/js/main.js"></script>
+    </body>
 </html>

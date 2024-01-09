@@ -1,12 +1,16 @@
-import { 
-    Color, BufferGeometry, Mesh, 
-    Material, DoubleSide, MeshPhongMaterial,
-    Float32BufferAttribute
-} from "three"
+import {
+    Color,
+    BufferGeometry,
+    Mesh,
+    Material,
+    DoubleSide,
+    MeshPhongMaterial,
+    Float32BufferAttribute,
+} from 'three'
 import { createBufferGeometry } from '../utils'
 import { IsoContoursParameters } from './isoContoursParameters'
 import { Serie } from '@youwol/dataframe'
-import { IsoContoursFill } from "./private/IsoContoursFill"
+import { IsoContoursFill } from './private/IsoContoursFill'
 
 /**
  * @example
@@ -21,16 +25,19 @@ import { IsoContoursFill } from "./private/IsoContoursFill"
  *         max: 10
  *     })
  * })
- * 
+ *
  * scene.add(skin)
  * ```
  * @category Skins
  */
 export function createIsoContourFilled(
-    mesh: Mesh, attribute: Serie,
-    {material, parameters} : {material?: Material, parameters: IsoContoursParameters})
-    : Mesh
-{
+    mesh: Mesh,
+    attribute: Serie,
+    {
+        material,
+        parameters,
+    }: { material?: Material; parameters: IsoContoursParameters },
+): Mesh {
     if (mesh === undefined) {
         throw new Error('mesh is undefined')
     }
@@ -66,8 +73,14 @@ export function createIsoContourFilled(
     const nmesh = new Mesh()
     //nmesh.castShadow = true
     nmesh.geometry = createBufferGeometry(result.position, result.index)
-    nmesh.geometry.setAttribute('color', new Float32BufferAttribute(result.color, 3))
-    nmesh.geometry.setAttribute('normal', new Float32BufferAttribute(result.normal, 3))
+    nmesh.geometry.setAttribute(
+        'color',
+        new Float32BufferAttribute(result.color, 3),
+    )
+    nmesh.geometry.setAttribute(
+        'normal',
+        new Float32BufferAttribute(result.normal, 3),
+    )
 
     if (material !== undefined) {
         nmesh.material = material
@@ -76,8 +89,8 @@ export function createIsoContourFilled(
             color: new Color(parameters.color),
             side: DoubleSide,
             vertexColors: true,
-            wireframe: false, 
-            flatShading: false
+            wireframe: false,
+            flatShading: false,
         })
         //mat.wireframe = true
         nmesh.material = mat
@@ -93,6 +106,6 @@ export function createIsoContourFilled(
     }
 
     //nmesh.geometry.computeVertexNormals()
-    
+
     return nmesh
 }

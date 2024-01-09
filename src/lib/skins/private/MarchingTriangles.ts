@@ -2,9 +2,9 @@ import { BufferAttribute } from 'three'
 import { Serie, array } from '@youwol/dataframe'
 
 export class MarchingTriangles {
-    topo_: any[] = [] ;
-    lock_ = false ;
-    maxVertexIndex_ = -1 ;
+    topo_: any[] = []
+    lock_ = false
+    maxVertexIndex_ = -1
     _bounds: Array<number> = []
 
     // topo of type BufferAttribute (with item count corresponding to 1 id)
@@ -21,9 +21,11 @@ export class MarchingTriangles {
 
             let k: number = topo.getX(l + 2)
 
-            this.topo_.push({i, j, k})
+            this.topo_.push({ i, j, k })
             if (i === j || i === k || j === k) {
-                throw new Error(`Error in topology while setting up iso-contouring in 'MarchingTriangles.' At index ${l}, got 3 indices (${i}, ${j}, ${k})`)
+                throw new Error(
+                    `Error in topology while setting up iso-contouring in 'MarchingTriangles.' At index ${l}, got 3 indices (${i}, ${j}, ${k})`,
+                )
             }
             this.maxVertexIndex_ = Math.max(this.maxVertexIndex_, i, j, k)
         }
@@ -68,7 +70,7 @@ export class MarchingTriangles {
             triangle[1] = this.topo_[i].j
             triangle[2] = this.topo_[i].k
 
-            let t1, t2, t3 ;
+            let t1, t2, t3
             const p0 = prop.array[triangle[0]]
             const p1 = prop.array[triangle[1]]
             const p2 = prop.array[triangle[2]]
@@ -77,19 +79,31 @@ export class MarchingTriangles {
                 continue
             }
 
-            if ((p0 >= isovalue)) { t1 = 1 ; } else { t1 = 0 ; }
-            if ((p1 >= isovalue)) { t2 = 1 ; } else { t2 = 0 ; }
-            if ((p2 >= isovalue)) { t3 = 1 ; } else { t3 = 0 ; }
+            if (p0 >= isovalue) {
+                t1 = 1
+            } else {
+                t1 = 0
+            }
+            if (p1 >= isovalue) {
+                t2 = 1
+            } else {
+                t2 = 0
+            }
+            if (p2 >= isovalue) {
+                t3 = 1
+            } else {
+                t3 = 0
+            }
 
             const tri_code = loockup1[t1][t2][t3]
 
             // means that this triangle is cut by the isoline
             if (tri_code > 0 && tri_code < 7) {
-                tri2code.set(i, tri_code);
-                cut_edges[0] = loockup0[tri_code][0] ;
-                cut_edges[1] = loockup0[tri_code][1] ;
-                for (let e = 0;e < 2;++e) {
-                    let v0 = cut_edges[e] ;
+                tri2code.set(i, tri_code)
+                cut_edges[0] = loockup0[tri_code][0]
+                cut_edges[1] = loockup0[tri_code][1]
+                for (let e = 0; e < 2; ++e) {
+                    let v0 = cut_edges[e]
                     let v1 = (v0 + 1) % 3
                     v0 = triangle[v0]
                     v1 = triangle[v1]
@@ -111,33 +125,36 @@ export class MarchingTriangles {
         do {
             if (tri2code.size <= 0) break
 
-            let isoline   = []
-            let values    = []
-            const start     = tri2code.keys()
+            let isoline = []
+            let values = []
+            const start = tri2code.keys()
             const first_tri = start.next().value
-            let code        = tri2code.get(first_tri)
+            let code = tri2code.get(first_tri)
             tri2code.delete(tri2code.keys().next().value)
 
             if (code < 1 || code > 6) {
                 continue
             }
 
-            triangle[0]  = this.topo_[first_tri].i
-            triangle[1]  = this.topo_[first_tri].j
-            triangle[2]  = this.topo_[first_tri].k
+            triangle[0] = this.topo_[first_tri].i
+            triangle[1] = this.topo_[first_tri].j
+            triangle[2] = this.topo_[first_tri].k
             cut_edges[0] = loockup0[code][0]
             cut_edges[1] = loockup0[code][1]
             const first_edge = []
             const next_edge = []
 
-            for (let e = 0;e < 2;++e) {
+            for (let e = 0; e < 2; ++e) {
                 let v0 = cut_edges[e]
                 let v1 = (v0 + 1) % 3
                 v0 = triangle[v0]
                 v1 = triangle[v1]
                 isoline.push(v0)
                 isoline.push(v1)
-                values.push((isovalue - prop.array[v0]) / (prop.array[v1] - prop.array[v0]))
+                values.push(
+                    (isovalue - prop.array[v0]) /
+                        (prop.array[v1] - prop.array[v0]),
+                )
                 let vmin = Math.min(v0, v1)
                 let vmax = Math.max(v0, v1)
 
@@ -155,9 +172,11 @@ export class MarchingTriangles {
             do {
                 let current_tri = first_tri
                 do {
-                    let adj_trgls = [connectiviy.get(next_edge[0]).get(next_edge[1])]
+                    let adj_trgls = [
+                        connectiviy.get(next_edge[0]).get(next_edge[1]),
+                    ]
                     if (adj_trgls.length === 1) {
-                        break; // border
+                        break // border
                     }
                     current_tri = adj_trgls[0] + adj_trgls[1] - current_tri
                     let iter = tri2code.get(current_tri)
@@ -176,7 +195,7 @@ export class MarchingTriangles {
                     cut_edges[0] = loockup0[code][0]
                     cut_edges[1] = loockup0[code][1]
 
-                    for (let e = 0;e < 2;++e) {
+                    for (let e = 0; e < 2; ++e) {
                         let v0 = cut_edges[e]
                         let v1 = (v0 + 1) % 3
                         v0 = triangle[v0]
@@ -186,7 +205,10 @@ export class MarchingTriangles {
                         if (vmin !== next_edge[0] || vmax !== next_edge[1]) {
                             isoline.push(v0)
                             isoline.push(v1)
-                            values.push((isovalue - prop.array[v0]) / (prop.array[v1] - prop.array[v0]))
+                            values.push(
+                                (isovalue - prop.array[v0]) /
+                                    (prop.array[v1] - prop.array[v0]),
+                            )
                             next_edge[0] = vmin
                             next_edge[1] = vmax
                             break
@@ -194,7 +216,10 @@ export class MarchingTriangles {
                     }
                 } while (true)
 
-                if (next_edge[0] === first_edge[0] && next_edge[1] === first_edge[1]) {
+                if (
+                    next_edge[0] === first_edge[0] &&
+                    next_edge[1] === first_edge[1]
+                ) {
                     // Closed line
                     isoline.push(isoline[0])
                     isoline.push(isoline[1])
@@ -219,16 +244,16 @@ export class MarchingTriangles {
             } else {
                 let connected_isoline_edges = []
                 let connected_isoline_values = []
-                for (let j = isoline.length - 1;j >= 2 * first_e;--j) {
+                for (let j = isoline.length - 1; j >= 2 * first_e; --j) {
                     connected_isoline_edges.push(isoline[j])
                 }
-                for (let j = values.length - 1;j >= first_e;--j) {
+                for (let j = values.length - 1; j >= first_e; --j) {
                     connected_isoline_values.push(1.0 - values[j])
                 }
-                for (let j = 0;j < 2 * first_e;++j) {
+                for (let j = 0; j < 2 * first_e; ++j) {
                     connected_isoline_edges.push(isoline[j])
                 }
-                for (let j = 0;j < first_e;++j) {
+                for (let j = 0; j < first_e; ++j) {
                     connected_isoline_values.push(values[j])
                 }
                 result[0].push(connected_isoline_edges)
@@ -244,8 +269,26 @@ function ok(p0: number, p1: number, p2: number, min: number, max: number) {
     function _in(p: number, min: number, max: number) {
         return p >= min && p <= max
     }
-    return _in(p0,min,max) && _in(p1,min,max) && _in(p2,min,max)
+    return _in(p0, min, max) && _in(p1, min, max) && _in(p2, min, max)
 }
 
-const loockup0 = [[-1, -1], [1, 2], [0, 1], [2, 0], [2, 0], [0, 1], [1, 2], [-1, -1]] ;
-const loockup1 = [[[0, 1], [2, 3]], [[4, 5], [6, 7]]] ;
+const loockup0 = [
+    [-1, -1],
+    [1, 2],
+    [0, 1],
+    [2, 0],
+    [2, 0],
+    [0, 1],
+    [1, 2],
+    [-1, -1],
+]
+const loockup1 = [
+    [
+        [0, 1],
+        [2, 3],
+    ],
+    [
+        [4, 5],
+        [6, 7],
+    ],
+]

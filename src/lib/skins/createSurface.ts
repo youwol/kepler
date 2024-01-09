@@ -1,9 +1,14 @@
 import {
-    Mesh, MeshStandardMaterial, Color, MeshBasicMaterial,
-    DoubleSide, Material, MeshPhongMaterial
-} from "three"
+    Mesh,
+    MeshStandardMaterial,
+    Color,
+    MeshBasicMaterial,
+    DoubleSide,
+    Material,
+    MeshPhongMaterial,
+} from 'three'
 
-import { SkinParameters } from "./skinParameters"
+import { SkinParameters } from './skinParameters'
 import { IArray, Serie } from '@youwol/dataframe'
 import { createBufferGeometry } from '../utils'
 
@@ -18,16 +23,27 @@ export class SurfaceParameters extends SkinParameters {
     public readonly wireframe: boolean = false
     public readonly creaseAngle: number = 0
 
-    constructor(
-        {color='#aaaaaa', flat=false, opacity=1, wireframe=false, creaseAngle=0, ...others}:
-        {color?: string, opacity?: number, flat?: boolean, wireframe?:boolean, creaseAngle?: number} = {})
-    {
+    constructor({
+        color = '#aaaaaa',
+        flat = false,
+        opacity = 1,
+        wireframe = false,
+        creaseAngle = 0,
+        ...others
+    }: {
+        color?: string
+        opacity?: number
+        flat?: boolean
+        wireframe?: boolean
+        creaseAngle?: number
+    } = {}) {
         super(others)
         this.color = color || '#aaaaaa'
-        this.flat = (flat !== undefined ? flat : false)
+        this.flat = flat !== undefined ? flat : false
         if (opacity !== undefined) this.opacity = opacity
         if (wireframe !== undefined) this.wireframe = wireframe
-        if (creaseAngle !== undefined) this.creaseAngle = creaseAngle * Math.PI/180
+        if (creaseAngle !== undefined)
+            this.creaseAngle = (creaseAngle * Math.PI) / 180
     }
 }
 
@@ -45,10 +61,10 @@ export class SurfaceParameters extends SkinParameters {
  *         creaseAngle: 30 // in degrees
  *     })
  * })
- * 
+ *
  * const attribute = dataframe.get('U').map( u => u[0] )
  * paintAttribute(surface, attribute )
- * 
+ *
  * const skin = createIsoContourLines({
  *     geometry : surface.geometry,
  *     attribute: attribute,
@@ -59,18 +75,25 @@ export class SurfaceParameters extends SkinParameters {
  *         max: 0.8
  *     })
  * })
- * 
+ *
  * scene.add( surface )
  * surface.add( skin )
  * ```
  * @category Skins
  */
-export function createSurface(
-    {positions, indices, material, parameters}:
-    {positions: IArray | Serie, indices: IArray | Serie, material?: Material, parameters?: SurfaceParameters}): Mesh
-{
+export function createSurface({
+    positions,
+    indices,
+    material,
+    parameters,
+}: {
+    positions: IArray | Serie
+    indices: IArray | Serie
+    material?: Material
+    parameters?: SurfaceParameters
+}): Mesh {
     if (positions === undefined) throw new Error('positions is undefined')
-    if (indices === undefined)   throw new Error('indices is undefined')
+    if (indices === undefined) throw new Error('indices is undefined')
 
     if (parameters === undefined) {
         parameters = new SurfaceParameters()
@@ -79,20 +102,25 @@ export function createSurface(
     const mesh = new Mesh()
     let color = new Color(parameters.color)
 
-    mesh.geometry = createBufferGeometry(positions, indices, parameters.creaseAngle)
+    mesh.geometry = createBufferGeometry(
+        positions,
+        indices,
+        parameters.creaseAngle,
+    )
 
     if (material) {
         mesh.material = material
     } else {
-        mesh.material = new MeshPhongMaterial({ // was MeshStandardMaterial
+        mesh.material = new MeshPhongMaterial({
+            // was MeshStandardMaterial
             color: color,
             side: DoubleSide,
             vertexColors: false,
-            wireframe: parameters.wireframe, 
+            wireframe: parameters.wireframe,
             flatShading: parameters.flat,
-            // emissive: 0x0c0c0, 
+            // emissive: 0x0c0c0,
             // specular: 0x050505,
-            // shininess: 500, 
+            // shininess: 500,
         })
     }
 

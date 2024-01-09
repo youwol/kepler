@@ -6,78 +6,80 @@ import { Vector } from './Vector'
 import { createLookupGrid } from './createLookupGrid'
 import { createStreamlineIntegrator } from './streamLineIntegrator'
 
-var STATE_INIT = 0;
-var STATE_STREAMLINE = 1;
-var STATE_PROCESS_QUEUE = 2;
-var STATE_DONE = 3;
-var STATE_SEED_STREAMLINE = 4;
+var STATE_INIT = 0
+var STATE_STREAMLINE = 1
+var STATE_PROCESS_QUEUE = 2
+var STATE_DONE = 3
+var STATE_SEED_STREAMLINE = 4
 
 export function computeStreamlines(protoOptions) {
-    var options = Object.create(null);
+    var options = Object.create(null)
     if (!protoOptions)
-        throw new Error('Configuration is required to compute streamlines');
+        throw new Error('Configuration is required to compute streamlines')
     if (!protoOptions.boundingBox) {
-        console.warn('No bounding box passed to streamline. Creating default one');
-        options.boundingBox = { left: -5, top: -5, width: 10, height: 10 };
+        console.warn(
+            'No bounding box passed to streamline. Creating default one',
+        )
+        options.boundingBox = { left: -5, top: -5, width: 10, height: 10 }
     } else {
-        options.boundingBox = {};
-        Object.assign(options.boundingBox, protoOptions.boundingBox);
+        options.boundingBox = {}
+        Object.assign(options.boundingBox, protoOptions.boundingBox)
     }
 
     //console.log( options.boundingBox )
 
-    normalizeBoundingBox(options.boundingBox);
+    normalizeBoundingBox(options.boundingBox)
 
-    var boundingBox = options.boundingBox;
-    options.vectorField = protoOptions.vectorField;
-    options.onStreamlineAdded = protoOptions.onStreamlineAdded;
-    options.onPointAdded = protoOptions.onPointAdded;
-    options.forwardOnly = protoOptions.forwardOnly;
+    var boundingBox = options.boundingBox
+    options.vectorField = protoOptions.vectorField
+    options.onStreamlineAdded = protoOptions.onStreamlineAdded
+    options.onPointAdded = protoOptions.onPointAdded
+    options.forwardOnly = protoOptions.forwardOnly
 
     if (!protoOptions.seed) {
         options.seed = new Vector(
             Math.random() * boundingBox.width + boundingBox.left,
-            Math.random() * boundingBox.height + boundingBox.top
-        );
+            Math.random() * boundingBox.height + boundingBox.top,
+        )
     } else if (Array.isArray(protoOptions.seed)) {
-        var seed = protoOptions.seed.shift();
-        options.seed = new Vector(seed.x, seed.y);
-        options.seedArray = protoOptions.seed;
+        var seed = protoOptions.seed.shift()
+        options.seed = new Vector(seed.x, seed.y)
+        options.seedArray = protoOptions.seed
     } else {
-        options.seed = new Vector(protoOptions.seed.x, protoOptions.seed.y);
+        options.seed = new Vector(protoOptions.seed.x, protoOptions.seed.y)
     }
 
     // Separation between streamlines. Naming according to the paper.
     options.dSep =
         protoOptions.dSep > 0
             ? protoOptions.dSep
-            : 1 / Math.max(boundingBox.width, boundingBox.height);
+            : 1 / Math.max(boundingBox.width, boundingBox.height)
 
     // When should we stop integrating a streamline.
     options.dTest =
-        protoOptions.dTest > 0 ? protoOptions.dTest : options.dSep * 0.5;
+        protoOptions.dTest > 0 ? protoOptions.dTest : options.dSep * 0.5
 
     // Lookup grid helps to quickly tell if there are points nearby
-    var grid = createLookupGrid(boundingBox, options.dSep);
+    var grid = createLookupGrid(boundingBox, options.dSep)
 
     // Integration time step.
-    options.timeStep = protoOptions.timeStep > 0 ? protoOptions.timeStep : 0.01;
+    options.timeStep = protoOptions.timeStep > 0 ? protoOptions.timeStep : 0.01
     options.stepsPerIteration =
-        protoOptions.stepsPerIteration > 0 ? protoOptions.stepsPerIteration : 10;
+        protoOptions.stepsPerIteration > 0 ? protoOptions.stepsPerIteration : 10
     options.maxTimePerIteration =
         protoOptions.maxTimePerIteration > 0
             ? protoOptions.maxTimePerIteration
-            : 1000;
+            : 1000
 
-    var stepsPerIteration = options.stepsPerIteration;
+    var stepsPerIteration = options.stepsPerIteration
     // var resolve;
-    var state = STATE_INIT;
-    var finishedStreamlineIntegrators = [];
+    var state = STATE_INIT
+    var finishedStreamlineIntegrators = []
     var streamlineIntegrator = createStreamlineIntegrator(
         options.seed,
         grid,
-        options
-    );
+        options,
+    )
 
     // var disposed = false;
     // var running = false;
@@ -90,7 +92,7 @@ export function computeStreamlines(protoOptions) {
         run: run,
         getGrid: getGrid,
         // dispose: dispose
-    };
+    }
 
     function run() {
         while (state !== STATE_DONE) {
@@ -100,16 +102,18 @@ export function computeStreamlines(protoOptions) {
 
     function oneStep() {
         for (var i = 0; i < stepsPerIteration; ++i) {
-            if (state === STATE_INIT)               initProcessing();
-            if (state === STATE_STREAMLINE)         continueStreamline();
-            if (state === STATE_PROCESS_QUEUE)      processQueue();
-            if (state === STATE_SEED_STREAMLINE)    seedStreamline();
-            if (state === STATE_DONE)               {return;}
+            if (state === STATE_INIT) initProcessing()
+            if (state === STATE_STREAMLINE) continueStreamline()
+            if (state === STATE_PROCESS_QUEUE) processQueue()
+            if (state === STATE_SEED_STREAMLINE) seedStreamline()
+            if (state === STATE_DONE) {
+                return
+            }
         }
     }
 
     function getGrid() {
-        return grid;
+        return grid
     }
 
     // function run() {
@@ -151,74 +155,74 @@ export function computeStreamlines(protoOptions) {
     // }
 
     function initProcessing() {
-        var streamLineCompleted = streamlineIntegrator.next();
+        var streamLineCompleted = streamlineIntegrator.next()
         if (streamLineCompleted) {
-            addStreamLineToQueue();
-            state = STATE_PROCESS_QUEUE;
+            addStreamLineToQueue()
+            state = STATE_PROCESS_QUEUE
         }
     }
 
     function seedStreamline() {
-        var currentStreamLine = finishedStreamlineIntegrators[0];
+        var currentStreamLine = finishedStreamlineIntegrators[0]
 
-        var validCandidate = currentStreamLine.getNextValidSeed();
+        var validCandidate = currentStreamLine.getNextValidSeed()
         if (validCandidate) {
             streamlineIntegrator = createStreamlineIntegrator(
                 validCandidate,
                 grid,
-                options
-            );
-            state = STATE_STREAMLINE;
+                options,
+            )
+            state = STATE_STREAMLINE
         } else {
-            finishedStreamlineIntegrators.shift();
-            state = STATE_PROCESS_QUEUE;
+            finishedStreamlineIntegrators.shift()
+            state = STATE_PROCESS_QUEUE
         }
     }
 
     function processQueue() {
         if (finishedStreamlineIntegrators.length === 0) {
-            state = STATE_DONE;
+            state = STATE_DONE
         } else {
-            state = STATE_SEED_STREAMLINE;
+            state = STATE_SEED_STREAMLINE
         }
     }
 
     function continueStreamline() {
-        var isDone = streamlineIntegrator.next();
+        var isDone = streamlineIntegrator.next()
         if (isDone) {
-            addStreamLineToQueue();
-            state = STATE_SEED_STREAMLINE;
+            addStreamLineToQueue()
+            state = STATE_SEED_STREAMLINE
         }
     }
 
     function addStreamLineToQueue() {
-        var streamLinePoints = streamlineIntegrator.getStreamline();
+        var streamLinePoints = streamlineIntegrator.getStreamline()
         if (streamLinePoints.length > 1) {
-            finishedStreamlineIntegrators.push(streamlineIntegrator);
+            finishedStreamlineIntegrators.push(streamlineIntegrator)
             if (options.onStreamlineAdded)
-                options.onStreamlineAdded(streamLinePoints, options);
+                options.onStreamlineAdded(streamLinePoints, options)
         }
     }
 }
 
 function normalizeBoundingBox(bbox) {
     var requiredBoxMessage =
-        'Bounding box {left, top, width, height} is required';
-    if (!bbox) throw new Error(requiredBoxMessage);
+        'Bounding box {left, top, width, height} is required'
+    if (!bbox) throw new Error(requiredBoxMessage)
 
-    assertNumber(bbox.left, requiredBoxMessage);
-    assertNumber(bbox.top, requiredBoxMessage);
+    assertNumber(bbox.left, requiredBoxMessage)
+    assertNumber(bbox.top, requiredBoxMessage)
     if (typeof bbox.size === 'number') {
-        bbox.width = bbox.size;
-        bbox.height = bbox.size;
+        bbox.width = bbox.size
+        bbox.height = bbox.size
     }
-    assertNumber(bbox.width, requiredBoxMessage);
-    assertNumber(bbox.height, requiredBoxMessage);
+    assertNumber(bbox.width, requiredBoxMessage)
+    assertNumber(bbox.height, requiredBoxMessage)
 
     if (bbox.width <= 0 || bbox.height <= 0)
-        throw new Error('Bounding box cannot be empty');
+        throw new Error('Bounding box cannot be empty')
 }
 
 function assertNumber(x, msg) {
-    if (typeof x !== 'number' || Number.isNaN(x)) throw new Error(msg);
+    if (typeof x !== 'number' || Number.isNaN(x)) throw new Error(msg)
 }
