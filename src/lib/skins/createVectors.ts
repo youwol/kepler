@@ -10,7 +10,7 @@ import {
 
 import { PaintParameters } from './paintAttribute'
 import { fromValueToColor } from '../utils/lut-utils'
-import { Serie, array, createFrom, IArray } from '@youwol/dataframe'
+import { Serie, array, IArray } from '@youwol/dataframe'
 import { createLut } from '../utils'
 
 /**
@@ -85,15 +85,21 @@ export function createVectors({
     attribute?: Serie
     parameters?: VectorsParameters
 }): Object3D {
-    if (geometry === undefined) throw new Error('geometry is undefined')
+    if (geometry === undefined) {
+        throw new Error('geometry is undefined')
+    }
     const position = geometry.getAttribute('position')
-    if (vectorField === undefined) throw new Error('vectorField is undefined')
-    if (vectorField.count !== position.count)
+    if (vectorField === undefined) {
+        throw new Error('vectorField is undefined')
+    }
+    if (vectorField.count !== position.count) {
         throw new Error('vectorField should have 3 x nb vertices')
-    if (parameters === undefined)
+    }
+    if (parameters === undefined) {
         throw new Error(
             'parameters is undefined (needs name of the vector field)',
         )
+    }
 
     if (material === undefined) {
         material = new LineBasicMaterial({

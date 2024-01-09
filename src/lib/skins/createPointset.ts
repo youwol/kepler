@@ -106,7 +106,7 @@ export function createPointset({
         sprite = new TextureLoader().load(parameters.sprite)
     }
 
-    let color = new Color(parameters.color)
+    const color = new Color(parameters.color)
     if (material === undefined) {
         material = new PointsMaterial({
             size: tsize,

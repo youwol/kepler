@@ -2,7 +2,7 @@ import { createTyped, Serie } from '@youwol/dataframe'
 import { BufferAttribute, BufferGeometry } from 'three'
 
 export class IsoBand {
-    public debug: boolean = true
+    public debug = true
     private triangles: Tri[] = []
     private attr: Serie = undefined
     private nodes: BufferAttribute = undefined
@@ -348,7 +348,7 @@ export class IsoBand {
         n2: Point,
         n3: Point,
         iso: number,
-        reversed: boolean = false,
+        reversed = false,
     ): void {
         // const revert = (n: Point): Point => [-n[0], -n[1], -n[2]]
 
@@ -370,7 +370,7 @@ export class IsoBand {
         n3: Point,
         n4: Point,
         iso: number,
-        reversed: boolean = false,
+        reversed = false,
     ): void {
         this.add3(p1, p2, p3, n1, n2, n3, iso, reversed)
         this.add3(p1, p3, p4, n1, n3, n4, iso, reversed)
@@ -388,7 +388,7 @@ export class IsoBand {
         n4: Point,
         n5: Point,
         iso: number,
-        reversed: boolean = false,
+        reversed = false,
     ): void {
         this.add4(p1, p2, p3, p4, n1, n2, n3, n4, iso, reversed)
         this.add3(p1, p4, p5, n1, n4, n5, iso, reversed)

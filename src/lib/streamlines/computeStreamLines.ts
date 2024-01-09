@@ -6,16 +6,17 @@ import { Vector } from './Vector'
 import { createLookupGrid } from './createLookupGrid'
 import { createStreamlineIntegrator } from './streamLineIntegrator'
 
-var STATE_INIT = 0
-var STATE_STREAMLINE = 1
-var STATE_PROCESS_QUEUE = 2
-var STATE_DONE = 3
-var STATE_SEED_STREAMLINE = 4
+const STATE_INIT = 0
+const STATE_STREAMLINE = 1
+const STATE_PROCESS_QUEUE = 2
+const STATE_DONE = 3
+const STATE_SEED_STREAMLINE = 4
 
 export function computeStreamlines(protoOptions) {
-    var options = Object.create(null)
-    if (!protoOptions)
+    const options = Object.create(null)
+    if (!protoOptions) {
         throw new Error('Configuration is required to compute streamlines')
+    }
     if (!protoOptions.boundingBox) {
         console.warn(
             'No bounding box passed to streamline. Creating default one',
@@ -30,7 +31,7 @@ export function computeStreamlines(protoOptions) {
 
     normalizeBoundingBox(options.boundingBox)
 
-    var boundingBox = options.boundingBox
+    const boundingBox = options.boundingBox
     options.vectorField = protoOptions.vectorField
     options.onStreamlineAdded = protoOptions.onStreamlineAdded
     options.onPointAdded = protoOptions.onPointAdded
@@ -42,7 +43,7 @@ export function computeStreamlines(protoOptions) {
             Math.random() * boundingBox.height + boundingBox.top,
         )
     } else if (Array.isArray(protoOptions.seed)) {
-        var seed = protoOptions.seed.shift()
+        const seed = protoOptions.seed.shift()
         options.seed = new Vector(seed.x, seed.y)
         options.seedArray = protoOptions.seed
     } else {
@@ -60,7 +61,7 @@ export function computeStreamlines(protoOptions) {
         protoOptions.dTest > 0 ? protoOptions.dTest : options.dSep * 0.5
 
     // Lookup grid helps to quickly tell if there are points nearby
-    var grid = createLookupGrid(boundingBox, options.dSep)
+    const grid = createLookupGrid(boundingBox, options.dSep)
 
     // Integration time step.
     options.timeStep = protoOptions.timeStep > 0 ? protoOptions.timeStep : 0.01
@@ -71,11 +72,11 @@ export function computeStreamlines(protoOptions) {
             ? protoOptions.maxTimePerIteration
             : 1000
 
-    var stepsPerIteration = options.stepsPerIteration
+    const stepsPerIteration = options.stepsPerIteration
     // var resolve;
-    var state = STATE_INIT
-    var finishedStreamlineIntegrators = []
-    var streamlineIntegrator = createStreamlineIntegrator(
+    let state = STATE_INIT
+    const finishedStreamlineIntegrators = []
+    let streamlineIntegrator = createStreamlineIntegrator(
         options.seed,
         grid,
         options,
@@ -101,11 +102,19 @@ export function computeStreamlines(protoOptions) {
     }
 
     function oneStep() {
-        for (var i = 0; i < stepsPerIteration; ++i) {
-            if (state === STATE_INIT) initProcessing()
-            if (state === STATE_STREAMLINE) continueStreamline()
-            if (state === STATE_PROCESS_QUEUE) processQueue()
-            if (state === STATE_SEED_STREAMLINE) seedStreamline()
+        for (let i = 0; i < stepsPerIteration; ++i) {
+            if (state === STATE_INIT) {
+                initProcessing()
+            }
+            if (state === STATE_STREAMLINE) {
+                continueStreamline()
+            }
+            if (state === STATE_PROCESS_QUEUE) {
+                processQueue()
+            }
+            if (state === STATE_SEED_STREAMLINE) {
+                seedStreamline()
+            }
             if (state === STATE_DONE) {
                 return
             }
@@ -155,7 +164,7 @@ export function computeStreamlines(protoOptions) {
     // }
 
     function initProcessing() {
-        var streamLineCompleted = streamlineIntegrator.next()
+        const streamLineCompleted = streamlineIntegrator.next()
         if (streamLineCompleted) {
             addStreamLineToQueue()
             state = STATE_PROCESS_QUEUE
@@ -163,9 +172,9 @@ export function computeStreamlines(protoOptions) {
     }
 
     function seedStreamline() {
-        var currentStreamLine = finishedStreamlineIntegrators[0]
+        const currentStreamLine = finishedStreamlineIntegrators[0]
 
-        var validCandidate = currentStreamLine.getNextValidSeed()
+        const validCandidate = currentStreamLine.getNextValidSeed()
         if (validCandidate) {
             streamlineIntegrator = createStreamlineIntegrator(
                 validCandidate,
@@ -188,7 +197,7 @@ export function computeStreamlines(protoOptions) {
     }
 
     function continueStreamline() {
-        var isDone = streamlineIntegrator.next()
+        const isDone = streamlineIntegrator.next()
         if (isDone) {
             addStreamLineToQueue()
             state = STATE_SEED_STREAMLINE
@@ -196,19 +205,22 @@ export function computeStreamlines(protoOptions) {
     }
 
     function addStreamLineToQueue() {
-        var streamLinePoints = streamlineIntegrator.getStreamline()
+        const streamLinePoints = streamlineIntegrator.getStreamline()
         if (streamLinePoints.length > 1) {
             finishedStreamlineIntegrators.push(streamlineIntegrator)
-            if (options.onStreamlineAdded)
+            if (options.onStreamlineAdded) {
                 options.onStreamlineAdded(streamLinePoints, options)
+            }
         }
     }
 }
 
 function normalizeBoundingBox(bbox) {
-    var requiredBoxMessage =
+    const requiredBoxMessage =
         'Bounding box {left, top, width, height} is required'
-    if (!bbox) throw new Error(requiredBoxMessage)
+    if (!bbox) {
+        throw new Error(requiredBoxMessage)
+    }
 
     assertNumber(bbox.left, requiredBoxMessage)
     assertNumber(bbox.top, requiredBoxMessage)
@@ -219,10 +231,13 @@ function normalizeBoundingBox(bbox) {
     assertNumber(bbox.width, requiredBoxMessage)
     assertNumber(bbox.height, requiredBoxMessage)
 
-    if (bbox.width <= 0 || bbox.height <= 0)
+    if (bbox.width <= 0 || bbox.height <= 0) {
         throw new Error('Bounding box cannot be empty')
+    }
 }
 
 function assertNumber(x, msg) {
-    if (typeof x !== 'number' || Number.isNaN(x)) throw new Error(msg)
+    if (typeof x !== 'number' || Number.isNaN(x)) {
+        throw new Error(msg)
+    }
 }

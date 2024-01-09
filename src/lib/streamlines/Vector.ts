@@ -21,14 +21,14 @@ export class Vector {
     }
 
     normalize() {
-        var l = this.length()
+        const l = this.length()
         this.x /= l
         this.y /= l
     }
 
     distanceTo(other: Vector) {
-        var dx = other.x - this.x
-        var dy = other.y - this.y
+        const dx = other.x - this.x
+        const dy = other.y - this.y
         return Math.sqrt(dx * dx + dy * dy)
     }
 }

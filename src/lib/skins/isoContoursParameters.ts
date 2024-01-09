@@ -53,8 +53,12 @@ export class IsoContoursParameters extends SkinParameters {
     }) {
         super(others)
 
-        if (filled !== undefined) this.filled = filled
-        if (lined !== undefined) this.lined = lined
+        if (filled !== undefined) {
+            this.filled = filled
+        }
+        if (lined !== undefined) {
+            this.lined = lined
+        }
 
         this.isoList = isoList
 
@@ -67,8 +71,14 @@ export class IsoContoursParameters extends SkinParameters {
         this.reverseLut =
             reverseLut !== undefined ? reverseLut : this.reverseLut
         this.lut = lut || 'Rainbow'
-        if (duplicateLut !== undefined) this.duplicateLut = duplicateLut
-        if (lut !== undefined) this.lut = lut
-        if (opacity !== undefined) this.opacity = opacity
+        if (duplicateLut !== undefined) {
+            this.duplicateLut = duplicateLut
+        }
+        if (lut !== undefined) {
+            this.lut = lut
+        }
+        if (opacity !== undefined) {
+            this.opacity = opacity
+        }
     }
 }

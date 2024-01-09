@@ -115,18 +115,21 @@ export class ColorMap {
         }
 
         this.n = numberofcolors || 32
-        let step = 1.0 / this.n
+        const step = 1.0 / this.n
 
         this.lut.length = 0
 
         for (let i = 0; i <= 1; i += step) {
             for (let j = 0; j < this.map.length - 1; j++) {
                 if (i >= this.map[j][0] && i < this.map[j + 1][0]) {
-                    let min = this.map[j][0]
-                    let max = this.map[j + 1][0]
-                    let minColor = new Color(this.map[j][1])
-                    let maxColor = new Color(this.map[j + 1][1])
-                    let color = minColor.lerp(maxColor, (i - min) / (max - min))
+                    const min = this.map[j][0]
+                    const max = this.map[j + 1][0]
+                    const minColor = new Color(this.map[j][1])
+                    const maxColor = new Color(this.map[j + 1][1])
+                    const color = minColor.lerp(
+                        maxColor,
+                        (i - min) / (max - min),
+                    )
                     this.lut.push(color)
                 }
             }
@@ -154,7 +157,9 @@ export class ColorMap {
         alpha = (alpha - this.minV) / (this.maxV - this.minV)
         let colorPosition = Math.round(alpha * this.n)
 
-        if (colorPosition === this.n) colorPosition -= 1
+        if (colorPosition === this.n) {
+            colorPosition -= 1
+        }
 
         return this.lut[colorPosition]
     }
@@ -169,7 +174,7 @@ export class ColorMap {
 
     updateCanvas(canvas: any) {
         this.canvas_ = canvas
-        let ctx = canvas.getContext('2d', { alpha: false })
+        const ctx = canvas.getContext('2d', { alpha: false })
 
         /*
         let imageData = ctx.getImageData(0, 0, canvas.width, this.n)
@@ -196,15 +201,18 @@ export class ColorMap {
         */
 
         let k = 0
-        let step = 1.0 / this.n
+        const step = 1.0 / this.n
         for (let i = 1; i >= 0; i -= step) {
             for (let j = this.map.length - 1; j >= 0; j--) {
                 if (i < this.map[j][0] && i >= this.map[j - 1][0]) {
-                    let min = this.map[j - 1][0]
-                    let max = this.map[j][0]
-                    let minColor = new Color(this.map[j - 1][1])
-                    let maxColor = new Color(this.map[j][1])
-                    let color = minColor.lerp(maxColor, (i - min) / (max - min))
+                    const min = this.map[j - 1][0]
+                    const max = this.map[j][0]
+                    const minColor = new Color(this.map[j - 1][1])
+                    const maxColor = new Color(this.map[j][1])
+                    const color = minColor.lerp(
+                        maxColor,
+                        (i - min) / (max - min),
+                    )
                     ctx.fillStyle = `rgb(${Math.round(
                         color.r * 255,
                     )}, ${Math.round(color.g * 255)}, ${Math.round(
@@ -220,7 +228,7 @@ export class ColorMap {
     }
 }
 
-let ColorMapKeywords = {
+const ColorMapKeywords = {
     Cooltowarm: [
         [0.0, 0x3c4ec2],
         [0.2, 0x9bbcff],

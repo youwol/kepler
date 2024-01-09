@@ -3,7 +3,7 @@
  * @category Skin Parameters
  */
 export class SkinParameters {
-    visible: boolean = true
+    visible = true
 
     constructor({ visible = true }: { visible?: boolean }) {
         this.visible = visible !== undefined ? visible : true

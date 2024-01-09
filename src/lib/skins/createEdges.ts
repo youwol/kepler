@@ -4,7 +4,6 @@ import {
     EdgesGeometry,
     LineBasicMaterial,
     LineSegments,
-    Material,
 } from 'three'
 import { SkinParameters } from '.'
 

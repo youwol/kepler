@@ -47,10 +47,15 @@ export function createIsoSurfaces({
     material?: Material
     parameters: IsoContoursParameters
 }): Object3D {
-    if (grid === undefined) throw new Error('grid is undefined')
-    if (attribute === undefined) throw new Error('attribute is undefined')
-    if (attribute.length === grid.sizes[0] * grid.sizes[1] * grid.sizes[2])
+    if (grid === undefined) {
+        throw new Error('grid is undefined')
+    }
+    if (attribute === undefined) {
+        throw new Error('attribute is undefined')
+    }
+    if (attribute.length === grid.sizes[0] * grid.sizes[1] * grid.sizes[2]) {
         throw new Error('attribute length mismatch')
+    }
 
     // if (parameters === undefined) {
     //     parameters = new IsoSurfaceParameters()
@@ -78,7 +83,7 @@ export function createIsoSurfaces({
     const vmax = minmax[1]
 
     // normalize
-    let scalars = attribute.array.map((v) => (v - vmin) / (vmax - vmin))
+    const scalars = attribute.array.map((v) => (v - vmin) / (vmax - vmin))
 
     // const isoValues = generateIsos(
     //     lerp(0, vmin, vmax),

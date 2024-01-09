@@ -94,10 +94,18 @@ export class Streamlines2D {
     run() {
         while (this.state !== State.DONE) {
             for (let i = 0; i < this.options.stepsPerIteration; ++i) {
-                if (this.state === State.INIT) this.initProcessing()
-                if (this.state === State.STREAMLINE) this.continueStreamline()
-                if (this.state === State.PROCESS_QUEUE) this.processQueue()
-                if (this.state === State.SEED_STREAMLINE) this.seedStreamline()
+                if (this.state === State.INIT) {
+                    this.initProcessing()
+                }
+                if (this.state === State.STREAMLINE) {
+                    this.continueStreamline()
+                }
+                if (this.state === State.PROCESS_QUEUE) {
+                    this.processQueue()
+                }
+                if (this.state === State.SEED_STREAMLINE) {
+                    this.seedStreamline()
+                }
             }
         }
     }
@@ -156,12 +164,16 @@ export class Streamlines2D {
 // ----------------------------------------------------------------------------
 
 function assertNumber(x: any, msg: string) {
-    if (typeof x !== 'number' || Number.isNaN(x)) throw new Error(msg)
+    if (typeof x !== 'number' || Number.isNaN(x)) {
+        throw new Error(msg)
+    }
 }
 
 function normalizeBoundingBox(bbox: any) {
     const msg = 'Bounding box {left, top, width, height} is required'
-    if (!bbox) throw new Error(msg)
+    if (!bbox) {
+        throw new Error(msg)
+    }
 
     assertNumber(bbox.left, msg)
     assertNumber(bbox.top, msg)
@@ -172,6 +184,7 @@ function normalizeBoundingBox(bbox: any) {
     assertNumber(bbox.width, msg)
     assertNumber(bbox.height, msg)
 
-    if (bbox.width <= 0 || bbox.height <= 0)
+    if (bbox.width <= 0 || bbox.height <= 0) {
         throw new Error('Bounding box cannot be empty')
+    }
 }

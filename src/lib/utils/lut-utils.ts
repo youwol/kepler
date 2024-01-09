@@ -6,11 +6,7 @@ import { ColorMap, generateColorMap } from './colorMap'
  * Create a new Lut and register several tables in it
  * @category Lookup Table
  */
-export function createLut(
-    name: string = 'rainbow',
-    nbColors = 32,
-    duplicate = 1,
-) {
+export function createLut(name = 'rainbow', nbColors = 32, duplicate = 1) {
     return generateColorMap(name, nbColors, duplicate)
 }
 
@@ -41,7 +37,7 @@ export function fromValueToColor(
         throw new Error(`value *must% be normalized. Got ${value}`)
     }
 
-    let w = reverse ? 1.0 - value : value
+    const w = reverse ? 1.0 - value : value
     if (w >= min && w <= max) {
         const c = lutTable.getColor(w)
         return [c.r, c.g, c.b]
@@ -88,7 +84,7 @@ export function fromValuesToColors(
         lutTable.setMin(min).setMax(max)
     }
 
-    let colors = new Array(3 * values.length).fill(0)
+    const colors = new Array(3 * values.length).fill(0)
 
     values.forEach((v, i) => {
         const w = reverse

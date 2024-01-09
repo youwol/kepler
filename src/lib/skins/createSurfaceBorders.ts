@@ -54,7 +54,7 @@ export function createSurfaceBorders({
     const bufferPosition = mesh.geometry.getAttribute(
         'position',
     ) as BufferAttribute
-    const bufferIndices = mesh.geometry.index as BufferAttribute
+    const bufferIndices = mesh.geometry.index
     const vertices = Serie.create({
         array: bufferPosition.array as IArray,
         itemSize: 3,

@@ -6,7 +6,7 @@ const unflat2d = (l: number) => {
     const di = l / ny
     const i = Math.trunc(di)
 
-    let j = ny * (di - i)
+    const j = ny * (di - i)
     return { i: Math.round(i), j: Math.round(j) }
 }
 
@@ -14,11 +14,11 @@ const unflat3d = (l: number) => {
     const di = l / ny / nz
     const i = Math.trunc(di)
 
-    let m = ny * nz * (di - i)
-    let dj = m / nz
-    let j = Math.trunc(dj)
+    const m = ny * nz * (di - i)
+    const dj = m / nz
+    const j = Math.trunc(dj)
 
-    let k = nz * (dj - j)
+    const k = nz * (dj - j)
 
     return { i: Math.round(i), j: Math.round(j), k: Math.round(k) }
 }

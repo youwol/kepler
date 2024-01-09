@@ -1,4 +1,4 @@
-import { DataFrame, Manager, Serie } from '@youwol/dataframe'
+import { DataFrame, Manager } from '@youwol/dataframe'
 import {
     Box3,
     BufferAttribute,
@@ -11,7 +11,6 @@ import {
     Matrix4,
     Mesh,
     MeshPhongMaterial,
-    MeshStandardMaterial,
     PlaneBufferGeometry,
     Quaternion,
     Vector3,
@@ -90,11 +89,14 @@ export function createFailurePlanes({
     parameters?: FailurePlanesParameters
 }) {
     const position = geometry.getAttribute('position')
-    if (position === undefined)
+    if (position === undefined) {
         throw new Error('geometry.position is undefined')
+    }
 
     const stress = dataframe.series[parameters.stress]
-    if (stress === undefined) throw new Error('stress Serie is undefined')
+    if (stress === undefined) {
+        throw new Error('stress Serie is undefined')
+    }
 
     const bbox = new Box3().setFromBufferAttribute(position as BufferAttribute)
     const size = bbox.getSize(new Vector3())
@@ -204,7 +206,7 @@ export function createFailurePlanes({
     const mergedGeometry = mergeBufferGeometries(geometries, true)
 
     if (scalars) {
-        let v2c = fromValuesToColors(scalars.array, {
+        const v2c = fromValuesToColors(scalars.array, {
             defaultColor: new Color(parameters.defaultColor),
             reverse: parameters.reverseLut,
             min: parameters.min,
@@ -246,7 +248,7 @@ function createPrimitive(
 ) {
     if (type === FractureType.FAULT) {
         const ang = deg2rad(45.0 - fric / 2.0)
-        var geom2 = geom1.clone()
+        const geom2 = geom1.clone()
         geom1.rotateY(ang)
         geom2.rotateY(-ang)
         return mergeBufferGeometries([geom1, geom2], false)

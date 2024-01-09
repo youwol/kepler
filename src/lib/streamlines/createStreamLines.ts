@@ -57,8 +57,9 @@ export function createStreamLines(
     // Have to use a background grid (or an Octree or a Quadtree)
     // Also, have a look at createLookupGrid in this folder
 
-    if (params.onStreamlineAddedCB === undefined)
+    if (params.onStreamlineAddedCB === undefined) {
         throw new Error('onStreamlineAddedCB must be set for streamlines')
+    }
 
     const bboxs = bboxSerie(positions)
 
@@ -76,8 +77,12 @@ export function createStreamLines(
     let hMin = 1e32
     indices.forEach((t) => {
         const T = bbox(positions, t[0], t[1], t[2])
-        if (T.width < wMin) wMin = T.width
-        if (T.height < hMin) hMin = T.height
+        if (T.width < wMin) {
+            wMin = T.width
+        }
+        if (T.height < hMin) {
+            hMin = T.height
+        }
         qt.insert(T)
     })
 
@@ -96,7 +101,9 @@ export function createStreamLines(
     return computeStreamlines({
         vectorField(p: Point2D) {
             const t = qt.retrieve({ x: p.x, y: p.y, width: wMin, height: hMin })
-            if (t.length === 0) return undefined
+            if (t.length === 0) {
+                return undefined
+            }
 
             const tt = t[0]
             const i1 = tt.i1
@@ -166,10 +173,18 @@ const bboxSerie = (positions: Serie): Rect => {
     let maxX = -1e32
     let maxY = -1e32
     positions.forEach((p) => {
-        if (p[0] < b.x) b.x = p[0]
-        if (p[0] > maxX) maxX = p[0]
-        if (p[1] < b.y) b.y = p[1]
-        if (p[1] > maxY) maxY = p[1]
+        if (p[0] < b.x) {
+            b.x = p[0]
+        }
+        if (p[0] > maxX) {
+            maxX = p[0]
+        }
+        if (p[1] < b.y) {
+            b.y = p[1]
+        }
+        if (p[1] > maxY) {
+            maxY = p[1]
+        }
     })
     b.width = maxX - b.x
     b.height = maxY - b.y

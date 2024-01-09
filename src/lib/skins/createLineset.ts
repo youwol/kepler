@@ -85,14 +85,14 @@ export function createLineset({
         const vecs = []
         let p = undefined
         if (position instanceof BufferGeometry) {
-            p = (position as BufferGeometry).getAttribute('position').array
+            p = position.getAttribute('position').array
         } else {
-            p = (position as Serie).array
+            p = position.array
         }
         for (let i = 0; i < p.length; i += 3) {
             vecs.push(new Vector3(p[i], p[i + 1], p[i + 2]))
         }
-        let count = p.length / 3
+        const count = p.length / 3
 
         const path = new CatmullRomCurve3(vecs)
         // TubeGeometry(path, tubularSegments, radius, radialSegments)

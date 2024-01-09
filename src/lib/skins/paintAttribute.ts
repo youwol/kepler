@@ -47,7 +47,9 @@ export class PaintParameters extends SkinParameters {
         super(others)
         this.defaultColor = defaultColor || '#aaaaaa'
         this.lut = lut || 'Rainbow'
-        if (duplicateLut !== undefined) this.duplicateLut = duplicateLut
+        if (duplicateLut !== undefined) {
+            this.duplicateLut = duplicateLut
+        }
         this.min = min !== undefined ? min : 0
         this.max = max !== undefined ? max : 1
         this.atVertex = atVertex !== undefined ? atVertex : true
@@ -118,11 +120,12 @@ export function paintAttribute(
         color = material['color']
         material['color'] = new Color('#ffffff')
     }
-    ;(material as Material).vertexColors = parameters.atVertex ? true : false
-    ;(material as Material).polygonOffset = true
-    ;(material as Material).polygonOffsetFactor = 1
+    const materialAsMaterial = material as Material
+    materialAsMaterial.vertexColors = parameters.atVertex ? true : false
+    materialAsMaterial.polygonOffset = true
+    materialAsMaterial.polygonOffsetFactor = 1
 
-    let colors = fromValuesToColors(attribute.array, {
+    const colors = fromValuesToColors(attribute.array, {
         defaultColor: new Color(parameters.defaultColor),
         reverse: parameters.reverseLut,
         min: parameters.min,
@@ -153,7 +156,7 @@ export function paintAttribute(
             const faces = geometry.index // 438
             const nbVertPerFace = 3
             const nbColorComps = 3
-            let fcolors = new Float32Array(
+            const fcolors = new Float32Array(
                 faces.count * nbVertPerFace * nbColorComps,
             )
 
@@ -180,5 +183,5 @@ export function paintAttribute(
     if (geometry.attributes.color) {
         geometry.attributes.color.needsUpdate = true
     }
-    ;(material as Material).needsUpdate = true
+    materialAsMaterial.needsUpdate = true
 }

@@ -64,12 +64,17 @@ export function createLineset2({
     position: Serie | BufferGeometry
     parameters?: LinesetParameters2
 }): Object3D {
-    if (position === undefined) throw new Error('geometry is undefined')
-    if (!(position instanceof BufferGeometry) && position.itemSize !== 3)
+    if (position === undefined) {
+        throw new Error('geometry is undefined')
+    }
+    if (!(position instanceof BufferGeometry) && position.itemSize !== 3) {
         throw new Error(
             `position should have itemSize = 3 (got ${position.itemSize})`,
         )
-    if (parameters === undefined) parameters = new LinesetParameters2()
+    }
+    if (parameters === undefined) {
+        parameters = new LinesetParameters2()
+    }
 
     const geometry = new LineGeometry()
 

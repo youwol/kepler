@@ -45,8 +45,12 @@ export function createBBox(
     object: Object3D,
     parameters: BBoxParameters,
 ): LineSegments {
-    if (object === undefined) throw new Error('object is undefined')
-    if (parameters === undefined) parameters = new BBoxParameters()
+    if (object === undefined) {
+        throw new Error('object is undefined')
+    }
+    if (parameters === undefined) {
+        parameters = new BBoxParameters()
+    }
 
     const bbox = new Box3().setFromObject(object)
     const size = bbox.getSize(new Vector3())

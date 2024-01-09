@@ -13,10 +13,10 @@ class Cell {
             return false
         }
         for (let i = 0; i < this.children.length; ++i) {
-            var p = this.children[i]
-            var dx = p.x - x,
+            const p = this.children[i]
+            const dx = p.x - x,
                 dy = p.y - y
-            var dist = Math.sqrt(dx * dx + dy * dy)
+            const dist = Math.sqrt(dx * dx + dy * dy)
             if (checkCallback(dist, p)) {
                 return true
             }
@@ -45,13 +45,15 @@ export function createLookupGrid(bbox: any, dSep: number) {
     }
 
     function occupyCoordinates(point: Vector) {
-        var x = point.x,
+        const x = point.x,
             y = point.y
         getCellByCoordinates(x, y).occupy(point)
     }
 
     function isTaken(x: number, y: number, checkCallback: Function) {
-        if (!cells) return false
+        if (!cells) {
+            return false
+        }
         const cx = gridX(x)
         const cy = gridY(y)
         for (let col = -1; col < 2; ++col) {
@@ -61,7 +63,9 @@ export function createLookupGrid(bbox: any, dSep: number) {
             }
 
             const cellRow = cells.get(currentCellX)
-            if (!cellRow) continue
+            if (!cellRow) {
+                continue
+            }
 
             for (let row = -1; row < 2; ++row) {
                 const currentCellY = cy + row
@@ -70,7 +74,9 @@ export function createLookupGrid(bbox: any, dSep: number) {
                 }
 
                 const cellCol = cellRow.get(currentCellY)
-                if (!cellCol) continue
+                if (!cellCol) {
+                    continue
+                }
                 if (cellCol.isTaken(x, y, checkCallback)) {
                     return true
                 }

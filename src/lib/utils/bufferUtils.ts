@@ -79,7 +79,7 @@ export function createBufferGeometry(
 export function addColorToBufferGeometry(
     geometry: BufferGeometry,
     color: Serie,
-    name: string = 'color',
+    name = 'color',
 ) {
     if (color.itemSize !== 3) {
         throw new Error('Serie for color must have count = 3')
@@ -104,32 +104,44 @@ export function mergeBufferGeometries(
     geometries: Array<BufferGeometry>,
     useGroups = false,
 ) {
-    var isIndexed = geometries[0].index !== null
-    var attributesUsed = new Set(Object.keys(geometries[0].attributes))
-    var morphAttributesUsed = new Set(
+    const isIndexed = geometries[0].index !== null
+    const attributesUsed = new Set(Object.keys(geometries[0].attributes))
+    const morphAttributesUsed = new Set(
         Object.keys(geometries[0].morphAttributes),
     )
-    var attributes = {}
-    var morphAttributes = {}
-    var morphTargetsRelative = geometries[0].morphTargetsRelative
-    var mergedGeometry = new BufferGeometry()
-    var offset = 0
+    const attributes = {}
+    const morphAttributes = {}
+    const morphTargetsRelative = geometries[0].morphTargetsRelative
+    const mergedGeometry = new BufferGeometry()
+    let offset = 0
 
     for (var i = 0; i < geometries.length; ++i) {
-        var geometry = geometries[i]
+        const geometry = geometries[i]
         // ensure that all geometries are indexed, or none
-        if (isIndexed !== (geometry.index !== null)) return null
+        if (isIndexed !== (geometry.index !== null)) {
+            return null
+        }
         // gather attributes, exit early if they're different
         for (var name in geometry.attributes) {
-            if (!attributesUsed.has(name)) return null
-            if (attributes[name] === undefined) attributes[name] = []
+            if (!attributesUsed.has(name)) {
+                return null
+            }
+            if (attributes[name] === undefined) {
+                attributes[name] = []
+            }
             attributes[name].push(geometry.attributes[name])
         }
         // gather morph attributes, exit early if they're different
-        if (morphTargetsRelative !== geometry.morphTargetsRelative) return null
+        if (morphTargetsRelative !== geometry.morphTargetsRelative) {
+            return null
+        }
         for (var name in geometry.morphAttributes) {
-            if (!morphAttributesUsed.has(name)) return null
-            if (morphAttributes[name] === undefined) morphAttributes[name] = []
+            if (!morphAttributesUsed.has(name)) {
+                return null
+            }
+            if (morphAttributes[name] === undefined) {
+                morphAttributes[name] = []
+            }
             morphAttributes[name].push(geometry.morphAttributes[name])
         }
 
@@ -152,10 +164,10 @@ export function mergeBufferGeometries(
     }
     // merge indices
     if (isIndexed) {
-        var indexOffset = 0
-        var mergedIndex = []
+        let indexOffset = 0
+        const mergedIndex = []
         for (var i = 0; i < geometries.length; ++i) {
-            var index = geometries[i].index
+            const index = geometries[i].index
             for (var j = 0; j < index.count; ++j) {
                 mergedIndex.push(index.getX(j) + indexOffset)
             }
@@ -166,26 +178,32 @@ export function mergeBufferGeometries(
 
     // merge attributes
     for (var name in attributes) {
-        var mergedAttribute = mergeBufferAttributes(attributes[name])
-        if (!mergedAttribute) return null
+        const mergedAttribute = mergeBufferAttributes(attributes[name])
+        if (!mergedAttribute) {
+            return null
+        }
         mergedGeometry.setAttribute(name, mergedAttribute)
     }
 
     // merge morph attributes
     for (var name in morphAttributes) {
-        var numMorphTargets = morphAttributes[name][0].length
-        if (numMorphTargets === 0) break
+        const numMorphTargets = morphAttributes[name][0].length
+        if (numMorphTargets === 0) {
+            break
+        }
         mergedGeometry.morphAttributes = mergedGeometry.morphAttributes || {}
         mergedGeometry.morphAttributes[name] = []
         for (var i = 0; i < numMorphTargets; ++i) {
-            var morphAttributesToMerge = []
+            const morphAttributesToMerge = []
             for (var j = 0; j < morphAttributes[name].length; ++j) {
                 morphAttributesToMerge.push(morphAttributes[name][j][i])
             }
-            var mergedMorphAttribute = mergeBufferAttributes(
+            const mergedMorphAttribute = mergeBufferAttributes(
                 morphAttributesToMerge,
             )
-            if (!mergedMorphAttribute) return null
+            if (!mergedMorphAttribute) {
+                return null
+            }
             mergedGeometry.morphAttributes[name].push(mergedMorphAttribute)
         }
     }
@@ -197,25 +215,39 @@ export function mergeBufferGeometries(
  * @category Buffer utils
  */
 export function mergeBufferAttributes(attributes: Array<BufferAttribute>) {
-    var TypedArray
-    var itemSize
-    var normalized
-    var arrayLength = 0
+    let TypedArray
+    let itemSize
+    let normalized
+    let arrayLength = 0
 
     for (var i = 0; i < attributes.length; ++i) {
-        var attribute = attributes[i]
-        if (attribute['isInterleavedBufferAttribute']) return null
-        if (TypedArray === undefined) TypedArray = attribute.array.constructor
-        if (TypedArray !== attribute.array.constructor) return null
-        if (itemSize === undefined) itemSize = attribute.itemSize
-        if (itemSize !== attribute.itemSize) return null
-        if (normalized === undefined) normalized = attribute.normalized
-        if (normalized !== attribute.normalized) return null
+        const attribute = attributes[i]
+        if (attribute['isInterleavedBufferAttribute']) {
+            return null
+        }
+        if (TypedArray === undefined) {
+            TypedArray = attribute.array.constructor
+        }
+        if (TypedArray !== attribute.array.constructor) {
+            return null
+        }
+        if (itemSize === undefined) {
+            itemSize = attribute.itemSize
+        }
+        if (itemSize !== attribute.itemSize) {
+            return null
+        }
+        if (normalized === undefined) {
+            normalized = attribute.normalized
+        }
+        if (normalized !== attribute.normalized) {
+            return null
+        }
         arrayLength += attribute.array.length
     }
 
-    var array = new (TypedArray as any)(arrayLength)
-    var offset = 0
+    const array = new TypedArray(arrayLength)
+    let offset = 0
     for (var i = 0; i < attributes.length; ++i) {
         array.set(attributes[i].array, offset)
         offset += attributes[i].array.length

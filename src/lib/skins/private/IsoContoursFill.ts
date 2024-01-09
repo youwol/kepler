@@ -1,4 +1,4 @@
-import { IArray, Serie } from '@youwol/dataframe'
+import { Serie } from '@youwol/dataframe'
 import { minMax } from '@youwol/math'
 import { BufferAttribute, BufferGeometry, Color } from 'three'
 import { ColorMap, createLut, fromValueToColor } from '../../utils'
@@ -219,8 +219,10 @@ export class IsoContoursFill {
         this.segment_list_ = []
         t.notIntersectedPolygonValue = this.vmin_
 
-        for (let iso of this.isoValues_) {
-            if (iso >= t.v3) break
+        for (const iso of this.isoValues_) {
+            if (iso >= t.v3) {
+                break
+            }
             if (iso > t.v1) {
                 this.addSegment(iso, t)
             } else {
@@ -493,7 +495,9 @@ export class IsoContoursFill {
         n3: number[],
         iso: number,
     ) {
-        if (iso < this.vmin_ || iso > this.vmax_) return
+        if (iso < this.vmin_ || iso > this.vmax_) {
+            return
+        }
         const c = fromValueToColor(this.normalizeAttr(iso), {
             defaultColor: this.color_,
             lutTable: this.lutTable_,
@@ -517,7 +521,9 @@ export class IsoContoursFill {
         n4: number[],
         iso: number,
     ) {
-        if (iso < this.vmin_ || iso > this.vmax_) return
+        if (iso < this.vmin_ || iso > this.vmax_) {
+            return
+        }
         const c = fromValueToColor(this.normalizeAttr(iso), {
             defaultColor: this.color_,
             lutTable: this.lutTable_,
@@ -543,7 +549,9 @@ export class IsoContoursFill {
         n5: number[],
         iso: number,
     ) {
-        if (iso < this.vmin_ || iso > this.vmax_) return
+        if (iso < this.vmin_ || iso > this.vmax_) {
+            return
+        }
         const c = fromValueToColor(this.normalizeAttr(iso), {
             defaultColor: this.color_,
             lutTable: this.lutTable_,

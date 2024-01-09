@@ -40,9 +40,15 @@ export function normalAttribute(
         cb.cross(ab)
         cb.normalize()
         face.normal.copy(cb)
-        if (vertexNormals[a] === undefined) vertexNormals[a] = []
-        if (vertexNormals[b] === undefined) vertexNormals[b] = []
-        if (vertexNormals[c] === undefined) vertexNormals[c] = []
+        if (vertexNormals[a] === undefined) {
+            vertexNormals[a] = []
+        }
+        if (vertexNormals[b] === undefined) {
+            vertexNormals[b] = []
+        }
+        if (vertexNormals[c] === undefined) {
+            vertexNormals[c] = []
+        }
         vertexNormals[a].push(face.normal)
         vertexNormals[b].push(face.normal)
         vertexNormals[c].push(face.normal)
@@ -102,7 +108,7 @@ function weightedNormal(
 class Face {
     a: number
     b: number
-    c: Number
+    c: number
     normal: Vector3
 
     constructor(a: number, b: number, c: number) {

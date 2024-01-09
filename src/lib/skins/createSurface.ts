@@ -1,12 +1,4 @@
-import {
-    Mesh,
-    MeshStandardMaterial,
-    Color,
-    MeshBasicMaterial,
-    DoubleSide,
-    Material,
-    MeshPhongMaterial,
-} from 'three'
+import { Mesh, Color, DoubleSide, Material, MeshPhongMaterial } from 'three'
 
 import { SkinParameters } from './skinParameters'
 import { IArray, Serie } from '@youwol/dataframe'
@@ -40,10 +32,15 @@ export class SurfaceParameters extends SkinParameters {
         super(others)
         this.color = color || '#aaaaaa'
         this.flat = flat !== undefined ? flat : false
-        if (opacity !== undefined) this.opacity = opacity
-        if (wireframe !== undefined) this.wireframe = wireframe
-        if (creaseAngle !== undefined)
+        if (opacity !== undefined) {
+            this.opacity = opacity
+        }
+        if (wireframe !== undefined) {
+            this.wireframe = wireframe
+        }
+        if (creaseAngle !== undefined) {
             this.creaseAngle = (creaseAngle * Math.PI) / 180
+        }
     }
 }
 
@@ -92,15 +89,19 @@ export function createSurface({
     material?: Material
     parameters?: SurfaceParameters
 }): Mesh {
-    if (positions === undefined) throw new Error('positions is undefined')
-    if (indices === undefined) throw new Error('indices is undefined')
+    if (positions === undefined) {
+        throw new Error('positions is undefined')
+    }
+    if (indices === undefined) {
+        throw new Error('indices is undefined')
+    }
 
     if (parameters === undefined) {
         parameters = new SurfaceParameters()
     }
 
     const mesh = new Mesh()
-    let color = new Color(parameters.color)
+    const color = new Color(parameters.color)
 
     mesh.geometry = createBufferGeometry(
         positions,

@@ -11,7 +11,6 @@ import {
 import { Serie } from '@youwol/dataframe'
 import { SkinParameters } from './skinParameters'
 import { IsoBand } from './private/IsoBand'
-import { createSurface, SurfaceParameters } from './createSurface'
 import { createBufferGeometry } from '../utils'
 
 export class BandParameters extends SkinParameters {
@@ -38,10 +37,18 @@ export class BandParameters extends SkinParameters {
         super(others)
 
         this.color = color !== undefined ? color : '#00ff00'
-        if (opacity !== undefined) this.opacity = opacity
-        if (from !== undefined) this.from = from
-        if (to !== undefined) this.to = to
-        if (scale !== undefined) this.scale = scale
+        if (opacity !== undefined) {
+            this.opacity = opacity
+        }
+        if (from !== undefined) {
+            this.from = from
+        }
+        if (to !== undefined) {
+            this.to = to
+        }
+        if (scale !== undefined) {
+            this.scale = scale
+        }
     }
 }
 

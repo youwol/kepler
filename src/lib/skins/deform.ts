@@ -41,11 +41,14 @@ export function deform({
     deformVector: Serie
     parameters?: DeformParameters
 }): Serie {
-    if (geometry === undefined) throw new Error('geometry is undefined')
+    if (geometry === undefined) {
+        throw new Error('geometry is undefined')
+    }
     const position = geometry.getAttribute('position') as BufferAttribute
 
-    if (deformVector.count !== position.count)
+    if (deformVector.count !== position.count) {
         throw new Error('attribute should have 3 x nb vertices')
+    }
 
     //const geom = position.clone()
     return deformVector.map((v, i) => [

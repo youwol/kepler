@@ -18,9 +18,9 @@ export function generateIsos(
         return nbrOrSpacingOrList.filter((v) => v >= min && v <= max)
     }
     if (useSpacing) {
-        return generateIsosBySpacing(min, max, nbrOrSpacingOrList as number)
+        return generateIsosBySpacing(min, max, nbrOrSpacingOrList)
     }
-    return generateIsosByNumber(min, max, nbrOrSpacingOrList as number)
+    return generateIsosByNumber(min, max, nbrOrSpacingOrList)
 }
 
 /**
@@ -33,7 +33,7 @@ export function generateIsos(
 export function generateIsosByNumber(
     min: number,
     max: number,
-    nbr: number = 10,
+    nbr = 10,
 ): Array<number> {
     if (min >= max) {
         return []
@@ -57,7 +57,9 @@ export function generateIsosBySpacing(
     spacing: number,
 ): Array<number> {
     const r = []
-    if (max < min) throw new Error('Min should be less than max')
+    if (max < min) {
+        throw new Error('Min should be less than max')
+    }
     if (Math.abs(max - min) / spacing > 500) {
         spacing = Math.abs(max - min) / 500
         console.warn(
@@ -68,9 +70,13 @@ export function generateIsosBySpacing(
     }
     if (min < 0 && max > 0) {
         let value = spacing
-        while (value >= min + spacing) r.push((value -= spacing))
+        while (value >= min + spacing) {
+            r.push((value -= spacing))
+        }
         value = 0
-        while (value <= max - spacing) r.push((value += spacing))
+        while (value <= max - spacing) {
+            r.push((value += spacing))
+        }
     } else {
         let scale = 1
         if (max < 0) {
@@ -79,9 +85,13 @@ export function generateIsosBySpacing(
             min = max
             max = a
         }
-        if (min * scale >= max * scale) return []
+        if (min * scale >= max * scale) {
+            return []
+        }
         let valueInc = Math.trunc((min * scale) / spacing)
-        if (valueInc * spacing < min * scale) valueInc++
+        if (valueInc * spacing < min * scale) {
+            valueInc++
+        }
         let value = valueInc * spacing
         while (value <= max * scale) {
             r.push(value * scale)

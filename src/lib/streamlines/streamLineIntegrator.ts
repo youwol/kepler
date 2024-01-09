@@ -2,17 +2,17 @@ import { Vector } from './Vector'
 import { rk4 } from './rk4'
 import { createLookupGrid } from './createLookupGrid'
 
-var FORWARD = 1
-var BACKWARD = 2
-var DONE = 3
+const FORWARD = 1
+const BACKWARD = 2
+const DONE = 3
 
 export function createStreamlineIntegrator(start, grid, config) {
-    var points = [start]
-    var pos = start
-    var state = FORWARD
-    var candidate = null
-    var lastCheckedSeed = -1
-    var ownGrid = createLookupGrid(config.boundingBox, config.timeStep * 0.9)
+    const points = [start]
+    let pos = start
+    let state = FORWARD
+    let candidate = null
+    let lastCheckedSeed = -1
+    const ownGrid = createLookupGrid(config.boundingBox, config.timeStep * 0.9)
 
     return {
         start: start,
@@ -29,21 +29,23 @@ export function createStreamlineIntegrator(start, grid, config) {
         while (lastCheckedSeed < points.length - 1) {
             lastCheckedSeed += 1
 
-            var p = points[lastCheckedSeed]
-            var v = normalizedVectorField(p)
-            if (!v) continue
+            const p = points[lastCheckedSeed]
+            const v = normalizedVectorField(p)
+            if (!v) {
+                continue
+            }
             // Check one normal. We just set c = p + n, where n is orthogonal to v.
             // Since v is unit vector we can multiply it by scaler (config.dSep) to get to the
             // right point. It is also easy to find normal in 2d: normal to (x, y) is just (-y, x).
             // You can get it by applying 2d rotation matrix.)
-            var cx = p.x - v.y * config.dSep
-            var cy = p.y + v.x * config.dSep
+            let cx = p.x - v.y * config.dSep
+            let cy = p.y + v.x * config.dSep
 
             if (
                 Array.isArray(config.seedArray) &&
                 config.seedArray.length > 0
             ) {
-                var seed = config.seedArray.shift()
+                const seed = config.seedArray.shift()
                 cx = seed.x
                 cy = seed.y
             }
@@ -57,20 +59,25 @@ export function createStreamlineIntegrator(start, grid, config) {
             }
 
             // Check orthogonal coordinates on the other side (o = p - n).
-            var ox = p.x + v.y * config.dSep
-            var oy = p.y - v.x * config.dSep
-            if (!grid.isOutside(ox, oy) && !grid.isTaken(ox, oy, checkDSep))
+            const ox = p.x + v.y * config.dSep
+            const oy = p.y - v.x * config.dSep
+            if (!grid.isOutside(ox, oy) && !grid.isTaken(ox, oy, checkDSep)) {
                 return new Vector(ox, oy)
+            }
         }
     }
 
     function checkDTest(distanceToCandidate) {
-        if (isSame(distanceToCandidate, config.dTest)) return false
+        if (isSame(distanceToCandidate, config.dTest)) {
+            return false
+        }
         return distanceToCandidate < config.dTest
     }
 
     function checkDSep(distanceToCandidate) {
-        if (isSame(distanceToCandidate, config.dSep)) return false
+        if (isSame(distanceToCandidate, config.dSep)) {
+            return false
+        }
 
         return distanceToCandidate < config.dSep
     }
@@ -85,7 +92,9 @@ export function createStreamlineIntegrator(start, grid, config) {
                     ownGrid.occupyCoordinates(point)
                     pos = point
                     var shouldPause = notifyPointAdded(point)
-                    if (shouldPause) return
+                    if (shouldPause) {
+                        return
+                    }
                 } else {
                     // Reset position to start, and grow backwards:
                     if (config.forwardOnly) {
@@ -104,7 +113,9 @@ export function createStreamlineIntegrator(start, grid, config) {
                     ownGrid.occupyCoordinates(point)
 
                     var shouldPause = notifyPointAdded(point)
-                    if (shouldPause) return
+                    if (shouldPause) {
+                        return
+                    }
                 } else {
                     state = DONE
                 }
@@ -122,15 +133,19 @@ export function createStreamlineIntegrator(start, grid, config) {
     }
 
     function growForward() {
-        var velocity = rk4(pos, config.timeStep, normalizedVectorField)
-        if (!velocity) return // Hit the singularity.
+        const velocity = rk4(pos, config.timeStep, normalizedVectorField)
+        if (!velocity) {
+            return
+        } // Hit the singularity.
 
         return growByVelocity(pos, velocity)
     }
 
     function growBackward() {
-        var velocity = rk4(pos, config.timeStep, normalizedVectorField)
-        if (!velocity) return // Singularity
+        let velocity = rk4(pos, config.timeStep, normalizedVectorField)
+        if (!velocity) {
+            return
+        } // Singularity
         velocity = velocity.mulScalar(-1)
 
         return growByVelocity(pos, velocity)
@@ -138,11 +153,17 @@ export function createStreamlineIntegrator(start, grid, config) {
 
     function growByVelocity(pos, velocity) {
         candidate = pos.add(velocity)
-        if (grid.isOutside(candidate.x, candidate.y)) return
-        if (grid.isTaken(candidate.x, candidate.y, checkDTest)) return
+        if (grid.isOutside(candidate.x, candidate.y)) {
+            return
+        }
+        if (grid.isTaken(candidate.x, candidate.y, checkDTest)) {
+            return
+        }
 
         // did we hit any of our points?
-        if (ownGrid.isTaken(candidate.x, candidate.y, timeStepCheck)) return
+        if (ownGrid.isTaken(candidate.x, candidate.y, timeStepCheck)) {
+            return
+        }
         // for (var i = 0; i < points.length; ++i) {
         //   if (points[i].distanceTo(candidate) < config.timeStep * 0.9) return;
         // }
@@ -155,7 +176,7 @@ export function createStreamlineIntegrator(start, grid, config) {
     }
 
     function notifyPointAdded(point) {
-        var shouldPause = false
+        let shouldPause = false
         if (config.onPointAdded) {
             shouldPause = config.onPointAdded(
                 point,
@@ -170,12 +191,18 @@ export function createStreamlineIntegrator(start, grid, config) {
 
     function normalizedVectorField(p) {
         var p = config.vectorField(p, points, state === DONE)
-        if (!p) return // Assume singularity
-        if (Number.isNaN(p.x) || Number.isNaN(p.y)) return // Not defined. e.g. Math.log(-1);
+        if (!p) {
+            return
+        } // Assume singularity
+        if (Number.isNaN(p.x) || Number.isNaN(p.y)) {
+            return
+        } // Not defined. e.g. Math.log(-1);
 
-        var l = p.x * p.x + p.y * p.y
+        let l = p.x * p.x + p.y * p.y
 
-        if (l === 0) return // the same, singularity
+        if (l === 0) {
+            return
+        } // the same, singularity
         l = Math.sqrt(l)
 
         // We need normalized field.

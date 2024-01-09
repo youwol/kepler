@@ -15,11 +15,11 @@ export class MarchingTriangles {
         this.topo_ = []
 
         for (let l = 0; l < topo.count; l += 3) {
-            let i: number = topo.getX(l)
+            const i: number = topo.getX(l)
 
-            let j: number = topo.getX(l + 1)
+            const j: number = topo.getX(l + 1)
 
-            let k: number = topo.getX(l + 2)
+            const k: number = topo.getX(l + 2)
 
             this.topo_.push({ i, j, k })
             if (i === j || i === k || j === k) {
@@ -42,7 +42,7 @@ export class MarchingTriangles {
      * 2) result[1] represents the connected isoline values
      */
     isolines(prop: Serie, isovalue: number) {
-        let result: any = [[]]
+        const result: any = [[]]
 
         if (this.lock_ === false) {
             return result
@@ -107,10 +107,10 @@ export class MarchingTriangles {
                     let v1 = (v0 + 1) % 3
                     v0 = triangle[v0]
                     v1 = triangle[v1]
-                    let vmin = Math.min(v0, v1)
-                    let vmax = Math.max(v0, v1)
+                    const vmin = Math.min(v0, v1)
+                    const vmax = Math.max(v0, v1)
                     if (!(vmin in connectiviy)) {
-                        let vmax_2_triangles = new Map()
+                        const vmax_2_triangles = new Map()
 
                         vmax_2_triangles.set(vmax, [i])
                         connectiviy.set(vmin, vmax_2_triangles)
@@ -123,10 +123,12 @@ export class MarchingTriangles {
 
         // Extraction...
         do {
-            if (tri2code.size <= 0) break
+            if (tri2code.size <= 0) {
+                break
+            }
 
-            let isoline = []
-            let values = []
+            const isoline = []
+            const values = []
             const start = tri2code.keys()
             const first_tri = start.next().value
             let code = tri2code.get(first_tri)
@@ -155,8 +157,8 @@ export class MarchingTriangles {
                     (isovalue - prop.array[v0]) /
                         (prop.array[v1] - prop.array[v0]),
                 )
-                let vmin = Math.min(v0, v1)
-                let vmax = Math.max(v0, v1)
+                const vmin = Math.min(v0, v1)
+                const vmax = Math.max(v0, v1)
 
                 if (e === 0) {
                     first_edge[0] = vmin
@@ -172,14 +174,14 @@ export class MarchingTriangles {
             do {
                 let current_tri = first_tri
                 do {
-                    let adj_trgls = [
+                    const adj_trgls = [
                         connectiviy.get(next_edge[0]).get(next_edge[1]),
                     ]
                     if (adj_trgls.length === 1) {
                         break // border
                     }
                     current_tri = adj_trgls[0] + adj_trgls[1] - current_tri
-                    let iter = tri2code.get(current_tri)
+                    const iter = tri2code.get(current_tri)
 
                     if (!(iter in tri2code)) {
                         break
@@ -200,8 +202,8 @@ export class MarchingTriangles {
                         let v1 = (v0 + 1) % 3
                         v0 = triangle[v0]
                         v1 = triangle[v1]
-                        let vmin = Math.min(v0, v1)
-                        let vmax = Math.max(v0, v1)
+                        const vmin = Math.min(v0, v1)
+                        const vmax = Math.max(v0, v1)
                         if (vmin !== next_edge[0] || vmax !== next_edge[1]) {
                             isoline.push(v0)
                             isoline.push(v1)
@@ -242,8 +244,8 @@ export class MarchingTriangles {
                     result[1].push(values)
                 }
             } else {
-                let connected_isoline_edges = []
-                let connected_isoline_values = []
+                const connected_isoline_edges = []
+                const connected_isoline_values = []
                 for (let j = isoline.length - 1; j >= 2 * first_e; --j) {
                     connected_isoline_edges.push(isoline[j])
                 }

@@ -48,13 +48,17 @@ export function createIsoContours(
             material,
             parameters,
         })
-        if (skin1) group.add(skin1)
+        if (skin1) {
+            group.add(skin1)
+        }
 
         const skin2 = createIsoContourLines(mesh, attribute, {
             material,
             parameters,
         })
-        if (skin2) group.add(skin2)
+        if (skin2) {
+            group.add(skin2)
+        }
 
         return group
     }

@@ -90,20 +90,21 @@ export function createIsoContourLines(
     let index = 0
 
     for (let i = 0; i < isoValues.length; ++i) {
-        if (isoValues[i] < parameters.min || isoValues[i] > parameters.max)
+        if (isoValues[i] < parameters.min || isoValues[i] > parameters.max) {
             continue
-        let result = algo.isolines(attribute, isoValues[i])
+        }
+        const result = algo.isolines(attribute, isoValues[i])
         for (let k = 0; k < result[0].length; ++k) {
             for (let l = 0; l < result[0][k].length - 2; l += 2) {
-                let i1 = result[0][k][l]
-                let i2 = result[0][k][l + 1]
-                let c = result[1][k][l / 2]
-                let v1x = vertices.getX(i1)
-                let v1y = vertices.getY(i1)
-                let v1z = vertices.getZ(i1)
-                let v2x = vertices.getX(i2)
-                let v2y = vertices.getY(i2)
-                let v2z = vertices.getZ(i2)
+                const i1 = result[0][k][l]
+                const i2 = result[0][k][l + 1]
+                const c = result[1][k][l / 2]
+                const v1x = vertices.getX(i1)
+                const v1y = vertices.getY(i1)
+                const v1z = vertices.getZ(i1)
+                const v2x = vertices.getX(i2)
+                const v2y = vertices.getY(i2)
+                const v2z = vertices.getZ(i2)
                 positions.push(
                     v1x + c * (v2x - v1x),
                     v1y + c * (v2y - v1y),

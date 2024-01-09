@@ -64,7 +64,7 @@ export function Quadtree(bounds, max_objects = 10, max_levels = 4, level = 0) {
  * @memberof Quadtree
  */
 Quadtree.prototype.split = function () {
-    var nextLevel = this.level + 1,
+    const nextLevel = this.level + 1,
         subWidth = this.bounds.width / 2,
         subHeight = this.bounds.height / 2,
         x = this.bounds.x,
@@ -130,11 +130,11 @@ Quadtree.prototype.split = function () {
  * @memberof Quadtree
  */
 Quadtree.prototype.getIndex = function (pRect) {
-    var indexes = [],
+    const indexes = [],
         verticalMidpoint = this.bounds.x + this.bounds.width / 2,
         horizontalMidpoint = this.bounds.y + this.bounds.height / 2
 
-    var startIsNorth = pRect.y < horizontalMidpoint,
+    const startIsNorth = pRect.y < horizontalMidpoint,
         startIsWest = pRect.x < verticalMidpoint,
         endIsEast = pRect.x + pRect.width > verticalMidpoint,
         endIsSouth = pRect.y + pRect.height > horizontalMidpoint
@@ -170,7 +170,7 @@ Quadtree.prototype.getIndex = function (pRect) {
  * @memberof Quadtree
  */
 Quadtree.prototype.insert = function (pRect) {
-    var i = 0,
+    let i = 0,
         indexes
 
     //if we have subnodes, call insert on matching subnodes
@@ -199,7 +199,7 @@ Quadtree.prototype.insert = function (pRect) {
         //add all objects to their corresponding subnode
         for (i = 0; i < this.objects.length; i++) {
             indexes = this.getIndex(this.objects[i])
-            for (var k = 0; k < indexes.length; k++) {
+            for (let k = 0; k < indexes.length; k++) {
                 this.nodes[indexes[k]].insert(this.objects[i])
             }
         }
@@ -216,12 +216,12 @@ Quadtree.prototype.insert = function (pRect) {
  * @memberof Quadtree
  */
 Quadtree.prototype.retrieve = function (pRect) {
-    var indexes = this.getIndex(pRect),
+    let indexes = this.getIndex(pRect),
         returnObjects = this.objects
 
     //if we have subnodes, retrieve their objects
     if (this.nodes.length) {
-        for (var i = 0; i < indexes.length; i++) {
+        for (let i = 0; i < indexes.length; i++) {
             returnObjects = returnObjects.concat(
                 this.nodes[indexes[i]].retrieve(pRect),
             )
@@ -243,7 +243,7 @@ Quadtree.prototype.retrieve = function (pRect) {
 Quadtree.prototype.clear = function () {
     this.objects = []
 
-    for (var i = 0; i < this.nodes.length; i++) {
+    for (let i = 0; i < this.nodes.length; i++) {
         if (this.nodes.length) {
             this.nodes[i].clear()
         }

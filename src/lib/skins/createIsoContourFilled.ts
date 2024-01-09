@@ -68,7 +68,9 @@ export function createIsoContourFilled(
 
     const iso = new IsoContoursFill(parameters)
     const result = iso.run(attribute, mesh.geometry)
-    if (result.position.length === 0) return undefined
+    if (result.position.length === 0) {
+        return undefined
+    }
 
     const nmesh = new Mesh()
     //nmesh.castShadow = true
